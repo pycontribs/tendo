@@ -1,0 +1,4 @@
+﻿NFD aaâaa
+NFC aaâaa
+NFKD aaâaa
+NFKC aaâaa
