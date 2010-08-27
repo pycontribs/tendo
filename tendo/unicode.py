@@ -9,8 +9,14 @@ import codecs, sys, types, unittest
 # we save the file function handler because we want to override it
 open_old = open
 
-def open(filename, mode=None, bufsize=None, fallback_encoding='utf_8'):
-	#try:
+def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
+		"""
+		This respects Python documentation (2.6):
+		* mode is by default 'r' if not specified and text mode
+		* negative bufsize makes it use the default system one (same as not specified)
+		"""
+		# Do not assign None to bufsize or mode because calling original open will fail
+
 		# we read the first 4 bytes just to be sure we use the right encoding
 		if(mode == "r" or mode == "rU"): # we are interested of detecting the mode only for read text
 			f = open_old(filename, "rb")
