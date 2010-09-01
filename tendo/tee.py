@@ -4,7 +4,7 @@
 # License: public domain
 from __future__ import print_function
 from __future__ import unicode_literals
-import logging, sys, subprocess, types, io, time
+import logging, sys, subprocess, types, io, time, os, codecs
 
 if sys.version_info[0] == 3:
     string_types = str,
@@ -76,7 +76,10 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 	def filelogger(msg):
 		try:
 			msg = msg + '\n'  # we'll use the same endline on all platforms, you like it or not
-			f.write(msg.encode('utf_8'))
+			try:
+				f.write(msg)
+			except TypeError:
+				f.write(msg.encode("utf-8"))
 		except Exception as e:
 			import traceback
 			print('        ****** ERROR: Exception: %s\nencoding = %s' % (e, encoding))
@@ -90,7 +93,7 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 	if not logger:
 		mylogger = nop
 	elif isinstance(logger, string_types):
-		f = open(logger, "at+")
+		f = codecs.open(logger, "a+b", 'utf_8')
 		mylogger = filelogger
 	elif isinstance(logger, (types.FunctionType, types.MethodType, types.BuiltinFunctionType)):
 		mylogger = logger
@@ -103,6 +106,9 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 		else:
 			sys.exit("tee() does not support this type of logger=%s" % type(logger))
 
+	if cwd is not None and not os.path.isdir(cwd):
+		os.makedirs(cwd) # this throws exception if fails
+	
 	cmd = quote_command(cmd) # to prevent _popen() bug
 	p = subprocess.Popen(cmd, cwd=cwd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if(log_command):
@@ -125,6 +131,10 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 			mylogger("Returned: %d (execution time %s)\n" % (returncode, secondsToStr(time.clock()-t)))
 		else:
 			mylogger("Returned: %d\n" % (returncode))
+
+	if not returncode == 0: # running a tool that returns non-zero? this deserves a warning
+		logging.warning("Returned: %d from: %s\n" % (returncode, cmd))
+
 	return(returncode, output)	
 		
 def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel):
@@ -140,29 +150,36 @@ if __name__ == '__main__':
 		format='%(message)s')
 	
 	# default (stdout)	
+	print("#1")
 	system("python --version")
 
 	# function/method		
+	print("#2")
 	system("python --version", logger=logging.error)
 
 	# function (this is the same as default)
+	print("#3")
 	system("python --version", logger=print)
 
 	# handler
-	f = tempfile.NamedTemporaryFile(delete=False)
+	print("#4")
+	f = tempfile.NamedTemporaryFile()
 	system("python --version", logger=f)
 	f.close()
-	os.unlink(f.name)
 
 	# test with string (filename)
+	print("#5")
 	(f, fname) = tempfile.mkstemp()
-	print(fname)
 	system("python --version", logger=fname)
+	os.close(f)
+	os.unlink(fname)
 
+	print("#6")
 	stdout = False
 	logger = None
 	system("echo test")
 
+	print("#7")
 	stdout = True
 	system("echo test2")
 	
