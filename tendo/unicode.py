@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from __future__ import unicode_literals
-import codecs, sys, types, unittest, logging, tempfile
+import codecs, sys, unittest, logging, tempfile, os
 
 # Author: Sorin Sbarnea <ssbarnea@adobe.com>
 
@@ -25,7 +25,7 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 				aBuf = f.read(4)
 				f.close()
 			except:
-				aBuf=''
+				aBuf=b''
 			if aBuf[:3] ==   b'\xEF\xBB\xBF' :
 				f = codecs.open(filename, mode, "utf_8")
 				f.seek(3,0)
@@ -59,6 +59,8 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 			return open_old(filename, mode, bufsize)
 
 class testUnicode(unittest.TestCase):
+	def setUp(self):
+		os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 	def test_read_utf8(self):
 		try:

@@ -14,7 +14,6 @@ if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
 		def _out_handle(self):
 			import ctypes
 			return ctypes.windll.kernel32.GetStdHandle(self.STD_OUTPUT_HANDLE)
-		out_handle = property(_out_handle)
 
 		def _set_color(self, code):
 			import ctypes

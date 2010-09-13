@@ -4,7 +4,7 @@
 # License: public domain
 from __future__ import print_function
 from __future__ import unicode_literals
-import logging, sys, subprocess, types, io, time, os, codecs
+import logging, sys, subprocess, types, time, os, codecs
 
 if sys.version_info[0] == 3:
     string_types = str,
@@ -29,6 +29,9 @@ def quote_command(cmd):
 	This function does assure that the command line is entirely quoted.
 	This is required in order to prevent getting "The input line is too long" error message.
 	"""
+	if not (os.name == "nt" or os.name == "dos"):
+		return cmd # the escaping is required only on Windows platforms, in fact it will break cmd line on others
+
 	import re
 	re_quoted_items = re.compile(r'" \s* [^"\s] [^"]* \"', re.VERBOSE)
 	woqi = re_quoted_items.sub('', cmd)
@@ -37,7 +40,7 @@ def quote_command(cmd):
 	else:
 		return cmd
 
-def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel):
+def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sentinel, timing=_sentinel):
 	#def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
 	""" This is a simple placement for os.system() or subprocess.Popen()
 	that simulates how Unix tee() works - logging stdout/stderr using logging
@@ -46,10 +49,13 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 
 	For filenames, it will open them as text for append and use UTF-8 encoding
 
-	If logger is an instance of
+	logger parameter can be:
 	* 'string' - it will assume it is a filename, open it and log to it
 	* 'handle' - it just write to it
 	* 'function' - it call it using the message
+	* None - disable any logging
+	
+	If logger parameter is not specified it will use python logging module.
 	
 	This method return (returncode, output_lines_as_list)
 	
@@ -59,9 +65,9 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 	if log_command is _sentinel: log_command = globals().get('log_command')
 	if timing is _sentinel: timing = globals().get('timing')
 	
-	if logger is None:
+	if logger is _sentinel: # default to python native logger if logger parameter is not used
 		logger = globals().get('logger')
-	if stdout is None:
+	if stdout is _sentinel:
 		stdout = globals().get('stdout')
 
 	#logging.debug("logger=%s stdout=%s" % (logger, stdout))
@@ -114,7 +120,15 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 	if(log_command):
 		mylogger("Running: %s" % cmd)
 	while True:
-		line = p.stdout.readline().decode(encoding)
+		try:
+			line = p.stdout.readline()
+			line = line.decode(encoding)
+		except Exception as e:
+			logging.error(e)
+			logging.error("The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s" %\
+				(encoding, cmd, repr(line)))
+			pass
+
 		output.append(line)
 		if not line:
 			break
@@ -133,7 +147,7 @@ def system2(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timi
 			mylogger("Returned: %d\n" % (returncode))
 
 	if not returncode == 0: # running a tool that returns non-zero? this deserves a warning
-		logging.warning("Returned: %d from: %s\n" % (returncode, cmd))
+		logging.warning("Returned: %d from: %s\nOutput %s" % (returncode, cmd, '\n'.join(output)))
 
 	return(returncode, output)	
 		
