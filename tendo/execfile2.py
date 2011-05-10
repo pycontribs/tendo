@@ -1,6 +1,11 @@
 from __future__ import print_function
 import os, sys, unittest, tempfile, shlex
 
+if sys.hexversion > 0x03000000:
+	def execfile(file, globals=globals(), locals=locals()):
+		with open(file, "r") as fh:
+			exec(fh.read()+"\n", globals, locals)
+
 def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 	"""
 	Execute a Python script using execfile().
@@ -27,6 +32,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 	exit_code = 0
 	try:
 		execfile(filename, _globals, _locals)
+		
 	except SystemExit as e:
 		if isinstance(e.code , int):
 			exit_code = e.code # this could be 0 if you do sys.exit(0)
