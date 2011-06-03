@@ -15,3 +15,6 @@ __all__ = ['tee','colorer','unicode','execfile2','singleton']
 	Tendo is tested with Python 2.6-3.1
 """
 
+import sys
+if sys.hexversion < 0x02060000:
+	sys.exit("Python 2.6 or newer is required by tendo module.")

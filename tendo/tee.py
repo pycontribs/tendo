@@ -6,6 +6,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 import logging, sys, subprocess, types, time, os, codecs
 
+if sys.hexversion < 0x02060000:
+	sys.stderr.write("You need Python 2.6 or newer.\n")
+	sys.exit(-1)
+
 if sys.version_info[0] == 3:
     string_types = str,
 else:
