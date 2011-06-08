@@ -11,9 +11,9 @@ if sys.hexversion < 0x02060000:
 	sys.exit(-1)
 
 if sys.version_info[0] == 3:
-    string_types = str,
+	string_types = str,
 else:
-    string_types = basestring,
+	string_types = basestring,
 
 global logger
 global stdout
@@ -35,14 +35,13 @@ def quote_command(cmd):
 	"""
 	if not (os.name == "nt" or os.name == "dos"):
 		return cmd # the escaping is required only on Windows platforms, in fact it will break cmd line on others
-
-	import re
-	re_quoted_items = re.compile(r'" \s* [^"\s] [^"]* \"', re.VERBOSE)
-	woqi = re_quoted_items.sub('', cmd)
-	if len(cmd) == 0 or (len(woqi) > 0 and not (woqi[0] == '"' and woqi[-1] == '"')):
-		return '"' + cmd + '"'    
-	else:
-		return cmd
+	if '"' in cmd:
+		import re
+		re_quoted_items = re.compile(r'" \s* [^"\s] [^"]* \"', re.VERBOSE)
+		woqi = re_quoted_items.sub('', cmd)
+		if len(cmd) == 0 or (len(woqi) > 0 and (not (woqi[0] == '"' and woqi[-1] == '"'))):
+			cmd =  '"' + cmd + '"'
+	return cmd
 
 def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sentinel, timing=_sentinel):
 	#def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
@@ -121,9 +120,10 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 	
 	cmd = quote_command(cmd) # to prevent _popen() bug
 	p = subprocess.Popen(cmd, cwd=cwd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	if(log_command):
+	if log_command:
 		mylogger("Running: %s" % cmd)
 	while True:
+		line=""
 		try:
 			line = p.stdout.readline()
 			line = line.decode(encoding)
@@ -138,27 +138,27 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 			break
 		line = line.rstrip('\n\r')
 		mylogger(line) # they are added by logging anyway
-		if(stdout):
+		if stdout :
 			print(line)
 	returncode = p.wait()
-	if(log_command):
-		if(timing):
+	if log_command :
+		if timing:
 			def secondsToStr(t):
 				from functools import reduce
 				return "%02d:%02d:%02d" % reduce(lambda ll,b : divmod(ll[0],b) + ll[1:], [(t*1000,),1000,60,60])[:3]
 			mylogger("Returned: %d (execution time %s)\n" % (returncode, secondsToStr(time.clock()-t)))
 		else:
-			mylogger("Returned: %d\n" % (returncode))
+			mylogger("Returned: %d\n" % returncode)
 
 	if not returncode == 0: # running a tool that returns non-zero? this deserves a warning
 		logging.warning("Returned: %d from: %s\nOutput %s" % (returncode, cmd, '\n'.join(output)))
 
-	return(returncode, output)	
+	return returncode, output
 		
 def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel):
 	""" System does not return a tuple """
 	(returncode, output) = system2(cmd, cwd=cwd, logger=logger, stdout=stdout, log_command=log_command, timing=timing)
-	return(returncode)
+	return returncode
 
 if __name__ == '__main__':
 	import colorer
@@ -200,5 +200,4 @@ if __name__ == '__main__':
 	print("#7")
 	stdout = True
 	system("echo test2")
-	
-		
+
