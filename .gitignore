@@ -1,3 +1,6 @@
 *.pyc
 MANIFEST
+tendo/build/*.*
+.idea/workspace.xml
+
 
