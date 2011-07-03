@@ -1,2 +1,2 @@
-TBD: same as python
+TODO: Same licensing terms as Python.
 

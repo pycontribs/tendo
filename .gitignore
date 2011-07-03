@@ -2,5 +2,9 @@
 MANIFEST
 tendo/build/*.*
 .idea/workspace.xml
+.DS_Store
+tendo.egg-info
+dist/*.*
+
 
 

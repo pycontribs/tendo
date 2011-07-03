@@ -21,10 +21,13 @@
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
   </component>
+  <component name="ProjectKey">
+    <option name="state" value="https://ssbarnea@github.com/ssbarnea/tendo.git" />
+  </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" assert-keyword="false" jdk-15="false" project-jdk-name="Python 2.6.1 (/System/Library/Frameworks/Python.framework/Versions/2.6/bin/python)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7.1 (/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python)" project-jdk-type="Python SDK" />
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 

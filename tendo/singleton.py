@@ -6,7 +6,8 @@ from multiprocessing import Process
 class SingleInstance:
 	def __init__(self):
 		import sys
-		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' + os.path.splitext(os.path.abspath(__file__))[0].replace("/","-")  + '.lock')
+		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +
+		    os.path.splitext(os.path.abspath(__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + '.lock')
 		logging.debug("SingleInstance lockfile: " + self.lockfile)
 		if sys.platform == 'win32':
 			try:
@@ -56,6 +57,6 @@ class testSingleton(unittest.TestCase):
 		# note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
 
 if __name__ == "__main__":
-	#logging.getLogger().setLevel(logging.DEBUG)
+	logging.getLogger().setLevel(logging.DEBUG)
 	unittest.main()
 
