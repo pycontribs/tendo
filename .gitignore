@@ -1,6 +1,7 @@
 *.pyc
 MANIFEST
 tendo/build/*.*
+docs/build/*.*
 .idea/workspace.xml
 .DS_Store
 tendo.egg-info
