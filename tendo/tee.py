@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 import logging, sys, subprocess, types, time, os, codecs, unittest
 
+
 if sys.hexversion < 0x02060000:
     sys.stderr.write("You need Python 2.6 or newer.\n")
     sys.exit(-1)
@@ -28,6 +29,7 @@ timing = True # print execution time of each command in the log, just after the 
 log_command = True # outputs the command being executed to the log (before command output)
 _sentinel = object()
 
+
 def quote_command(cmd):
     """
     This function does assure that the command line is entirely quoted.
@@ -41,23 +43,9 @@ def quote_command(cmd):
 
 def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sentinel, timing=_sentinel):
     #def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
-    """ This is a simple placement for os.system() or subprocess.Popen()
-    that simulates how Unix tee() works - logging stdout/stderr using logging
+    """ Works exactly like :func:`system` but it returns both the exit code and the output as a list of lines.
 
-    If you specify file (name or handler) it will output to this file.
-
-    For filenames, it will open them as text for append and use UTF-8 encoding
-
-    logger parameter can be:
-    * 'string' - it will assume it is a filename, open it and log to it
-    * 'handle' - it just write to it
-    * 'function' - it call it using the message
-    * None - disable any logging
-
-    If logger parameter is not specified it will use python logging module.
-
-    This method return (returncode, output_lines_as_list)
-
+    This method returns a tuple: (return_code, output_lines_as_list). The return code of 0 means success.
     """
     t = time.clock()
     output = []
@@ -152,7 +140,24 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
     return returncode, output
 
 def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel):
-    """ System does not return a tuple """
+    """ This works similar to :py:func:`os.system` but add some useful optional parameters.
+
+    * ``cmd`` - command to be executed
+    * ``cwd`` - optional working directory to be set before running cmd
+    * ``logger`` - None, 'log.txt', handle or a function like print or :py:meth:`logging.Logger.warning`
+    
+    Returns the exit code reported by the execution of the command, 0 means success.
+
+	>>> import os, logging
+	>>> tee.system("echo test", logger=logging.error)  # output using python logging
+
+   	>>> tee.system("echo test", logger="log.txt")  # output to a file
+
+    >>> f = open("log.txt", "w")
+    >>> tee.system("echo test", logger=f) # output to a filehandle
+
+    >>> tee.system("echo test", logger=print) # use the print() function for output
+    """
     (returncode, output) = system2(cmd, cwd=cwd, logger=logger, stdout=stdout, log_command=log_command, timing=timing)
     return returncode
 

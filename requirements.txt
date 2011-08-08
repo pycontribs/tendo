@@ -1,3 +1,5 @@
 nose
 rednose
 pylint
+sphinx
+sphinx-pypi-upload

@@ -6,8 +6,8 @@ __author__  = "Sorin Sbarnea"
 __copyright__ = "Copyright 2010-2011, Sorin Sbarnea"
 __email__   = "sorindotsbarnea@gmail.com"
 __status__  = "Development"
-__version__ = "0.0.8"
-__date__    = "2011-07-03"
+__version__ = "0.0.9"
+__date__    = "2011-08-08"
 
 __all__ = ['tee','colorer','unicode','execfile2','singleton']
 

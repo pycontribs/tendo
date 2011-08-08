@@ -8,18 +8,20 @@ if sys.hexversion > 0x03000000:
 
 def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 	"""
-	Execute a Python script using execfile().
-	In addition to Python execfile() this method can temporary change the argv params.
+	Execute a Python script using :py:func:`execfile`.
+	In addition to Python :py:func:`execfile` this method can temporary change the argv params.
 
 	This enables you to call an external python script that requires
 	command line arguments without leaving current python interpretor.
 
-	* `cmd` can be string with command line arguments or a list or arguments
+	`cmd` can be a string with command line arguments or a list or arguments
 
 	The return value is a numeric exit code similar to the one used for command line tools:
-	* 0 - if succesfull; this applies if script receives SystemExit with error code 0
-	* 1 - if SystemExit does not contain an error code or if other Exception is received.
-	* x - the SystemExit error code (if present)
+
+	- 0 - if succesfull; this applies if script receives SystemExit with error code 0
+	- 1 - if SystemExit does not contain an error code or if other Exception is received.
+	- x - the SystemExit error code (if present)
+
 	"""
 	_globals['__name__']='__main__'
 	saved_argv = sys.argv # we save sys.argv

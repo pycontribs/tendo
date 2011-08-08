@@ -4,6 +4,16 @@ import sys, os, errno, tempfile, unittest, logging
 from multiprocessing import Process
 
 class SingleInstance:
+	"""
+	If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will exist the application with the message "Another instance is already running, quitting.", returning -1 error code.
+
+	>>> import tendo
+	>>> me = SingleInstance()
+
+	This option is very useful if you have scripts executed by crontab at small amounts of time.
+
+	Remember that this works by creating a lock file with a filename based on the full path to the script file.
+	"""
 	def __init__(self):
 		import sys
 		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +

@@ -12,9 +12,13 @@ Example of things:
 * enable you to use symlinks under windows
 * tee() command (executing extenal programs and redirecting their output to both console/file)
 
+Documentation
+------------------------------
+Check http://packages.python.org/tendo/
+
 Requirements and compatibility
 ------------------------------
-* python 2.6-3.1
+* python 2.6-3.2
 * distribute (for installation)
 
 Related project and packages
@@ -27,4 +31,5 @@ Related project and packages
 TODO
 ----
 * implement testing, see test frameworks http://pycheesecake.org/wiki/PythonTestingToolsTaxonomy
+* implement all PEP8 recomandations
 

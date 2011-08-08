@@ -3,11 +3,23 @@
 # Author: sorin sbarnea
 # License: public domain
 
+"""
+Colorer does enable colored logging messages by using `ANSI escape sequences <http://en.wikipedia.org/wiki/ANSI_escape_code>`_.
+
+Under Windows, where the escapes are not supported it does use the Windows API.
+
+The colored output is generated only when the console is a terminal supporting it, so if you redirect the output to a log file you will not see the escape codes in the file.
+
+>>> import colorer, logging
+>>> logging.error("red line")
+>>> logging.warn("yellow line")
+>>> logging.info("gray line")
+>>> logging.debug("magenta line")
+"""
 import logging, sys
-# This assures that we are enabling colorer only when the console supports coloring
-# main advantage is that if you redirect the script you will not get ANSI escapes in the output file
-# Why stderr and not stdout? - because python logging module does output to stderr by default and not stdout.
+
 if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
+	# Why stderr and not stdout? - because python logging module does output to stderr by default and not stdout.
 	# now we patch Python code to add color support to logging.StreamHandler
 	def add_coloring_to_emit_windows(fn):
 			# add methods we need to the class
@@ -57,15 +69,15 @@ if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
 			BACKGROUND_INTENSITY = 0x0080 # background color is intensified.     
 
 			levelno = args[1].levelno
-			if(levelno>=50):
+			if levelno>=50:
 				color = BACKGROUND_YELLOW | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_INTENSITY 
-			elif(levelno>=40):
+			elif levelno>=40:
 				color = FOREGROUND_RED | FOREGROUND_INTENSITY
-			elif(levelno>=30):
+			elif levelno>=30:
 				color = FOREGROUND_YELLOW | FOREGROUND_INTENSITY
-			elif(levelno>=20):
+			elif levelno>=20:
 				color = FOREGROUND_GREEN
-			elif(levelno>=10):
+			elif levelno>=10:
 				color = FOREGROUND_MAGENTA
 			else:
 				color =  FOREGROUND_WHITE
@@ -81,15 +93,15 @@ if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
 		# add methods we need to the class
 		def new(*args):
 			levelno = args[1].levelno
-			if(levelno>=50):
+			if levelno>=50:
 				color = '\x1b[31m' # red
-			elif(levelno>=40):
+			elif levelno>=40 :
 				color = '\x1b[31m' # red
-			elif(levelno>=30):
+			elif levelno>=30 :
 				color = '\x1b[33m' # yellow
-			elif(levelno>=20):
+			elif levelno>=20 :
 				color = '\x1b[32m' # green 
-			elif(levelno>=10):
+			elif levelno>=10:
 				color = '\x1b[35m' # pink
 			else:
 				color = '\x1b[0m' # normal
@@ -111,7 +123,7 @@ if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
 		#//hdlr.setFormatter(formatter())
 
 if __name__ == '__main__':
-	import logging, sys, os
+	import logging
 	# import colorer
 	# remember that logging outputs to stderr and not stdout (just in case you'll wonder)
 	logging.getLogger().setLevel(logging.NOTSET)

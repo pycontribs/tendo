@@ -1,25 +1,42 @@
 #!/usr/bin/python
 from __future__ import unicode_literals
 import codecs, sys, unittest, logging, tempfile, os
+"""
+Author: Sorin Sbarnea <ssbarnea@adobe.com>
 
-# Author: Sorin Sbarnea <ssbarnea@adobe.com>
+This file does add some additional Unicode support to Python, like:
+* auto-detect BOM on text-file open: open(file, "r") and open(file, "rU")
 
-# This file does add some additional Unicode support to Python, like:
-# * auto-detect BOM on text-file open: open(file, "r") and open(file, "rU")
-
+"""
 # we save the file function handler because we want to override it
 open_old = open
 
 def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 		"""
-		This respects Python documentation (2.6):
+		This replaces Python original open() function with an improved version that is Unicode aware.
+
+		The new `open()` does change behaviour only for text files, not binary.
+		
 		* mode is by default 'r' if not specified and text mode
 		* negative bufsize makes it use the default system one (same as not specified)
+
+		>>> import tendo.unicode
+		>>> f = open("file-with-unicode-content.txt")
+		>>> content = f.read() # Unicode content of the file, without BOM
+
+		Shortly by importing unicode, you will repair code that previously was broken when the input files were Unicode.
+
+		This will not change the behavior of  code that reads the files as binary, it has an effect on text file operations.
+
+		Files with BOM will be read properly as Unicode and the BOM will not be part of the text.
+
+		If you do not specify the fallback_encoding, files without BOM will be read as `UTF-8` instead of `ascii`.
+
 		"""
 		# Do not assign None to bufsize or mode because calling original open will fail
 
 		# we read the first 4 bytes just to be sure we use the right encoding
-		if("r" in mode or "a" in mode): # we are interested of detecting the mode only for read text
+		if "r" in mode or "a" in mode: # we are interested of detecting the mode only for read text
 			try:
 				f = open_old(filename, "rb")
 				aBuf = bytes(f.read(4))
@@ -65,16 +82,16 @@ class testUnicode(unittest.TestCase):
 	def test_read_utf8(self):
 		try:
 			f = open("tests/utf8.txt","rU")
-			r = f.readlines()
+			f.readlines()
 			f.close()
 		except Exception as e:
-			self.assertTrue(False, "Unable to properly read valid utf8 encoded file.")
+			self.assertTrue(False, "Unable to properly read valid utf8 encoded file: " + e)
 
 	def test_read_invalid_utf8(self):
 		passed = False
 		try:
 			f = open("tests/utf8-invalid.txt","rU")
-			r = f.readlines()
+			f.readlines()
 			f.close()
 		except Exception as e:
 			if isinstance(e, UnicodeDecodeError):

@@ -31,7 +31,7 @@ setup(
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		'Topic :: Internet',
 	],
-	long_description = '''Update: for complete list of changes read https://github.com/ssbarnea/tendo/commits/master''',
+	long_description = open('README.txt').read(),
         **options
 )
   
