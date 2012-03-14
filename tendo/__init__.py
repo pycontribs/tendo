@@ -6,15 +6,15 @@ __author__  = "Sorin Sbarnea"
 __copyright__ = "Copyright 2010-2011, Sorin Sbarnea"
 __email__   = "sorindotsbarnea@gmail.com"
 __status__  = "Development"
-__version__ = "0.0.9"
-__date__    = "2011-08-08"
+__version__ = "0.0.10"
+__date__    = "2012-03-14"
 
 __all__ = ['tee','colorer','unicode','execfile2','singleton']
 
 """
-	Tendo is tested with Python 2.6-3.2
+	Tendo is tested with Python 2.5-3.2
 """
 
 import sys
-if sys.hexversion < 0x02060000:
-	sys.exit("Python 2.6 or newer is required by tendo module.")
+if sys.hexversion < 0x02050000:
+	sys.exit("Python 2.5 or newer is required by tendo module.")

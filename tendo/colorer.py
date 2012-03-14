@@ -105,7 +105,7 @@ if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
 				color = '\x1b[35m' # pink
 			else:
 				color = '\x1b[0m' # normal
-			args[1].msg = color + args[1].msg +  '\x1b[0m'  # normal
+			args[1].msg = color + str(args[1].msg) +  '\x1b[0m'  # normal
 			#print "after"
 			return fn(*args)
 		return new

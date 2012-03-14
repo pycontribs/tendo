@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Setuptools is required for the use_2to3 option below. You should install it
 # from the Distribute home page, http://packages.python.org/distribute/
 import sys
