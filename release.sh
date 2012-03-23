@@ -16,5 +16,6 @@ rm -rf build dist MANIFEST &> /dev/null
 # Build installers, etc. and upload to PyPI
 # python setup.py register sdist bdist_wininst upload
 
-python setup.py register sdist build_sphinx upload upload_sphinx
+#python setup.py register sdist build_sphinx upload upload_sphinx
+python setup.py register sdist upload
 

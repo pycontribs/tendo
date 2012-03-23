@@ -36,4 +36,3 @@ setup(
 	long_description = open('README.txt').read(),
         **options
 )
-  
