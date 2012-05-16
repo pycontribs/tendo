@@ -16,7 +16,7 @@ The colored output is generated only when the console is a terminal supporting i
 >>> logging.info("gray line")
 >>> logging.debug("magenta line")
 """
-import logging, sys
+import logging, sys, os
 
 if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
 	# Why stderr and not stdout? - because python logging module does output to stderr by default and not stdout.
@@ -126,6 +126,20 @@ if __name__ == '__main__':
 	import logging
 	# import colorer
 	# remember that logging outputs to stderr and not stdout (just in case you'll wonder)
+
+	for param in os.environ.keys():
+		print "%25s %s" % (param,os.environ[param])
+
+	isatty = None
+	if hasattr(sys.stderr, "isatty"):
+		isatty = sys.stderr.isatty()
+	print("sys.stderr.isatty = %s" % isatty)
+
+	isatty = None
+	if hasattr(sys.stdout, "isatty"):
+		isatty = sys.stdout.isatty()
+	print("sys.stdout.isatty = %s" % isatty)
+
 	logging.getLogger().setLevel(logging.NOTSET)
 	logging.warn("a warning")
 	logging.error("some error")

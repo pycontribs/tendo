@@ -1,4 +1,4 @@
-#! /usr/bin/env python -3 -t
+#! /usr/bin/env python
 
 import sys, os, errno, tempfile, unittest, logging
 from multiprocessing import Process

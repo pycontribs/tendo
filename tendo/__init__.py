@@ -1,4 +1,4 @@
-#!/usr/bin/env python -3 -t
+#!/usr/bin/env python
 # Licensed to PSF under a Contributor Agreement.
 # See http://www.python.org/psf/license for licensing details.
 

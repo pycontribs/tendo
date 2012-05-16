@@ -1,4 +1,4 @@
-#!/usr/bin/env python -3 -t
+#!/usr/bin/env python
 # Originally from http://waf.googlecode.com/svn/trunk/waflib/ansiterm.py
 import sys, os
 try:
