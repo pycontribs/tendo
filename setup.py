@@ -12,6 +12,7 @@ setup(
 	name = 'tendo',
 	py_modules = ['tendo.colorer', 'tendo.execfile2', 'tendo.singleton', 'tendo.tee', 'tendo.unicode'],
 	version = __version__,
+	zip_safe = False,
 	description = 'A Python library that extends some core functionality',
 	author = 'Sorin Sbarnea',
 	author_email = 'sorin.sbarnea@gmail.com',
