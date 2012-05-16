@@ -18,7 +18,7 @@ The colored output is generated only when the console is a terminal supporting i
 """
 import logging, sys, os
 
-if hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
+if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or ('TERM' in os.environ.keys() and os.environ['TERM'] in ['linux'] ):
 	# Why stderr and not stdout? - because python logging module does output to stderr by default and not stdout.
 	# now we patch Python code to add color support to logging.StreamHandler
 	def add_coloring_to_emit_windows(fn):
