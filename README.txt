@@ -18,7 +18,7 @@ Check http://packages.python.org/tendo/
 
 Requirements and compatibility
 ------------------------------
-* python 2.6-3.2
+* python 2.5-3.2
 * distribute (for installation)
 
 Related project and packages
