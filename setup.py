@@ -34,6 +34,8 @@ setup(
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		'Topic :: Internet',
 	],
+	setup_requires=['nose>=1.0'],
+	tests_require=[],
 	long_description = open('README.txt').read(),
         **options
 )

@@ -21,8 +21,8 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 		* negative bufsize makes it use the default system one (same as not specified)
 
 		>>> import tendo.unicode
-		>>> f = open("file-with-unicode-content.txt")
-		>>> content = f.read() # Unicode content of the file, without BOM
+		... f = open("file-with-unicode-content.txt")
+		... content = f.read() # Unicode content of the file, without BOM
 
 		Shortly by importing unicode, you will repair code that previously was broken when the input files were Unicode.
 

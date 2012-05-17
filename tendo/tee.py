@@ -144,19 +144,17 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
 
     * ``cmd`` - command to be executed
     * ``cwd`` - optional working directory to be set before running cmd
-    * ``logger`` - None, 'log.txt', handle or a function like print or :py:meth:`logging.Logger.warning`
+    * ``logger`` - None, a filename, handle or a function like print or :py:meth:`logging.Logger.warning`
     
     Returns the exit code reported by the execution of the command, 0 means success.
 
-	>>> import os, logging
-	>>> tee.system("echo test", logger=logging.error)  # output using python logging
-
-   	>>> tee.system("echo test", logger="log.txt")  # output to a file
-
-    >>> f = open("log.txt", "w")
-    >>> tee.system("echo test", logger=f) # output to a filehandle
-
-    >>> tee.system("echo test", logger=print) # use the print() function for output
+    >>> import os, logging, tempfile
+    ... import tendo.tee
+    ... tee.system("echo test", logger=logging.error)  # output using python logging
+    ... tee.system("echo test", logger="/tmp/log.txt")  # output to a file
+    ... f = NamedTemporaryFile()
+    ... tee.system("echo test", logger=f) # output to a filehandle
+    ... tee.system("echo test", logger=print) # use the print() function for output
     """
     (returncode, output) = system2(cmd, cwd=cwd, logger=logger, stdout=stdout, log_command=log_command, timing=timing)
     return returncode
