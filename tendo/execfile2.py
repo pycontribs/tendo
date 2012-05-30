@@ -1,11 +1,15 @@
 #!/usr/bin/env python
-from __future__ import print_function
+#from __future__ import print_function
 import os, sys, unittest, tempfile, shlex
 
 if sys.hexversion > 0x03000000:
 	def execfile(file, globals=globals(), locals=locals()):
-		with open(file, "r") as fh:
-			exec(fh.read()+"\n", globals, locals)
+		fh = open(file, "r")
+		if not fh: raise Exception("Unable to open %s." % file)
+		exec(fh.read()+"\n", globals, locals)
+		# The code below is not parsed by python2.5
+		#with open(file, "r") as fh:
+		#	exec(fh.read()+"\n", globals, locals)
 
 def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 	"""
@@ -36,7 +40,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 	try:
 		execfile(filename, _globals, _locals)
 		
-	except SystemExit as e:
+	except SystemExit, e:
 		if isinstance(e.code , int):
 			exit_code = e.code # this could be 0 if you do sys.exit(0)
 		else:

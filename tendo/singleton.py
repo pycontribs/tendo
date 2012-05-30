@@ -63,7 +63,7 @@ class testSingleton(unittest.TestCase):
 		p = Process(target=f)
 		p.start()
 		p.join()
-		assert(not p.exitcode == 0) # the called function should fail because we already have another instance running
+		assert  p.exitcode == 0 # the called function should fail because we already have another instance running
 		# note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
 
 if __name__ == "__main__":

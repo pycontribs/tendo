@@ -148,6 +148,7 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
     
     Returns the exit code reported by the execution of the command, 0 means success.
 
+<<<<<<< HEAD
     >>> import os, logging, tempfile
     ... import tendo.tee
     ... tee.system("echo test", logger=logging.error)  # output using python logging
@@ -155,6 +156,15 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
     ... f = NamedTemporaryFile()
     ... tee.system("echo test", logger=f) # output to a filehandle
     ... tee.system("echo test", logger=print) # use the print() function for output
+=======
+	>>> import os, logging
+	... import tendo.tee
+	... tee.system("echo test", logger=logging.error)  # output using python logging
+	... tee.system("echo test", logger="log.txt")  # output to a file
+	... f = open("log.txt", "w")
+	... tee.system("echo test", logger=f) # output to a filehandle
+	... tee.system("echo test", logger=print) # use the print() function for output
+>>>>>>> unittest
     """
     (returncode, output) = system2(cmd, cwd=cwd, logger=logger, stdout=stdout, log_command=log_command, timing=timing)
     return returncode

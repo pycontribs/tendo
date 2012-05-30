@@ -1,12 +1,21 @@
 *.pyc
 MANIFEST
 tendo/build/*.*
+docs/_build/
 docs/build/*.*
 .idea/workspace.xml
 .DS_Store
 tendo.egg-info
 dist/*.*
+<<<<<<< HEAD
 build/*.*
 
+=======
+*.egg
+build
+.tox
+log.txt
+.idea/workspace.xml
+>>>>>>> unittest
 
 
