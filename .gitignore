@@ -1,21 +1,16 @@
 *.pyc
-MANIFEST
-tendo/build/*.*
-docs/_build/
-docs/build/*.*
+*.egg
+.tox
 .idea/workspace.xml
 .DS_Store
-tendo.egg-info
-dist/*.*
-<<<<<<< HEAD
 build/*.*
-
-=======
-*.egg
 build
-.tox
+docs/_build/
+docs/build/*.*
+dist/*.*
+MANIFEST
+tendo/build/*.*
+tendo.egg-info
 log.txt
-.idea/workspace.xml
->>>>>>> unittest
 
 

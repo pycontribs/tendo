@@ -11,10 +11,10 @@ Under Windows, where the escapes are not supported it does use the Windows API.
 The colored output is generated only when the console is a terminal supporting it, so if you redirect the output to a log file you will not see the escape codes in the file.
 
 >>> import colorer, logging
->>> logging.error("red line")
->>> logging.warn("yellow line")
->>> logging.info("gray line")
->>> logging.debug("magenta line")
+... logging.error("red line")
+... logging.warn("yellow line")
+... logging.info("gray line")
+... logging.debug("magenta line")
 """
 import logging, sys, os
 
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 	# remember that logging outputs to stderr and not stdout (just in case you'll wonder)
 
 	for param in os.environ.keys():
-		print "%25s %s" % (param,os.environ[param])
+		print("%25s %s" % (param,os.environ[param]))
 
 	isatty = None
 	if hasattr(sys.stderr, "isatty"):

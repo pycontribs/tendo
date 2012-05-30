@@ -2,14 +2,7 @@
 # encoding: utf-8
 # Author: sorin sbarnea
 # License: public domain
-from __future__ import print_function
-from __future__ import unicode_literals
 import logging, sys, subprocess, types, time, os, codecs, unittest
-
-
-if sys.hexversion < 0x02060000:
-    sys.stderr.write("You need Python 2.6 or newer.\n")
-    sys.exit(-1)
 
 if sys.version_info[0] == 3:
     string_types = str,
@@ -73,7 +66,8 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
                 f.write(msg)
             except TypeError:
                 f.write(msg.encode("utf-8"))
-        except Exception as e:
+        except Exception:
+            type, e, tb = sys.exc_info()
             import traceback
             print('        ****** ERROR: Exception: %s\nencoding = %s' % (e, encoding))
             traceback.print_exc(file=sys.stderr)
@@ -111,7 +105,8 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
         try:
             line = p.stdout.readline()
             line = line.decode(encoding)
-        except Exception as e:
+        except Exception:
+            type, e, tb = sys.exc_info()
             logging.error(e)
             logging.error("The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s" %\
                 (encoding, cmd, repr(line)))
@@ -148,23 +143,13 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
     
     Returns the exit code reported by the execution of the command, 0 means success.
 
-<<<<<<< HEAD
-    >>> import os, logging, tempfile
+    >>> import os, logging
     ... import tendo.tee
     ... tee.system("echo test", logger=logging.error)  # output using python logging
-    ... tee.system("echo test", logger="/tmp/log.txt")  # output to a file
-    ... f = NamedTemporaryFile()
+    ... tee.system("echo test", logger="log.txt")  # output to a file
+    ... f = open("log.txt", "w")
     ... tee.system("echo test", logger=f) # output to a filehandle
     ... tee.system("echo test", logger=print) # use the print() function for output
-=======
-	>>> import os, logging
-	... import tendo.tee
-	... tee.system("echo test", logger=logging.error)  # output using python logging
-	... tee.system("echo test", logger="log.txt")  # output to a file
-	... f = open("log.txt", "w")
-	... tee.system("echo test", logger=f) # output to a filehandle
-	... tee.system("echo test", logger=print) # use the print() function for output
->>>>>>> unittest
     """
     (returncode, output) = system2(cmd, cwd=cwd, logger=logger, stdout=stdout, log_command=log_command, timing=timing)
     return returncode
@@ -196,7 +181,7 @@ class testTee(unittest.TestCase):
         save = os.name
         os.name = 'nt'
 
-        for key, value in quotes.iteritems():
+        for key, value in quotes.items():
             resulted_value = quote_command(key)
             self.assertEqual(value, resulted_value, "Returned <%s>, expected <%s>" % (resulted_value, value))
             #ret = os.system(resulted_value)

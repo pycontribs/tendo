@@ -1,8 +1,8 @@
 #!/usr/bin/python
-from __future__ import unicode_literals
 import codecs, sys, unittest, logging, tempfile, os
+import six
 """
-Author: Sorin Sbarnea <ssbarnea@adobe.com>
+Author: Sorin Sbarnea
 
 This file does add some additional Unicode support to Python, like:
 * auto-detect BOM on text-file open: open(file, "r") and open(file, "rU")
@@ -42,24 +42,24 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 				aBuf = bytes(f.read(4))
 				f.close()
 			except:
-				aBuf=b''
-			if bytes(aBuf[:3]) ==   b'\xEF\xBB\xBF' :
+				aBuf=six.b('')
+			if six.binary_type(aBuf[:3]) ==   six.b('\xEF\xBB\xBF') :
 				f = codecs.open(filename, mode, "utf_8")
 				f.seek(3,0)
 				f.BOM = codecs.BOM_UTF8
-			elif bytes(aBuf[:2]) == b'\xFF\xFE':
+			elif six.binary_type(aBuf[:2]) == six.b('\xFF\xFE'):
 				f = codecs.open(filename, mode, "utf_16_le")
 				f.seek(2,0)
 				f.BOM = codecs.BOM_UTF16_LE
-			elif bytes(aBuf[:2]) == b'\xFE\xFF':
+			elif six.binary_type(aBuf[:2]) == six.b('\xFE\xFF'):
 				f = codecs.open(filename, mode, "utf_16_be")
 				f.seek(2,0)
 				f.BOM = codecs.BOM_UTF16_BE
-			elif bytes(aBuf[:4]) == b'\xFF\xFE\x00\x00':
+			elif six.binary_type(aBuf[:4]) == six.b('\xFF\xFE\x00\x00'):
 				f = codecs.open(filename, mode, "utf_32_le")
 				f.seek(4,0)
 				f.BOM = codecs.BOM_UTF32_LE
-			elif bytes(aBuf[:4]) == b'\x00\x00\xFE\xFF':
+			elif six.binary_type(aBuf[:4]) == six.b('\x00\x00\xFE\xFF'):
 				f = codecs.open(filename, mode, "utf_32_be")
 				f.seek(4,0)
 				f.BOM = codecs.BOM_UTF32_BE
@@ -84,7 +84,8 @@ class testUnicode(unittest.TestCase):
 			f = open("tests/utf8.txt","rU")
 			f.readlines()
 			f.close()
-		except Exception as e:
+		except Exception:
+			type, e, tb = sys.exc_info()
 			self.assertTrue(False, "Unable to properly read valid utf8 encoded file: " + e)
 
 	def test_read_invalid_utf8(self):
@@ -93,7 +94,8 @@ class testUnicode(unittest.TestCase):
 			f = open("tests/utf8-invalid.txt","rU")
 			f.readlines()
 			f.close()
-		except Exception as e:
+		except Exception:
+			type, e, tb = sys.exc_info()
 			if isinstance(e, UnicodeDecodeError):
 				passed = True # yes, we expect an exception
 			pass
@@ -104,10 +106,10 @@ class testUnicode(unittest.TestCase):
 		(ftmp, fname_tmp) = tempfile.mkstemp()
 		shutil.copyfile("tests/utf8.txt", fname_tmp)
 		f = open(fname_tmp,"a") # encoding not specified, should use utf-8
-		f.write("\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000")
+		f.write(six.u("\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000"))
 		f.close()
 		passed = filecmp.cmp("tests/utf8-after-append.txt", fname_tmp, shallow=False)
-		self.assertTrue(passed, "Appending to existing UTF-8 file test failed.")
+		self.assertTrue(passed, "Appending to existing UTF-8 file test failed (%s)." % fname_tmp)
 		os.close(ftmp)
 		os.unlink(fname_tmp)
 

@@ -8,7 +8,7 @@ class SingleInstance:
 	If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will exist the application with the message "Another instance is already running, quitting.", returning -1 error code.
 
 	>>> import tendo
-	>>> me = SingleInstance()
+	... me = SingleInstance()
 
 	This option is very useful if you have scripts executed by crontab at small amounts of time.
 
@@ -25,7 +25,8 @@ class SingleInstance:
 				if os.path.exists(self.lockfile):
 					os.unlink(self.lockfile)
 				self.fd =  os.open(self.lockfile, os.O_CREAT|os.O_EXCL|os.O_RDWR)
-			except OSError as e:
+			except OSError:
+				type, e, tb = sys.exc_info()
 				if e.errno == 13:
 					logging.error("Another instance is already running, quitting.")
 					sys.exit(-1)
@@ -59,11 +60,16 @@ class testSingleton(unittest.TestCase):
 		me = SingleInstance()
 		pass
 	def test_2(self):
+		p = Process(target=f)
+		p.start()
+		p.join()
+		assert  p.exitcode == 0, "%s != 0" % p.exitcode # the called function should succeed
+	def test_3(self):
 		me = SingleInstance()
 		p = Process(target=f)
 		p.start()
 		p.join()
-		assert  p.exitcode == 0 # the called function should fail because we already have another instance running
+		assert  p.exitcode != 0, "%s != 0" % p.exitcode # the called function should fail because we already have another instance running
 		# note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
 
 if __name__ == "__main__":

@@ -3,15 +3,26 @@
 # from the Distribute home page, http://packages.python.org/distribute/
 import sys
 from setuptools import setup, Command
+from setuptools.command.test import test as TestCommand
+
 #from distutils.core import setup, Command
 
 from tendo import __version__
 
-requirements=['pep8>=0.6','nose'] #'nosexcover']
-test_suite="tendo.colorer" # for 2.5 we test only the colorer
+# Hack to prevent stupid "TypeError: 'NoneType' object is not callable" error
+# in multiprocessing/util.py _exit_function when running `python
+# setup.py test` (see
+# http://www.eby-sarna.com/pipermail/peak/2010-May/003357.html)
+try:
+    import multiprocessing
+except ImportError:
+    pass
+
+requirements=['pep8>=0.6','nose','six','sphinx'] #'nosexcover']
+test_suite="py.test"
 if sys.hexversion >= 0x02060000:
     requirements.extend(['nose-machineout'])
-    test_suite="nose.collector"
+    test_suite="py.test"
 
 # handle python 3
 if sys.version_info >= (3,):
@@ -21,16 +32,27 @@ else:
 
 options = {}
 
-class PyTest(Command):
-    user_options = []
-    def initialize_options(self):
-        pass
+#class PyTest(Command):
+#    user_options = []
+#    def initialize_options(self):
+#        pass
+#    def finalize_options(self):
+#        pass
+#    def run(self):
+#        import sys,subprocess
+#        errno = subprocess.call([sys.executable, 'tox'])
+#        raise SystemExit(errno)
+
+class PyTest(TestCommand):
     def finalize_options(self):
-        pass
-    def run(self):
-        import sys,subprocess
-        errno = subprocess.call([sys.executable, 'tox'])
-        raise SystemExit(errno)
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        pytest.main(self.test_args)
+
 
 setup(
 	name = 'tendo',
@@ -58,10 +80,8 @@ setup(
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		'Topic :: Internet',
 	],
-	setup_requires=['nose>=1.0'],
-	tests_require=[],
 	long_description = open('README.txt').read(),
-	setup_requires=['nose>=1.0'], #,'nosexcover'],
+	setup_requires=['six'], #,'nosexcover'],
 	tests_require=requirements, # autopep8 removed because it does not install on python2.5
 	test_suite=test_suite,
 	cmdclass={'test':PyTest},

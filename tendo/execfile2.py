@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#from __future__ import print_function
 import os, sys, unittest, tempfile, shlex
 
 if sys.hexversion > 0x03000000:
@@ -40,7 +39,8 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 	try:
 		execfile(filename, _globals, _locals)
 		
-	except SystemExit, e:
+	except SystemExit:
+		type, e, tb = sys.exc_info()
 		if isinstance(e.code , int):
 			exit_code = e.code # this could be 0 if you do sys.exit(0)
 		else:
