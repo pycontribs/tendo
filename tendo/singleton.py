@@ -17,7 +17,7 @@ class SingleInstance:
 	def __init__(self, flavor_id=""):
 		import sys
 		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +
-		    os.path.splitext(os.path.abspath(__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + flavor_id +'.lock')
+		    os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + '-%s' % flavor_id +'.lock')
 		logging.debug("SingleInstance lockfile: " + self.lockfile)
 		if sys.platform == 'win32':
 			try:
