@@ -14,10 +14,10 @@ class SingleInstance:
 
 	Remember that this works by creating a lock file with a filename based on the full path to the script file.
 	"""
-	def __init__(self):
+	def __init__(self, flavor_id=""):
 		import sys
 		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +
-		    os.path.splitext(os.path.abspath(__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + '.lock')
+		    os.path.splitext(os.path.abspath(__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + flavor_id +'.lock')
 		logging.debug("SingleInstance lockfile: " + self.lockfile)
 		if sys.platform == 'win32':
 			try:
