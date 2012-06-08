@@ -18,7 +18,7 @@ class SingleInstance:
 		import sys
 		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +
 		    os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + '-%s' % flavor_id +'.lock')
-		logging.debug("SingleInstance lockfile: " + self.lockfile)
+		logger.debug("SingleInstance lockfile: " + self.lockfile)
 		if sys.platform == 'win32':
 			try:
 				# file already exists, we try to remove (in case previous execution was interrupted)
@@ -28,7 +28,7 @@ class SingleInstance:
 			except OSError:
 				type, e, tb = sys.exc_info()
 				if e.errno == 13:
-					logging.error("Another instance is already running, quitting.")
+					logger.error("Another instance is already running, quitting.")
 					sys.exit(-1)
 				print(e.errno)
 				raise
@@ -38,7 +38,7 @@ class SingleInstance:
 			try:
 				fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
 			except IOError:
-				logging.warning("Another instance is already running, quitting.")
+				logger.warning("Another instance is already running, quitting.")
 				sys.exit(-1)
 
 	def __del__(self):
@@ -49,10 +49,10 @@ class SingleInstance:
 				os.unlink(self.lockfile)
 
 def f():
-	tmp = logging.getLogger().level
-	logging.getLogger().setLevel(logging.CRITICAL) # we do not want to see the warning
+	tmp = logger.level
+	logger.setLevel(logging.CRITICAL) # we do not want to see the warning
 	me2 = SingleInstance()
-	logging.getLogger().setLevel(tmp)
+	logger.setLevel(tmp)
 	pass
 
 class testSingleton(unittest.TestCase):
@@ -72,7 +72,10 @@ class testSingleton(unittest.TestCase):
 		assert  p.exitcode != 0, "%s != 0" % p.exitcode # the called function should fail because we already have another instance running
 		# note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
 
+logger = logging.getLogger("tendo.singleton")
+logger.addHandler(logging.StreamHandler())
+
 if __name__ == "__main__":
-	logging.getLogger().setLevel(logging.DEBUG)
+	logger.setLevel(logging.DEBUG)
 	unittest.main()
 
