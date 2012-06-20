@@ -18,11 +18,11 @@ try:
 except ImportError:
     pass
 
-requirements=['pep8>=0.6','nose','six','sphinx'] #'nosexcover']
+test_requirements=['pep8>=0.6','nose','six','sphinx','pytest-xdist'] #'nosexcover']
 test_suite="py.test"
-if sys.hexversion >= 0x02060000:
-    requirements.extend(['nose-machineout'])
-    test_suite="py.test"
+#if sys.hexversion >= 0x02060000:
+#    requirements.extend(['nose-machineout'])
+#    test_suite="py.test"
 
 # handle python 3
 if sys.version_info >= (3,):
@@ -82,7 +82,7 @@ setup(
 	],
 	long_description = open('README.txt').read(),
 	setup_requires=['six'], #,'nosexcover'],
-	tests_require=requirements, # autopep8 removed because it does not install on python2.5
+	tests_require=test_requirements, # autopep8 removed because it does not install on python2.5
 	test_suite=test_suite,
 	cmdclass={'test':PyTest},
 #	use_2to3 = use_2to3,
