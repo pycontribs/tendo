@@ -22,7 +22,7 @@ try:
 except ImportError:
     pass
 
-requirements=['pep8>=0.6','py','pytest','six','sphinx'] #'nosexcover']
+test_requirements=['pep8>=0.6','py','pytest','six','sphinx'] #'nosexcover']
 test_suite="py.test"
 if sys.hexversion >= 0x02060000:
     #requirements.extend(['nose-machineout'])
