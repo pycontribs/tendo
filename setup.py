@@ -86,7 +86,7 @@ setup(
 	],
 	long_description = open('README.txt').read(),
 	setup_requires=['six'], #,'nosexcover'],
-	tests_require=requirements, # autopep8 removed because it does not install on python2.5
+	tests_require=test_requirements, # autopep8 removed because it does not install on python2.5
 	test_suite=test_suite,
 	cmdclass={'test':PyTest},
 #	use_2to3 = use_2to3,

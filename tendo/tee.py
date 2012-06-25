@@ -2,7 +2,15 @@
 # encoding: utf-8
 # Author: sorin sbarnea
 # License: public domain
-import logging, sys, subprocess, types, time, os, codecs, unittest
+import codecs
+import functools
+import logging
+import os
+import sys
+import subprocess
+import types
+import time
+import unittest
 
 if sys.version_info[0] == 3:
     string_types = str,
