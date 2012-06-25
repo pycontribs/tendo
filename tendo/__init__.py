@@ -3,13 +3,13 @@
 # See http://www.python.org/psf/license for licensing details.
 
 __author__  = "Sorin Sbarnea"
-__copyright__ = "Copyright 2010-2011, Sorin Sbarnea"
+__copyright__ = "Copyright 2010-2012, Sorin Sbarnea"
 __email__   = "sorindotsbarnea@gmail.com"
 __status__  = "Development"
-__version__ = "0.0.12"
+__version__ = "0.0.14"
 __date__    = "2012-05-30"
 
-__all__ = ['tee','colorer','unicode','execfile2','singleton']
+__all__ = ['tee','colorer','unicode','execfile2','singleton','ansiterm']
 
 """
 	Tendo is tested with Python 2.5-3.2

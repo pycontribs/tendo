@@ -33,7 +33,7 @@ class SingleInstance:
 				print(e.errno)
 				raise
 		else: # non Windows
-			import fcntl, sys
+			import fcntl
 			self.fp = open(self.lockfile, 'w')
 			try:
 				fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -43,10 +43,20 @@ class SingleInstance:
 
 	def __del__(self):
 		import sys
-		if sys.platform == 'win32':
-			if hasattr(self, 'fd'):
-				os.close(self.fd)
-				os.unlink(self.lockfile)
+		try:
+			if sys.platform == 'win32':
+				if hasattr(self, 'fd'):
+					os.close(self.fd)
+					os.unlink(self.lockfile)
+			else:
+				import fcntl
+				fcntl.lockf(self.fp, fcntl.LOCK_UN)
+				#os.close(self.fp)
+				if os.path.isfile(self.lockfile):
+					os.unlink(self.lockfile)
+		except Exception, e:
+			logger.warning(e)
+			sys.exit(-1)
 
 def f():
 	tmp = logger.level
@@ -58,7 +68,8 @@ def f():
 class testSingleton(unittest.TestCase):
 	def test_1(self):
 		me = SingleInstance()
-		pass
+		del me # now the lock should be removed
+		assert True
 	def test_2(self):
 		p = Process(target=f)
 		p.start()

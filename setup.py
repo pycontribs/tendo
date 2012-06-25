@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # Setuptools is required for the use_2to3 option below. You should install it
 # from the Distribute home page, http://packages.python.org/distribute/
+import inspect
+import logging
+import os
 import sys
+
 from setuptools import setup, Command
 from setuptools.command.test import test as TestCommand
 
@@ -18,10 +22,10 @@ try:
 except ImportError:
     pass
 
-requirements=['pep8>=0.6','nose','six','sphinx'] #'nosexcover']
+requirements=['pep8>=0.6','py','pytest','six','sphinx'] #'nosexcover']
 test_suite="py.test"
 if sys.hexversion >= 0x02060000:
-    requirements.extend(['nose-machineout'])
+    #requirements.extend(['nose-machineout'])
     test_suite="py.test"
 
 # handle python 3
@@ -53,10 +57,10 @@ class PyTest(TestCommand):
         import pytest
         pytest.main(self.test_args)
 
-
 setup(
 	name = 'tendo',
 	py_modules = ['tendo.colorer', 'tendo.execfile2', 'tendo.singleton', 'tendo.tee', 'tendo.unicode'],
+	packages = ['tendo'],
 	version = __version__,
 	zip_safe = False,
 	description = 'A Python library that extends some core functionality',
