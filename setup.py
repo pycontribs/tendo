@@ -66,8 +66,8 @@ setup(
 	description = 'A Python library that extends some core functionality',
 	author = 'Sorin Sbarnea',
 	author_email = 'sorin.sbarnea@gmail.com',
-	url = 'https://github.com/ssbarnea/tendo',
-	download_url = 'https://github.com/ssbarnea/tendo/archives/master',
+	url = 'https://github.com/pycontribs/tendo',
+	download_url = 'https://github.com/pycontribs/tendo/archives/master',
 	keywords = ['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
 	classifiers = [
 		'Programming Language :: Python',
