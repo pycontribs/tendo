@@ -9,7 +9,7 @@ __status__  = "Development"
 __version__ = "0.0.14"
 __date__    = "2012-09-18"
 
-__all__ = ['tee','colorer','unicode','execfile2','singleton']
+__all__ = ['tee','colorer','unicode','execfile2','singleton','ansiterm']
 
 """
 	Tendo is tested with Python 2.5-3.2

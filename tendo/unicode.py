@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import codecs, sys, unittest, logging, tempfile, os
+import inspect
+
 import six
 """
 Author: Sorin Sbarnea
@@ -78,10 +80,11 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 class testUnicode(unittest.TestCase):
 	def setUp(self):
 		os.chdir(os.path.dirname(os.path.abspath(__file__)))
+		self.dir =  os.path.dirname(inspect.getfile(inspect.currentframe()))
 
 	def test_read_utf8(self):
 		try:
-			f = open("tests/utf8.txt","rU")
+			f = open(os.path.join(self.dir,"tests/utf8.txt"),"rU")
 			f.readlines()
 			f.close()
 		except Exception:
@@ -91,7 +94,7 @@ class testUnicode(unittest.TestCase):
 	def test_read_invalid_utf8(self):
 		passed = False
 		try:
-			f = open("tests/utf8-invalid.txt","rU")
+			f = open(os.path.join(self.dir,"tests/utf8-invalid.txt"),"rU")
 			f.readlines()
 			f.close()
 		except Exception:
@@ -104,11 +107,11 @@ class testUnicode(unittest.TestCase):
 	def test_write_on_existing_utf8(self):
 		import shutil, filecmp, os
 		(ftmp, fname_tmp) = tempfile.mkstemp()
-		shutil.copyfile("tests/utf8.txt", fname_tmp)
+		shutil.copyfile(os.path.join(self.dir,"tests/utf8.txt"), fname_tmp)
 		f = open(fname_tmp,"a") # encoding not specified, should use utf-8
 		f.write(six.u("\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000"))
 		f.close()
-		passed = filecmp.cmp("tests/utf8-after-append.txt", fname_tmp, shallow=False)
+		passed = filecmp.cmp(os.path.join(self.dir,"tests/utf8-after-append.txt"), fname_tmp, shallow=False)
 		self.assertTrue(passed, "Appending to existing UTF-8 file test failed (%s)." % fname_tmp)
 		os.close(ftmp)
 		os.unlink(fname_tmp)

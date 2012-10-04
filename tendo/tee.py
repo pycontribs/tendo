@@ -131,7 +131,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
     if log_command :
         if timing:
             def secondsToStr(t):
-                return "%02d:%02d:%02d" % functools.reduce(lambda ll,b : divmod(ll[0],b) + ll[1:], [(t*1000,),1000,60,60])[:3]
+                return time.strftime('%H:%M:%S', time.gmtime(t))
             mylogger("Returned: %d (execution time %s)\n" % (returncode, secondsToStr(time.clock()-t)))
         else:
             mylogger("Returned: %d\n" % returncode)
@@ -199,6 +199,8 @@ class testTee(unittest.TestCase):
 if __name__ == '__main__':
     import os
     unittest.main()
+    #import pytest
+    #pytest.main(['--pyargs', __name__])
     """
     import colorer
     import tempfile, os
