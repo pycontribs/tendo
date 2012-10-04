@@ -16,6 +16,7 @@ class SingleInstance:
 	"""
 	def __init__(self, flavor_id=""):
 		import sys
+		self.initialized = False
 		self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +
 		    os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/","-").replace(":","").replace("\\","-")  + '-%s' % flavor_id +'.lock')
 		logger.debug("SingleInstance lockfile: " + self.lockfile)
@@ -40,9 +41,11 @@ class SingleInstance:
 			except IOError:
 				logger.warning("Another instance is already running, quitting.")
 				sys.exit(-1)
+		self.initialized=True
 
 	def __del__(self):
 		import sys
+		if not self.initialized: return
 		try:
 			if sys.platform == 'win32':
 				if hasattr(self, 'fd'):
@@ -80,8 +83,12 @@ class testSingleton(unittest.TestCase):
 		p = Process(target=f)
 		p.start()
 		p.join()
-		assert  p.exitcode != 0, "%s != 0" % p.exitcode # the called function should fail because we already have another instance running
+		assert  p.exitcode != 0, "%s != 0 (2nd execution)" % p.exitcode # the called function should fail because we already have another instance running
 		# note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
+		p = Process(target=f)
+		p.start()
+		p.join()
+		assert  p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode # the called function should fail because we already have another instance running
 
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())

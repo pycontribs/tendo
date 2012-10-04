@@ -3,6 +3,7 @@
 .tox
 .idea/workspace.xml
 .DS_Store
+.cache/
 build/*.*
 build
 docs/_build/
