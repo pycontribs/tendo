@@ -3,9 +3,11 @@
 # Author: sorin sbarnea
 # License: public domain
 import codecs
+import collections
 import functools
 import logging
 import os
+import pipes
 import sys
 import subprocess
 import types
@@ -48,6 +50,9 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 
     This method returns a tuple: (return_code, output_lines_as_list). The return code of 0 means success.
     """
+    if isinstance(cmd, collections.Iterable):
+        cmd = " ".join(pipes.quote(s) for s in cmd)
+
     t = time.clock()
     output = []
     if log_command is _sentinel: log_command = globals().get('log_command')
@@ -196,9 +201,21 @@ class testTee(unittest.TestCase):
             #    print("failed")
         os.name = save
 
+    def test_2(self):
+        self.assertEqual(system(['python','-V']),0)
+
+    def test_3(self):
+        self.assertEqual(system2(['python','-V'])[0],0)
+
+    def test_2(self):
+        self.assertEqual(system(['python','-c',"print('c c')"]),0)
+
 if __name__ == '__main__':
     import os
-    unittest.main()
+    #unittest.main()
+    import pytest
+    pytest.main([__file__])
+
     #import pytest
     #pytest.main(['--pyargs', __name__])
     """

@@ -1,30 +1,15 @@
 #!/bin/bash
-
+source prepare
 set -e
 
 echo === running unittests ===
 #python setup.py test
-
-tox --version >/dev/null 2>&1 || {
-    sudo easy_install tox || echo >&2 "I require tox but it's not installed and I wasn't able to install it.  Aborting."; exit 1;
-    }
-
 tox
 
-# autopep8
-echo === running autopep8  ===
-autopep8 --version >/dev/null 2>&1 || {
-    sudo easy_install autopep8 || echo >&2 "I require pep8 but it's not installed and I wasn't able to install it.  Aborting."; exit 1;
-    }
-
+echo === autopep8 ===
 autopep8 --ignore=E501 -i *.py scripts/*.py scripts/*/*.py scripts/lib/*/*.py   
 
-# pep8
 echo === running pep8  ===
-pep8 --version >/dev/null 2>&1 || {
-    sudo easy_install pep8 || echo >&2 "I require pep8 but it's not installed and I wasn't able to install it.  Aborting."; exit 1;
-    }
-
 pep8
 
 # TODO: run autopep8 ?!

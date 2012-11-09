@@ -84,7 +84,7 @@ setup(
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		'Topic :: Internet',
 	],
-	long_description = open('README.txt').read(),
+	long_description = open('README.md').read(),
 	setup_requires=['six'], #,'nosexcover'],
 	tests_require=test_requirements, # autopep8 removed because it does not install on python2.5
 	test_suite=test_suite,
