@@ -16,7 +16,12 @@ The colored output is generated only when the console is a terminal supporting i
 ... logging.info("gray line")
 ... logging.debug("magenta line")
 """
-import logging, sys, os
+import logging
+import copy
+import os
+import sys
+import tempfile
+import unittest
 
 if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
         ('TERM' in os.environ.keys() and os.environ['TERM'] in ['linux'] ) or \
@@ -95,7 +100,14 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
 	def add_coloring_to_emit_ansi(fn):
 		# add methods we need to the class
 		def new(*args):
-			levelno = args[1].levelno
+			#new_args = args
+                        if len(args)==2:
+			    new_args = (args[0], copy.copy(args[1]))
+			else:
+			    new_args = (args[0], copy.copy(args[1]), args[2:])
+                        if hasattr(args[0],'baseFilename'):
+				return fn(*args)
+			levelno = new_args[1].levelno
 			if levelno>=50:
 				color = '\x1b[31m' # red
 			elif levelno>=40 :
@@ -108,9 +120,9 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
 				color = '\x1b[35m' # pink
 			else:
 				color = '\x1b[0m' # normal
-			args[1].msg = color + str(args[1].msg) +  '\x1b[0m'  # normal
+			new_args[1].msg = color + str(new_args[1].msg) +  '\x1b[0m'  # normal
 			#print "after"
-			return fn(*args)
+			return fn(*new_args)
 		return new
 
 	import platform
@@ -124,27 +136,48 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
 		#log.addFilter(log_filter())
 		#//hdlr = logging.StreamHandler()
 		#//hdlr.setFormatter(formatter())
+class testSingleton(unittest.TestCase):
+	def test_1(self):
+		isatty = None
+		if hasattr(sys.stderr, "isatty"):
+			isatty = sys.stderr.isatty()
+		print("sys.stderr.isatty = %s" % isatty)
+
+		isatty = None
+		if hasattr(sys.stdout, "isatty"):
+			isatty = sys.stdout.isatty()
+		print("sys.stdout.isatty = %s" % isatty)
+
+		logging.getLogger().setLevel(logging.NOTSET)
+		tmp_file=tempfile.NamedTemporaryFile(suffix='_colorer.log').name
+		fh = logging.FileHandler(tmp_file)
+		fh.setLevel(logging.NOTSET)
+		ch = logging.StreamHandler()
+		ch.setLevel(logging.NOTSET)
+		formatter = logging.Formatter('%(levelname)s: %(message)s')
+		fh.setFormatter(formatter)
+		ch.setFormatter(formatter)
+		logging.getLogger().addHandler(ch)
+		logging.getLogger().addHandler(fh)
+
+		logging.warn("a warning")
+		logging.error("some error")
+		logging.info("some info")
+		logging.debug("some info")
+		expected_lines = ['WARNING: a warning\n', 'ERROR: some error\n', 'INFO: some info\n', 'DEBUG: some info\n']
+		line_no = 0
+		for line in open(tmp_file).readlines():
+			assert(line == expected_lines[line_no])
+			line_no += 1
 
 if __name__ == '__main__':
 	import logging
 	# import colorer
 	# remember that logging outputs to stderr and not stdout (just in case you'll wonder)
 
-	for param in os.environ.keys():
-		print("%25s %s" % (param,os.environ[param]))
+	#for param in os.environ.keys():
+	#	print("%25s %s" % (param,os.environ[param]))
 
-	isatty = None
-	if hasattr(sys.stderr, "isatty"):
-		isatty = sys.stderr.isatty()
-	print("sys.stderr.isatty = %s" % isatty)
+	unittest.main()
 
-	isatty = None
-	if hasattr(sys.stdout, "isatty"):
-		isatty = sys.stdout.isatty()
-	print("sys.stdout.isatty = %s" % isatty)
 
-	logging.getLogger().setLevel(logging.NOTSET)
-	logging.warn("a warning")
-	logging.error("some error")
-	logging.info("some info")
-	logging.debug("some info")
