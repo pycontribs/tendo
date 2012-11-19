@@ -28,8 +28,8 @@ global log_command
 logger = None
 stdout = False
 stderr = False
-timing = True # print execution time of each command in the log, just after the return code
-log_command = True # outputs the command being executed to the log (before command output)
+timing = True  # print execution time of each command in the log, just after the return code
+log_command = True  # outputs the command being executed to the log (before command output)
 _sentinel = object()
 
 
@@ -39,10 +39,11 @@ def quote_command(cmd):
     This is required in order to prevent getting "The input line is too long" error message.
     """
     if not (os.name == "nt" or os.name == "dos"):
-        return cmd # the escaping is required only on Windows platforms, in fact it will break cmd line on others
+        return cmd  # the escaping is required only on Windows platforms, in fact it will break cmd line on others
     if '"' in cmd[1:-1]:
-        cmd =  '"' + cmd + '"'
+        cmd = '"' + cmd + '"'
     return cmd
+
 
 def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sentinel, timing=_sentinel):
     #def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
@@ -50,15 +51,18 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 
     This method returns a tuple: (return_code, output_lines_as_list). The return code of 0 means success.
     """
-    if isinstance(cmd, collections.Iterable):
+    # if isinstance(cmd, collections.Iterable): # -- this line was replaced because collections.Iterable seems to be missing on Debian Python 2.5.5 (but not on OS X 10.8 with Python 2.5.6)
+    if hasattr(cmd, '__iter__'):
         cmd = " ".join(pipes.quote(s) for s in cmd)
 
     t = time.clock()
     output = []
-    if log_command is _sentinel: log_command = globals().get('log_command')
-    if timing is _sentinel: timing = globals().get('timing')
+    if log_command is _sentinel:
+        log_command = globals().get('log_command')
+    if timing is _sentinel:
+        timing = globals().get('timing')
 
-    if logger is _sentinel: # default to python native logger if logger parameter is not used
+    if logger is _sentinel:  # default to python native logger if logger parameter is not used
         logger = globals().get('logger')
     if stdout is _sentinel:
         stdout = globals().get('stdout')
@@ -100,51 +104,52 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
     else:
         method_write = getattr(logger, "write", None)
         # if we can call write() we'll aceppt it :D
-        if hasattr(method_write,'__call__'): # this should work for filehandles
+        if hasattr(method_write, '__call__'):  # this should work for filehandles
             f = logger
             mylogger = filelogger
         else:
             sys.exit("tee() does not support this type of logger=%s" % type(logger))
 
     if cwd is not None and not os.path.isdir(cwd):
-        os.makedirs(cwd) # this throws exception if fails
+        os.makedirs(cwd)  # this throws exception if fails
 
-    cmd = quote_command(cmd) # to prevent _popen() bug
+    cmd = quote_command(cmd)  # to prevent _popen() bug
     p = subprocess.Popen(cmd, cwd=cwd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if log_command:
         mylogger("Running: %s" % cmd)
     while True:
-        line=""
+        line = ""
         try:
             line = p.stdout.readline()
             line = line.decode(encoding)
         except Exception:
             type, e, tb = sys.exc_info()
             logging.error(e)
-            logging.error("The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s" %\
-                (encoding, cmd, repr(line)))
+            logging.error("The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s" %
+                         (encoding, cmd, repr(line)))
             pass
 
         output.append(line)
         if not line:
             break
         line = line.rstrip('\n\r')
-        mylogger(line) # they are added by logging anyway
-        if stdout :
+        mylogger(line)  # they are added by logging anyway
+        if stdout:
             print(line)
     returncode = p.wait()
-    if log_command :
+    if log_command:
         if timing:
             def secondsToStr(t):
                 return time.strftime('%H:%M:%S', time.gmtime(t))
-            mylogger("Returned: %d (execution time %s)\n" % (returncode, secondsToStr(time.clock()-t)))
+            mylogger("Returned: %d (execution time %s)\n" % (returncode, secondsToStr(time.clock() - t)))
         else:
             mylogger("Returned: %d\n" % returncode)
 
-    if not returncode == 0: # running a tool that returns non-zero? this deserves a warning
+    if not returncode == 0:  # running a tool that returns non-zero? this deserves a warning
         logging.warning("Returned: %d from: %s\nOutput %s" % (returncode, cmd, '\n'.join(output)))
 
     return returncode, output
+
 
 def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel):
     """ This works similar to :py:func:`os.system` but add some useful optional parameters.
@@ -152,7 +157,7 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
     * ``cmd`` - command to be executed
     * ``cwd`` - optional working directory to be set before running cmd
     * ``logger`` - None, a filename, handle or a function like print or :py:meth:`logging.Logger.warning`
-    
+
     Returns the exit code reported by the execution of the command, 0 means success.
 
     >>> import os, logging
@@ -165,6 +170,7 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
     """
     (returncode, output) = system2(cmd, cwd=cwd, logger=logger, stdout=stdout, log_command=log_command, timing=timing)
     return returncode
+
 
 class testTee(unittest.TestCase):
     def test_1(self):
@@ -184,9 +190,9 @@ class testTee(unittest.TestCase):
 
         quotes = {
             'dir >nul': 'dir >nul',
-            'cd /D "C:\\Program Files\\"':'"cd /D "C:\\Program Files\\""',
-            'python -c "import os" dummy':'"python -c "import os" dummy"',
-            'sort':'sort',
+            'cd /D "C:\\Program Files\\"': '"cd /D "C:\\Program Files\\""',
+            'python -c "import os" dummy': '"python -c "import os" dummy"',
+            'sort': 'sort',
         }
 
         # we fake the os name because we want to run the test on any platform
@@ -202,13 +208,13 @@ class testTee(unittest.TestCase):
         os.name = save
 
     def test_2(self):
-        self.assertEqual(system(['python','-V']),0)
+        self.assertEqual(system(['python', '-V']), 0)
 
     def test_3(self):
-        self.assertEqual(system2(['python','-V'])[0],0)
+        self.assertEqual(system2(['python', '-V'])[0], 0)
 
     def test_2(self):
-        self.assertEqual(system(['python','-c',"print('c c')"]),0)
+        self.assertEqual(system(['python', '-c', "print('c c')"]), 0)
 
 if __name__ == '__main__':
     import os

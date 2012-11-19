@@ -1,16 +1,41 @@
-#!/bin/bash
-source prepare
-set -e
+#!/usr/bin/env python
+import os
+import sys
+import logging
 
-echo === running unittests ===
-#python setup.py test
-tox
+if __name__ == "__main__":
+        log = logging.getLogger()
 
-echo === autopep8 ===
-autopep8 --ignore=E501 -i *.py scripts/*.py scripts/*/*.py scripts/lib/*/*.py   
+        # now we'll detect which python interpretors we have on this machine and run the tests for all of them
+        known_pys = { 'python2.5':'py25', 'python2.6':'py26', 'python2.7':'py27' } # ,'python3':'py3', 'python3.2':'py32', 'python4':'py4'}
+        #known_pys = { 'python2.7':'py27' } # ,'python3':'py3', 'python3.2':'py32', 'python4':'py4'}
 
-echo === running pep8  ===
-pep8
+        detected_pys = set()
+        for known_py in known_pys:
+            if os.system("which %s >/dev/null" % known_py) == 0:
+                detected_pys.add(known_pys[known_py])
 
-# TODO: run autopep8 ?!
+        if os.system("tox --version >/dev/null 2>&1 || sudo easy_install tox ") != 0:
+            print("tox not found")
+            sys.exit(3)
 
+        if os.system("autopep8 --version >/dev/null 2>&1 || sudo easy_install autopep8 ") != 0:
+            print("autopep8 not found")
+            sys.exit(4)
+
+        if os.system("autopep8 --ignore=E501 -i *.py tendo/*.py ") != 0:
+            print("autopep8 failed")
+            sys.exit(5)
+
+        #os.system("python setup.py test")
+        if os.system("tox -e %s" % ",".join(detected_pys)) != 0:
+            print("tox failed")
+            sys.exit(6)
+
+        if os.system("""pep8 --version >/dev/null 2>&1 || { sudo easy_install pep8 || echo >&2 "I require pep8 but it's not installed and I wasn't able to install it.  Aborting."; exit 1; }""") != 0:
+            print("pep8 not found")
+            sys.exit(7)
+
+        if os.system("pep8") != 0:
+            print("pep8 failed")
+            sys.exit(8)
