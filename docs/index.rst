@@ -22,7 +22,6 @@ singleton
 =======
 colorer
 =======
-.. py:module:: tendo.colorer
 .. automodule:: tendo.colorer
 
 =======

@@ -12,7 +12,7 @@ __date__ = "2012-11-19"
 __all__ = ['tee', 'colorer', 'unicode', 'execfile2', 'singleton', 'ansiterm']
 
 """
-	Tendo is tested with Python 2.5-3.2
+Tendo is tested with Python 2.5-3.2
 """
 
 import sys

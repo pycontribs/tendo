@@ -23,8 +23,10 @@ class SingleInstance:
     def __init__(self, flavor_id=""):
         import sys
         self.initialized = False
-        self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' +
-                                         os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock')
+        basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
+        # os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
+        self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' + basename)
+
         logger.debug("SingleInstance lockfile: " + self.lockfile)
         if sys.platform == 'win32':
             try:
@@ -69,34 +71,34 @@ class SingleInstance:
             sys.exit(-1)
 
 
-def f():
+def f(name):
     tmp = logger.level
     logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
-    me2 = SingleInstance()
+    me2 = SingleInstance(flavor_id=name)
     logger.setLevel(tmp)
     pass
 
 
 class testSingleton(unittest.TestCase):
     def test_1(self):
-        me = SingleInstance()
+        me = SingleInstance(flavor_id="test-1")
         del me  # now the lock should be removed
         assert True
 
     def test_2(self):
-        p = Process(target=f)
+        p = Process(target=f, args=("test-2",))
         p.start()
         p.join()
         assert  p.exitcode == 0, "%s != 0" % p.exitcode  # the called function should succeed
 
     def test_3(self):
-        me = SingleInstance()
-        p = Process(target=f)
+        me = SingleInstance(flavor_id="test-3")
+        p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
         assert  p.exitcode != 0, "%s != 0 (2nd execution)" % p.exitcode  # the called function should fail because we already have another instance running
         # note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
-        p = Process(target=f)
+        p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
         assert  p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode  # the called function should fail because we already have another instance running

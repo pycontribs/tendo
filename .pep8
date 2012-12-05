@@ -1,9 +1,9 @@
 [pep8]
-exclude=lib,.tox,third,*.egg
+exclude=lib,.tox,third,*.egg,docs
 ;filename=
 ;select
 ignore=E501 scripts
-max-line-length=200
+max-line-length=1024
 count=1
 ;format
 ;quiet

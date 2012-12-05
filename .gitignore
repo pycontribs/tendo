@@ -3,6 +3,9 @@
 .tox
 .idea/workspace.xml
 .DS_Store
+.coverage
+coverage.xml
+projectFileBackup
 .cache/
 build/*.*
 build

@@ -14,12 +14,15 @@ Example of things:
 
 Documentation
 ------------------------------
-Check http://packages.python.org/tendo/
+Check:
+    * http://packages.python.org/tendo/
+    * https://tendo.readthedocs.org/en/latest/
 
 Requirements and compatibility
 ------------------------------
 * python 2.5-3.2
 * distribute (for installation)
+* tox for running tests
 
 Related project and packages
 ----------------------------
