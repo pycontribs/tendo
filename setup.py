@@ -9,7 +9,7 @@ import sys
 from setuptools import setup, Command
 from setuptools.command.test import test as TestCommand
 
-#from distutils.core import setup, Command
+# from distutils.core import setup, Command
 
 from tendo import __version__
 
@@ -25,7 +25,7 @@ except ImportError:
 test_requirements = ['pep8>=0.6', 'py', 'pytest', 'six', 'sphinx']  # 'nosexcover']
 test_suite = "py.test"
 if sys.hexversion >= 0x02060000:
-    #requirements.extend(['nose-machineout'])
+    # requirements.extend(['nose-machineout'])
     test_suite = "py.test"
 
 # handle python 3
@@ -36,7 +36,7 @@ else:
 
 options = {}
 
-#class PyTest(Command):
+# class PyTest(Command):
 #    user_options = []
 #    def initialize_options(self):
 #        pass
@@ -67,7 +67,7 @@ class Tox(TestCommand):
         self.test_suite = True
 
     def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
+        # import here, cause outside the eggs aren't loaded
         import tox
         errno = tox.cmdline(self.test_args)
         sys.exit(errno)

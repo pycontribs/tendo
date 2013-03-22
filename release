@@ -1,4 +1,5 @@
 #!/bin/bash
+export PYTHONDONTWRITEBYTECODE=
 
 if ! python setup.py test; then
 	echo "The test suite failed. Fix it!"

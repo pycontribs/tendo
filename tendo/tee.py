@@ -46,7 +46,7 @@ def quote_command(cmd):
 
 
 def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sentinel, timing=_sentinel):
-    #def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
+    # def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
     """ Works exactly like :func:`system` but it returns both the exit code and the output as a list of lines.
 
     This method returns a tuple: (return_code, output_lines_as_list). The return code of 0 means success.
@@ -67,7 +67,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
     if stdout is _sentinel:
         stdout = globals().get('stdout')
 
-    #logging.debug("logger=%s stdout=%s" % (logger, stdout))
+    # logging.debug("logger=%s stdout=%s" % (logger, stdout))
 
     f = sys.stdout
     if not f.encoding or f.encoding == 'ascii':
@@ -202,8 +202,8 @@ class testTee(unittest.TestCase):
         for key, value in quotes.items():
             resulted_value = quote_command(key)
             self.assertEqual(value, resulted_value, "Returned <%s>, expected <%s>" % (resulted_value, value))
-            #ret = os.system(resulted_value)
-            #if not ret==0:
+            # ret = os.system(resulted_value)
+            # if not ret==0:
             #    print("failed")
         os.name = save
 
@@ -218,12 +218,12 @@ class testTee(unittest.TestCase):
 
 if __name__ == '__main__':
     import os
-    #unittest.main()
+    # unittest.main()
     import pytest
     pytest.main([__file__])
 
-    #import pytest
-    #pytest.main(['--pyargs', __name__])
+    # import pytest
+    # pytest.main(['--pyargs', __name__])
     """
     import colorer
     import tempfile, os

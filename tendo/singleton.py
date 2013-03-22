@@ -63,7 +63,7 @@ class SingleInstance:
             else:
                 import fcntl
                 fcntl.lockf(self.fp, fcntl.LOCK_UN)
-                #os.close(self.fp)
+                # os.close(self.fp)
                 if os.path.isfile(self.lockfile):
                     os.unlink(self.lockfile)
         except Exception, e:
@@ -89,19 +89,19 @@ class testSingleton(unittest.TestCase):
         p = Process(target=f, args=("test-2",))
         p.start()
         p.join()
-        assert  p.exitcode == 0, "%s != 0" % p.exitcode  # the called function should succeed
+        assert p.exitcode == 0, "%s != 0" % p.exitcode  # the called function should succeed
 
     def test_3(self):
         me = SingleInstance(flavor_id="test-3")
         p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
-        assert  p.exitcode != 0, "%s != 0 (2nd execution)" % p.exitcode  # the called function should fail because we already have another instance running
+        assert p.exitcode != 0, "%s != 0 (2nd execution)" % p.exitcode  # the called function should fail because we already have another instance running
         # note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
         p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
-        assert  p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode  # the called function should fail because we already have another instance running
+        assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode  # the called function should fail because we already have another instance running
 
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())
