@@ -93,14 +93,14 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
 
             ret = fn(*args)
             args[0]._set_color(FOREGROUND_WHITE)
-            #print "after"
+            # print "after"
             return ret
         return new
 
     def add_coloring_to_emit_ansi(fn):
         # add methods we need to the class
         def new(*args):
-            #new_args = args
+            # new_args = args
             if len(args) == 2:
                 new_args = (args[0], copy.copy(args[1]))
             else:
@@ -120,8 +120,12 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
                 color = '\x1b[35m'  # pink
             else:
                 color = '\x1b[0m'  # normal
-            new_args[1].msg = color + str(new_args[1].msg) + '\x1b[0m'  # normal
-            #print "after"
+            try:
+                new_args[1].msg = color + unicode(new_args[1].msg) + '\x1b[0m'  # normal
+            except e:
+                print type(new_args[1].msg)
+                raise e
+            # print "after"
             return fn(*new_args)
         return new
 
@@ -132,8 +136,8 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
     else:
         # all non-Windows platforms are supporting ANSI escapes so we use them
         logging.StreamHandler.emit = add_coloring_to_emit_ansi(logging.StreamHandler.emit)
-        #log = logging.getLogger()
-        #log.addFilter(log_filter())
+        # log = logging.getLogger()
+        # log.addFilter(log_filter())
         #//hdlr = logging.StreamHandler()
         #//hdlr.setFormatter(formatter())
 
@@ -177,7 +181,7 @@ if __name__ == '__main__':
     # import colorer
     # remember that logging outputs to stderr and not stdout (just in case you'll wonder)
 
-    #for param in os.environ.keys():
+    # for param in os.environ.keys():
     #	print("%25s %s" % (param,os.environ[param]))
 
     unittest.main()
