@@ -20,3 +20,5 @@ log.txt
 
 
 pytestdebug.log
+
+test-distribute.sh
