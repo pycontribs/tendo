@@ -6,4 +6,5 @@ sphinx-pypi-upload
 pytest
 pytest-pep8
 pytest-xdist
+autopep8
 pip
