@@ -3,20 +3,21 @@ tendo
 ======
 
 Tendo is a python module that adds basic functionality that is 
-not (yet) provided by Python.
+not (yet) provided by Python. 
 
-Example of things:
-* silent Unicode support for text file operations (BOM)
-* terminal coloring support for both unix and windows
-* logging coloring (when used in console)
+[![Build Status](https://drone.io/github.com/pycontribs/tendo/status.png)](https://drone.io/github.com/pycontribs/tendo/latest)
+
+* [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.org/en/latest/#module-tendo.singleton)
+* [console logging coloring](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer)
 * enable you to use symlinks under windows
-* tee() command (executing extenal programs and redirecting their output to both console/file)
-
+* [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing extenal programs and redirecting their output to both console/file)
+* [improved execfile](https://tendo.readthedocs.org/en/latest/#module-tendo.execfile2)
+ 
 Documentation
 ------------------------------
 Check:
-    * http://packages.python.org/tendo/
-    * https://tendo.readthedocs.org/en/latest/
+* http://packages.python.org/tendo/
+* https://tendo.readthedocs.org/en/latest/
 
 Requirements and compatibility
 ------------------------------
