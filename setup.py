@@ -86,9 +86,10 @@ setup(
     license='Python',
     platforms=['any'],
     url='https://github.com/pycontribs/tendo',
-        download_url='https://github.com/pycontribs/tendo/archives/master',
-        keywords=['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
-        classifiers=[
+    download_url='https://github.com/pycontribs/tendo/archives/master',
+    bugtrack_url='https://github.com/pycontribs/tendo/issues',
+    keywords=['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
+    classifiers=[
                 'Programming Language :: Python',
                 'Programming Language :: Python :: 2.5',
                 'Programming Language :: Python :: 2.6',
