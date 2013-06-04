@@ -11,7 +11,7 @@ from setuptools.command.test import test as TestCommand
 
 # from distutils.core import setup, Command
 
-from tendo import __version__
+from tendo.version import __version__
 
 # Hack to prevent stupid "TypeError: 'NoneType' object is not callable" error
 # in multiprocessing/util.py _exit_function when running `python
@@ -81,6 +81,10 @@ setup(
     description='A Python library that extends some core functionality',
     author='Sorin Sbarnea',
     author_email='sorin.sbarnea@gmail.com',
+    maintainer='Sorin Sbarnea',
+    maintainer_email='sorin.sbarnea@gmail.com',
+    license='Python',
+    platforms=['any'],
     url='https://github.com/pycontribs/tendo',
         download_url='https://github.com/pycontribs/tendo/archives/master',
         keywords=['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
@@ -94,7 +98,6 @@ setup(
                 'Environment :: Other Environment',
                 'Intended Audience :: Developers',
                 'License :: OSI Approved :: BSD License',
-        'License :: OSI Approved :: BSD License',
                 'Operating System :: OS Independent',
                 'Topic :: Software Development :: Libraries :: Python Modules',
                 'Topic :: Internet',
