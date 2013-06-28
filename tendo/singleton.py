@@ -52,7 +52,7 @@ class SingleInstance:
         self.initialized = True
 
     def __del__(self):
-        import sys
+        import sys, os
         if not self.initialized:
             return
         try:
@@ -67,7 +67,10 @@ class SingleInstance:
                 if os.path.isfile(self.lockfile):
                     os.unlink(self.lockfile)
         except Exception, e:
-            logger.warning(e)
+            if logger:
+                logger.warning(e)
+            else:
+                print "Unloggable error: %s" % e
             sys.exit(-1)
 
 
