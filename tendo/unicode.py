@@ -85,6 +85,7 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
 
 
 class testUnicode(unittest.TestCase):
+
     def setUp(self):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         self.dir = os.path.dirname(inspect.getfile(inspect.currentframe()))

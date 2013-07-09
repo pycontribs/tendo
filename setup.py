@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # Setuptools is required for the use_2to3 option below. You should install it
 # from the Distribute home page, http://packages.python.org/distribute/
+from __future__ import absolute_import
+
 import inspect
 import logging
 import os
@@ -22,7 +24,7 @@ try:
 except ImportError:
     pass
 
-test_requirements = ['pep8>=0.6', 'py', 'pytest', 'six', 'sphinx']  # 'nosexcover']
+test_requirements = ['pep8>=0.6', 'py>=1.4.15', 'pytest', 'six', 'sphinx']  # 'nosexcover']
 test_suite = "py.test"
 if sys.hexversion >= 0x02060000:
     # requirements.extend(['nose-machineout'])
@@ -61,6 +63,7 @@ class PyTest(TestCommand):
 
 
 class Tox(TestCommand):
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
@@ -74,7 +77,7 @@ class Tox(TestCommand):
 
 setup(
     name='tendo',
-    py_modules=['tendo.colorer', 'tendo.execfile2', 'tendo.singleton', 'tendo.tee', 'tendo.unicode'],
+    py_modules=['tendo.colorer', 'tendo.execfile2', 'tendo.singleton', 'tendo.tee', 'tendo.unicode', 'tendo.version'],
     packages=['tendo'],
     version=__version__,
     zip_safe=False,
@@ -90,19 +93,19 @@ setup(
     bugtrack_url='https://github.com/pycontribs/tendo/issues',
     keywords=['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
     classifiers=[
-                'Programming Language :: Python',
-                'Programming Language :: Python :: 2.5',
-                'Programming Language :: Python :: 2.6',
-                'Programming Language :: Python :: 2.7',
-                'Programming Language :: Python :: 3',
-                'Development Status :: 4 - Beta',
-                'Environment :: Other Environment',
-                'Intended Audience :: Developers',
-                'License :: OSI Approved :: BSD License',
-                'Operating System :: OS Independent',
-                'Topic :: Software Development :: Libraries :: Python Modules',
-                'Topic :: Internet',
-        ],
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.5',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Development Status :: 4 - Beta',
+        'Environment :: Other Environment',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Internet',
+    ],
     long_description=open('README.md').read(),
     setup_requires=['six', 'tox'],  # ,'nosexcover'],
     tests_require=test_requirements,  # autopep8 removed because it does not install on python2.5

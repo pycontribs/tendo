@@ -143,6 +143,7 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
 
 
 class testSingleton(unittest.TestCase):
+
     def test_1(self):
         isatty = None
         if hasattr(sys.stderr, "isatty"):

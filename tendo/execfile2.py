@@ -43,7 +43,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
             sys.argv.extend(shlex.split(cmd))
     exit_code = 0
     try:
-        execfile(filename, _globals, _locals)
+        exec(compile(open(filename).read(), filename, 'exec'), _globals, _locals)
 
     except SystemExit:
         type, e, tb = sys.exc_info()
@@ -63,6 +63,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
 
 
 class testExecfile(unittest.TestCase):
+
     def _exec_py_code(self, code, cmd=None):
         (ftmp, fname_tmp) = tempfile.mkstemp()
         f = open(fname_tmp, "w")  # encoding not specified, should use utf-8

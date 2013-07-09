@@ -173,6 +173,7 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
 
 
 class testTee(unittest.TestCase):
+
     def test_1(self):
         """
 

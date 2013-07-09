@@ -10,6 +10,7 @@ from multiprocessing import Process
 
 
 class SingleInstance:
+
     """
     If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will exist the application with the message "Another instance is already running, quitting.", returning -1 error code.
 
@@ -20,6 +21,7 @@ class SingleInstance:
 
     Remember that this works by creating a lock file with a filename based on the full path to the script file.
     """
+
     def __init__(self, flavor_id=""):
         import sys
         self.initialized = False
@@ -52,7 +54,8 @@ class SingleInstance:
         self.initialized = True
 
     def __del__(self):
-        import sys, os
+        import sys
+        import os
         if not self.initialized:
             return
         try:
@@ -66,7 +69,7 @@ class SingleInstance:
                 # os.close(self.fp)
                 if os.path.isfile(self.lockfile):
                     os.unlink(self.lockfile)
-        except Exception, e:
+        except Exception as e:
             if logger:
                 logger.warning(e)
             else:
@@ -83,6 +86,7 @@ def f(name):
 
 
 class testSingleton(unittest.TestCase):
+
     def test_1(self):
         me = SingleInstance(flavor_id="test-1")
         del me  # now the lock should be removed

@@ -4,8 +4,7 @@ import sys
 import logging
 import platform
 """
-TODO: 
-sudo easy_install -q docutils sphinx six pylint sphinx-pypi-upload pytest-pep8 rednose
+This script will install the requirements needed for developing tendo.
 """
 
 if __name__ == "__main__":
@@ -19,29 +18,10 @@ if __name__ == "__main__":
             if os.system("which %s >/dev/null" % known_py) == 0:
                 detected_pys.add(known_pys[known_py])
 
-        if os.system("easy_install --help >/dev/null 2>&1") != 0:
-            print("Dude, you are hopeless, you dont even have easy_install, please intall it, ususaly with '[apt-get|yum|brew] install python-setuptools'")
-        elif os.system("tox --version >/dev/null 2>&1 || { sudo easy_install tox || exit 1;}") != 0:
-            print("tox not found, and I was unable to install it!")
-
-        elif os.system("""pep8 --version >/dev/null 2>&1 || { sudo easy_install pep8 || exit 1; }""") != 0:
-            print("pep8 not found, and I was unable to install it!")
-
-        if os.system("""autopep8 --version >/dev/null 2>&1 || { sudo easy_install autopep8 || exit 1; }""") != 0:
-            print("autopep8 not found")
-
-        elif os.system("""py.test --version >/dev/null 2>&1 || { sudo easy_install pytest || exit 1; }""") != 0:
-            print("py.test not found and I was unable to install it!")
-
-        elif os.system("py.test --version 2>&1 | grep -q 'pytest-xdist' || { sudo easy_install pytest-xdist || exit 1;}"):
-            print("pytest-xdist not found and I was unable to install it!")
-
-        elif os.system("py.test --version 2>&1 | grep -q 'pytest-growl' || { sudo easy_install pytest-growl || exit 1;}"):
-            print("pytest-xdist not found and I was unable to install it!")
-
-        elif os.system("py.test --version 2>&1 | grep -q 'pytest-cov' || { sudo easy_install pytest-cov || exit 1;}"):
-            print("pytest-xdist not found and I was unable to install it!")
-
+        if os.system("pip --help >/dev/null 2>&1") != 0:
+            print("Dude, you are hopeless, you dont even have pip, please intall it, ususaly with '[apt-get|yum|brew] install pip'")
+        elif os.system("pip install --user -r requirements.txt") == 0:
+            pass
         else:
             print "All requirements are available."
             sys.exit(0)

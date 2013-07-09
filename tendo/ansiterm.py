@@ -45,6 +45,7 @@ else:
     STD_ERROR_HANDLE = -12
 
     class AnsiTerm(object):
+
         def __init__(self):
             self.encoding = sys.stdout.encoding
             self.hconsole = windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
