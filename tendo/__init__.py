@@ -8,7 +8,7 @@ __copyright__ = "Copyright 2010-2013, Sorin Sbarnea"
 __email__ = "sorin(dot)sbarnea(at)gmail.com"
 __status__ = "Production"
 from . import version
-__date__ = "2013-07-09"
+__date__ = "2013-09-10"
 
 __all__ = ['tee', 'colorer', 'unicode', 'execfile2', 'singleton', 'ansiterm', 'version']
 

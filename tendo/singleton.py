@@ -73,7 +73,7 @@ class SingleInstance:
             if logger:
                 logger.warning(e)
             else:
-                print "Unloggable error: %s" % e
+                print("Unloggable error: %s" % e)
             sys.exit(-1)
 
 
