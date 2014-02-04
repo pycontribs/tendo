@@ -25,7 +25,7 @@ class SingleInstance:
     def __init__(self, flavor_id=""):
         import sys
         self.initialized = False
-        basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
+        basename = os.path.splitext(os.path.realpath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         # os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' + basename)
 
