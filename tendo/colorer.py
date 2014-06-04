@@ -122,7 +122,7 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
                 color = '\x1b[0m'  # normal
             try:
                 new_args[1].msg = color + unicode(new_args[1].msg) + '\x1b[0m'  # normal
-            except e:
+            except Exception as e:
                 print type(new_args[1].msg)
                 raise e
             # print "after"
