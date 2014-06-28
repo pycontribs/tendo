@@ -71,7 +71,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 
     f = sys.stdout
     if not f.encoding or f.encoding == 'ascii':
-    # `ascii` is not a valid encoding by our standards, it's better to output to UTF-8 because it can encoding any Unicode text
+        # `ascii` is not a valid encoding by our standards, it's better to output to UTF-8 because it can encoding any Unicode text
         encoding = 'utf_8'
     else:
         encoding = f.encoding
@@ -126,7 +126,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
             type, e, tb = sys.exc_info()
             logging.error(e)
             logging.error("The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s" %
-                         (encoding, cmd, repr(line)))
+                          (encoding, cmd, repr(line)))
             pass
 
         output.append(line)

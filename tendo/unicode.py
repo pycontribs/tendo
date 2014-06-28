@@ -129,8 +129,3 @@ class testUnicode(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-    # lines = open("test/utf8.txt","rU")
-
-    # for line in lines:
-    #	print(line)

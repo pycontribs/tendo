@@ -22,3 +22,5 @@ log.txt
 pytestdebug.log
 
 test-distribute.sh
+.idea/misc.xml
+.idea/tendo.iml

@@ -123,7 +123,6 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
             try:
                 new_args[1].msg = color + unicode(new_args[1].msg) + '\x1b[0m'  # normal
             except e:
-                print type(new_args[1].msg)
                 raise e
             # print "after"
             return fn(*new_args)
@@ -138,8 +137,8 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
         logging.StreamHandler.emit = add_coloring_to_emit_ansi(logging.StreamHandler.emit)
         # log = logging.getLogger()
         # log.addFilter(log_filter())
-        #//hdlr = logging.StreamHandler()
-        #//hdlr.setFormatter(formatter())
+        # //hdlr = logging.StreamHandler()
+        # //hdlr.setFormatter(formatter())
 
 
 class testSingleton(unittest.TestCase):
@@ -181,8 +180,5 @@ if __name__ == '__main__':
     import logging
     # import colorer
     # remember that logging outputs to stderr and not stdout (just in case you'll wonder)
-
-    # for param in os.environ.keys():
-    #	print("%25s %s" % (param,os.environ[param]))
 
     unittest.main()

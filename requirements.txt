@@ -10,3 +10,4 @@ pytest-xdist
 autopep8
 pip
 tox
+six>=1.7.2

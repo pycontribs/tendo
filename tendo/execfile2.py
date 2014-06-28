@@ -11,9 +11,6 @@ if sys.hexversion > 0x03000000:
         if not fh:
             raise Exception("Unable to open %s." % file)
         exec(fh.read() + "\n", globals, locals)
-        # The code below is not parsed by python2.5
-        # with open(file, "r") as fh:
-        #	exec(fh.read()+"\n", globals, locals)
 
 
 def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
