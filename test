@@ -34,8 +34,8 @@ if __name__ == "__main__":
 
 
         cmds = ["python -m autopep8 --ignore=E501 -i *.py tendo/*.py demo/*.py",
-             "pep8",
-             "tox -e %s" % ",".join(detected_pys)]
+             "python -m pep8",
+             "python -m tox -e %s" % ",".join(detected_pys)]
         for cmd in cmds:
             if os.system(cmd) != 0:
                 print("ERROR:	Command `%s` failed, testing stopped here." % cmd)

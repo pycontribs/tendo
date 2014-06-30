@@ -4,10 +4,11 @@ pylint
 sphinx
 sphinx-pypi-upload
 py>=1.4.15
-pytest
+pytest>=2.4.2
 pytest-pep8
 pytest-xdist
 autopep8
 pip
 tox
 six>=1.7.2
+pypandoc
