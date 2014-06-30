@@ -3,7 +3,7 @@ rednose
 pylint
 sphinx
 sphinx-pypi-upload
-py>=1.4.15
+py>=1.4.17
 pytest>=2.4.2
 pytest-pep8
 pytest-xdist
