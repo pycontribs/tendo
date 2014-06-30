@@ -6,6 +6,7 @@ Tendo is a python module that adds basic functionality that is
 not (yet) provided by Python. 
 
 [![Build Status](https://drone.io/github.com/pycontribs/tendo/status.png)](https://drone.io/github.com/pycontribs/tendo/latest)
+[![Build Status](https://travis-ci.org/pycontribs/tendo.svg?branch=master)](https://travis-ci.org/pycontribs/tendo)
 
 * [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.org/en/latest/#module-tendo.singleton)
 * [console logging coloring](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer)

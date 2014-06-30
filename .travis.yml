@@ -16,3 +16,5 @@ script: tox -e $TOX_ENV
 branches:
   only:
     - master
+notifications:
+  hipchat: 7d72ba6ba0bf07248f17e0a6a1a899@DevOps
