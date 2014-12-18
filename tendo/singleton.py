@@ -78,10 +78,10 @@ class SingleInstance:
             sys.exit(-1)
 
 
-def f(name):
+def f(name, silent_exit=False):
     tmp = logger.level
     logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
-    me2 = SingleInstance(flavor_id=name)
+    me2 = SingleInstance(flavor_id=name, silent_exit=silent_exit)
     logger.setLevel(tmp)
     pass
 
@@ -110,6 +110,13 @@ class testSingleton(unittest.TestCase):
         p.start()
         p.join()
         assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode  # the called function should fail because we already have another instance running
+
+    def test_4(self):
+        me = SingleInstance(flavor_id="test-4")
+        p = Process(target=f, args=("test-4", True))
+        p.start()
+        p.join()
+        assert p.exitcode == 0, "%s != 0 (2nd execution)" % p.exitcode  # the called function should pass because we already have another instance running but the newer process exited silently
 
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())
