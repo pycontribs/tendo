@@ -22,12 +22,13 @@ class SingleInstance:
     Remember that this works by creating a lock file with a filename based on the full path to the script file.
     """
 
-    def __init__(self, flavor_id=""):
+    def __init__(self, flavor_id="", silent_exit=False):
         import sys
         self.initialized = False
         basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         # os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' + basename)
+        exit_code = 0 if silent_exit else -1
 
         logger.debug("SingleInstance lockfile: " + self.lockfile)
         if sys.platform == 'win32':
@@ -40,7 +41,7 @@ class SingleInstance:
                 type, e, tb = sys.exc_info()
                 if e.errno == 13:
                     logger.error("Another instance is already running, quitting.")
-                    sys.exit(-1)
+                    sys.exit(exit_code)
                 print(e.errno)
                 raise
         else:  # non Windows
@@ -50,7 +51,7 @@ class SingleInstance:
                 fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
                 logger.warning("Another instance is already running, quitting.")
-                sys.exit(-1)
+                sys.exit(exit_code)
         self.initialized = True
 
     def __del__(self):
@@ -77,10 +78,10 @@ class SingleInstance:
             sys.exit(-1)
 
 
-def f(name):
+def f(name, silent_exit=False):
     tmp = logger.level
     logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
-    me2 = SingleInstance(flavor_id=name)
+    me2 = SingleInstance(flavor_id=name, silent_exit=silent_exit)
     logger.setLevel(tmp)
     pass
 
@@ -109,6 +110,13 @@ class testSingleton(unittest.TestCase):
         p.start()
         p.join()
         assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode  # the called function should fail because we already have another instance running
+
+    def test_4(self):
+        me = SingleInstance(flavor_id="test-4")
+        p = Process(target=f, args=("test-4", True))
+        p.start()
+        p.join()
+        assert p.exitcode == 0, "%s != 0 (2nd execution)" % p.exitcode  # the called function should pass because we already have another instance running but the newer process exited silently
 
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())
