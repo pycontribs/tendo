@@ -22,12 +22,13 @@ class SingleInstance:
     Remember that this works by creating a lock file with a filename based on the full path to the script file.
     """
 
-    def __init__(self, flavor_id=""):
+    def __init__(self, flavor_id="", silent_exit=True):
         import sys
         self.initialized = False
         basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         # os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' + basename)
+        exit_code = 0 if silent_exit else -1
 
         logger.debug("SingleInstance lockfile: " + self.lockfile)
         if sys.platform == 'win32':
@@ -40,7 +41,7 @@ class SingleInstance:
                 type, e, tb = sys.exc_info()
                 if e.errno == 13:
                     logger.error("Another instance is already running, quitting.")
-                    sys.exit(-1)
+                    sys.exit(exit_code)
                 print(e.errno)
                 raise
         else:  # non Windows
@@ -50,7 +51,7 @@ class SingleInstance:
                 fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
                 logger.warning("Another instance is already running, quitting.")
-                sys.exit(-1)
+                sys.exit(exit_code)
         self.initialized = True
 
     def __del__(self):
