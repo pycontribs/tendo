@@ -22,7 +22,7 @@ class SingleInstance:
     Remember that this works by creating a lock file with a filename based on the full path to the script file.
     """
 
-    def __init__(self, flavor_id="", silent_exit=True):
+    def __init__(self, flavor_id="", silent_exit=False):
         import sys
         self.initialized = False
         basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
