@@ -70,7 +70,7 @@ class PyTest(TestCommand):
     def run_tests(self):
         # before running tests we need to run autopep8
         r = os.system(
-            "python -m autopep8 -r --in-place %s/ tests/ examples/" % NAME)
+            "python -m autopep8 -r --in-place %s/ examples/" % NAME)
         if r:
             raise Exception("autopep8 failed")
 
