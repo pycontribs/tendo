@@ -117,16 +117,16 @@ setup(
     version=__version__,
     cmdclass={'test': PyTest, 'release': Release},
     packages=[NAME],
-    
+
     zip_safe=False,
-	setup_requires=['six'],
+    setup_requires=['six'],
     tests_require=['pep8>=0.6', 'py>=1.4.15', 'pytest', 'six', 'sphinx'],
     test_suite="py.test",
     maintainer='Sorin Sbarnea',
     maintainer_email='sorin.sbarnea@gmail.com',
     license='Python',
     description='A Python library that extends some core functionality',
-    
+
     long_description=open("README.rst").read(),
     author='Sorin Sbarnea',
     author_email='sorin.sbarnea@gmail.com',
@@ -134,7 +134,7 @@ setup(
     url='https://github.com/pycontribs/tendo',
     download_url='https://github.com/pycontribs/tendo/archives/master',
     bugtrack_url='https://github.com/pycontribs/tendo/issues',
-	home_page='https://github.com/pycontribs/tendo',
+        home_page='https://github.com/pycontribs/tendo',
     keywords=['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
     classifiers=[
         'Programming Language :: Python',
@@ -153,5 +153,5 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Topic :: Internet',
-    ],    
+    ],
 )

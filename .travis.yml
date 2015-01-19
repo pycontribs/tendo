@@ -9,8 +9,6 @@ python:
 - '3.4'
 install:
 - pip -q install -r requirements.txt
-before_install:
-  - sudo apt-get install pandoc
 script:
   - curl --silent -Lo travis_after_all.py https://raw.github.com/pycontribs/travis_after_all/master/travis_after_all.py
   - travis_wait python setup.py test
