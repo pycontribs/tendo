@@ -24,19 +24,6 @@ try:
 except ImportError:
     pass
 
-test_requirements = ['pep8>=0.6', 'py>=1.4.15', 'pytest', 'six', 'sphinx']  # 'nosexcover']
-test_suite = "py.test"
-if sys.hexversion >= 0x02060000:
-    # requirements.extend(['nose-machineout'])
-    test_suite = "py.test"
-
-# handle python 3
-if sys.version_info >= (3,):
-    use_2to3 = True
-else:
-    use_2to3 = False
-
-options = {}
 
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
@@ -106,10 +93,13 @@ class Release(Command):
 
     def run(self):
         import json
-        import urllib2
-        response = urllib2.urlopen(
-            "http://pypi.python.org/pypi/%s/json" % NAME)
-        data = json.load(response)
+        try:
+            from urllib.request import urlopen
+        except ImportError:
+            from urllib2 import urlopen
+        response = urlopen(
+            "http://pypi.python.org/pypi/%s/json" % NAME).read().decode('utf-8')
+        data = json.loads(response)
         released_version = data['info']['version']
         if released_version == __version__:
             raise RuntimeError(
@@ -122,21 +112,29 @@ class Release(Command):
 
 setup(
     name=NAME,
-    py_modules=['tendo.colorer', 'tendo.execfile2', 'tendo.singleton', 'tendo.tee', 'tendo.unicode', 'tendo.version'],
-    packages=[NAME],
+    py_modules=['tendo.colorer', 'tendo.execfile2', 'tendo.singleton',
+                'tendo.tee', 'tendo.unicode', 'tendo.version'],
     version=__version__,
     cmdclass={'test': PyTest, 'release': Release},
+    packages=[NAME],
+    
     zip_safe=False,
-    description='A Python library that extends some core functionality',
-    author='Sorin Sbarnea',
-    author_email='sorin.sbarnea@gmail.com',
+	setup_requires=['six'],
+    tests_require=['pep8>=0.6', 'py>=1.4.15', 'pytest', 'six', 'sphinx'],
+    test_suite="py.test",
     maintainer='Sorin Sbarnea',
     maintainer_email='sorin.sbarnea@gmail.com',
     license='Python',
+    description='A Python library that extends some core functionality',
+    
+    long_description=open("README.rst").read(),
+    author='Sorin Sbarnea',
+    author_email='sorin.sbarnea@gmail.com',
     platforms=['any'],
     url='https://github.com/pycontribs/tendo',
     download_url='https://github.com/pycontribs/tendo/archives/master',
     bugtrack_url='https://github.com/pycontribs/tendo/issues',
+	home_page='https://github.com/pycontribs/tendo',
     keywords=['tendo', 'tee', 'unicode', 'colorer', 'singleton'],
     classifiers=[
         'Programming Language :: Python',
@@ -150,16 +148,10 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Topic :: Software Development :: Libraries :: Python Modules',
-		'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Topic :: Internet',
-    ],
-    long_description=open('README.md').read(),
-    setup_requires=['six'],
-    tests_require=test_requirements,
-    test_suite=test_suite,
-    # use_2to3 = use_2to3,
-    **options
+    ],    
 )

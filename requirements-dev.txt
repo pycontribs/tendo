@@ -1,0 +1,12 @@
+Sphinx
+autopep8
+coveralls
+pep8
+pytest>=2.6.0
+pytest-cov
+pytest-pep8
+pytest-xdist
+pytest-instafail
+wheel
+docutils
+MarkupSafe
