@@ -40,7 +40,8 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
             sys.argv.extend(shlex.split(cmd))
     exit_code = 0
     try:
-        exec(compile(open(filename).read(), filename, 'exec'), _globals, _locals)
+        exec(
+            compile(open(filename).read(), filename, 'exec'), _globals, _locals)
 
     except SystemExit:
         type, e, tb = sys.exc_info()
@@ -96,7 +97,8 @@ class testExecfile(unittest.TestCase):
         self.assertTrue(exit_code == 1)
 
     def test_command_line(self):
-        exit_code = self._exec_py_code("import sys\nif len(sys.argv)==2 and sys.argv[1]=='doh!': sys.exit(-1)", cmd="doh!")
+        exit_code = self._exec_py_code(
+            "import sys\nif len(sys.argv)==2 and sys.argv[1]=='doh!': sys.exit(-1)", cmd="doh!")
         self.assertTrue(exit_code == -1)
 
 if __name__ == "__main__":

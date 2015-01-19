@@ -25,21 +25,26 @@ class SingleInstance:
     def __init__(self, flavor_id=""):
         import sys
         self.initialized = False
-        basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
+        basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace(
+            "/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
         # os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
-        self.lockfile = os.path.normpath(tempfile.gettempdir() + '/' + basename)
+        self.lockfile = os.path.normpath(
+            tempfile.gettempdir() + '/' + basename)
 
         logger.debug("SingleInstance lockfile: " + self.lockfile)
         if sys.platform == 'win32':
             try:
-                # file already exists, we try to remove (in case previous execution was interrupted)
+                # file already exists, we try to remove (in case previous
+                # execution was interrupted)
                 if os.path.exists(self.lockfile):
                     os.unlink(self.lockfile)
-                self.fd = os.open(self.lockfile, os.O_CREAT | os.O_EXCL | os.O_RDWR)
+                self.fd = os.open(
+                    self.lockfile, os.O_CREAT | os.O_EXCL | os.O_RDWR)
             except OSError:
                 type, e, tb = sys.exc_info()
                 if e.errno == 13:
-                    logger.error("Another instance is already running, quitting.")
+                    logger.error(
+                        "Another instance is already running, quitting.")
                     sys.exit(-1)
                 print(e.errno)
                 raise
@@ -49,7 +54,8 @@ class SingleInstance:
             try:
                 fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
-                logger.warning("Another instance is already running, quitting.")
+                logger.warning(
+                    "Another instance is already running, quitting.")
                 sys.exit(-1)
         self.initialized = True
 
@@ -96,19 +102,25 @@ class testSingleton(unittest.TestCase):
         p = Process(target=f, args=("test-2",))
         p.start()
         p.join()
-        assert p.exitcode == 0, "%s != 0" % p.exitcode  # the called function should succeed
+        # the called function should succeed
+        assert p.exitcode == 0, "%s != 0" % p.exitcode
 
     def test_3(self):
         me = SingleInstance(flavor_id="test-3")
         p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
-        assert p.exitcode != 0, "%s != 0 (2nd execution)" % p.exitcode  # the called function should fail because we already have another instance running
-        # note, we return -1 but this translates to 255 meanwhile we'll consider that anything different from 0 is good
+        # the called function should fail because we already have another
+        # instance running
+        assert p.exitcode != 0, "%s != 0 (2nd execution)" % p.exitcode
+        # note, we return -1 but this translates to 255 meanwhile we'll
+        # consider that anything different from 0 is good
         p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
-        assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode  # the called function should fail because we already have another instance running
+        # the called function should fail because we already have another
+        # instance running
+        assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode
 
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())

@@ -10,7 +10,8 @@ __status__ = "Production"
 from . import version
 __date__ = "2013-09-10"
 
-__all__ = ['tee', 'colorer', 'unicode', 'execfile2', 'singleton', 'ansiterm', 'version']
+__all__ = ['tee', 'colorer', 'unicode',
+           'execfile2', 'singleton', 'ansiterm', 'version']
 
 """
 Tendo is tested with Python 2.5-3.3

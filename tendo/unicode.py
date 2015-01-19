@@ -41,10 +41,12 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
     If you do not specify the fallback_encoding, files without BOM will be read as `UTF-8` instead of `ascii`.
 
     """
-    # Do not assign None to bufsize or mode because calling original open will fail
+    # Do not assign None to bufsize or mode because calling original open will
+    # fail
 
     # we read the first 4 bytes just to be sure we use the right encoding
-    if "r" in mode or "a" in mode:  # we are interested of detecting the mode only for read text
+    # we are interested of detecting the mode only for read text
+    if "r" in mode or "a" in mode:
         try:
             f = open_old(filename, "rb")
             aBuf = bytes(f.read(4))
@@ -78,7 +80,8 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
         return f
     else:
         import traceback
-        logging.warning("Calling unicode.open(%s,%s,%s) that may be wrong." % (filename, mode, bufsize))
+        logging.warning(
+            "Calling unicode.open(%s,%s,%s) that may be wrong." % (filename, mode, bufsize))
         traceback.print_exc(file=sys.stderr)
 
         return open_old(filename, mode, bufsize)
@@ -97,7 +100,8 @@ class testUnicode(unittest.TestCase):
             f.close()
         except Exception:
             type, e, tb = sys.exc_info()
-            self.assertTrue(False, "Unable to properly read valid utf8 encoded file: " + e)
+            self.assertTrue(
+                False, "Unable to properly read valid utf8 encoded file: " + e)
 
     def test_read_invalid_utf8(self):
         passed = False
@@ -119,10 +123,13 @@ class testUnicode(unittest.TestCase):
         (ftmp, fname_tmp) = tempfile.mkstemp()
         shutil.copyfile(os.path.join(self.dir, "tests/utf8.txt"), fname_tmp)
         f = open(fname_tmp, "a")  # encoding not specified, should use utf-8
-        f.write(six.u("\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000"))
+        f.write(six.u(
+            "\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000"))
         f.close()
-        passed = filecmp.cmp(os.path.join(self.dir, "tests/utf8-after-append.txt"), fname_tmp, shallow=False)
-        self.assertTrue(passed, "Appending to existing UTF-8 file test failed (%s)." % fname_tmp)
+        passed = filecmp.cmp(
+            os.path.join(self.dir, "tests/utf8-after-append.txt"), fname_tmp, shallow=False)
+        self.assertTrue(
+            passed, "Appending to existing UTF-8 file test failed (%s)." % fname_tmp)
         os.close(ftmp)
         os.unlink(fname_tmp)
 
