@@ -51,6 +51,7 @@ class SingleInstance:
         else:  # non Windows
             import fcntl
             self.fp = open(self.lockfile, 'w')
+            self.fp.flush()
             try:
                 fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
