@@ -40,7 +40,8 @@ else:
     except:
         _type = str
 
-    to_int = lambda number, default: number and int(number) or default
+    def to_int(number, default):
+        return number and int(number) or default
     wlock = threading.Lock()
 
     STD_OUTPUT_HANDLE = -11
