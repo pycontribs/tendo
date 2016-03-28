@@ -9,10 +9,14 @@ import logging
 from multiprocessing import Process
 
 
+class SingletonInstanceException(BaseException):
+    pass
+
+
 class SingleInstance:
 
     """
-    If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will exist the application with the message "Another instance is already running, quitting.", returning -1 error code.
+    If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will throw a `SingletonInstanceException`.
 
     >>> import tendo
     ... me = SingleInstance()
@@ -20,7 +24,7 @@ class SingleInstance:
     This option is very useful if you have scripts executed by crontab at small amounts of time.
 
     Remember that this works by creating a lock file with a filename based on the full path to the script file.
-    
+
     Providing a flavor_id will augment the filename with the provided flavor_id, allowing you to create multiple singleton instances from the same file. This is particularly useful if you want specific functions to have their own singleton instances.
     """
 
@@ -47,7 +51,7 @@ class SingleInstance:
                 if e.errno == 13:
                     logger.error(
                         "Another instance is already running, quitting.")
-                    sys.exit(-1)
+                    raise SingletonInstanceException()
                 print(e.errno)
                 raise
         else:  # non Windows
@@ -59,7 +63,7 @@ class SingleInstance:
             except IOError:
                 logger.warning(
                     "Another instance is already running, quitting.")
-                sys.exit(-1)
+                raise SingletonInstanceException()
         self.initialized = True
 
     def __del__(self):
@@ -89,7 +93,10 @@ class SingleInstance:
 def f(name):
     tmp = logger.level
     logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
-    me2 = SingleInstance(flavor_id=name)
+    try:
+        me2 = SingleInstance(flavor_id=name)
+    except SingletonInstanceException:
+        sys.exit(-1)
     logger.setLevel(tmp)
     pass
 
