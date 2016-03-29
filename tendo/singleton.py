@@ -9,14 +9,14 @@ import logging
 from multiprocessing import Process
 
 
-class SingletonInstanceException(BaseException):
+class SingleInstanceException(BaseException):
     pass
 
 
 class SingleInstance:
 
     """
-    If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will throw a `SingletonInstanceException`.
+    If you want to prevent your script from running in parallel just instantiate SingleInstance() class. If is there another instance already running it will throw a `SingleInstanceException`.
 
     >>> import tendo
     ... me = SingleInstance()
@@ -51,7 +51,7 @@ class SingleInstance:
                 if e.errno == 13:
                     logger.error(
                         "Another instance is already running, quitting.")
-                    raise SingletonInstanceException()
+                    raise SingleInstanceException()
                 print(e.errno)
                 raise
         else:  # non Windows
@@ -63,7 +63,7 @@ class SingleInstance:
             except IOError:
                 logger.warning(
                     "Another instance is already running, quitting.")
-                raise SingletonInstanceException()
+                raise SingleInstanceException()
         self.initialized = True
 
     def __del__(self):
@@ -95,7 +95,7 @@ def f(name):
     logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
     try:
         me2 = SingleInstance(flavor_id=name)
-    except SingletonInstanceException:
+    except SingleInstanceException:
         sys.exit(-1)
     logger.setLevel(tmp)
     pass
