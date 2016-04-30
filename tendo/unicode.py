@@ -21,7 +21,7 @@ open_old = open
 
 def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
     """
-    This replaces Python original open() function with an improved version that is Unicode aware.
+    This replaces Python original function with an improved version that is Unicode aware.
 
     The new `open()` does change behaviour only for text files, not binary.
 

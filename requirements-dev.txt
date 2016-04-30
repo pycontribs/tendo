@@ -2,6 +2,8 @@ Sphinx
 autopep8
 coveralls
 pep8
+flake8
+flake8-docstrings
 pytest>=2.6.0
 pytest-cov
 pytest-pep8

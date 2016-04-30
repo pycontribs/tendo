@@ -6,7 +6,7 @@ try:
     if (not sys.stderr.isatty()) or (not sys.stdout.isatty()):
         raise ValueError('not a tty')
 
-    from ctypes import *
+    from ctypes import *  # noqa
 
     class COORD(Structure):
         _fields_ = [("X", c_short), ("Y", c_short)]

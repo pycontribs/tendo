@@ -3,7 +3,7 @@
 # Author: sorin sbarnea
 # License: public domain
 
-from tendo import colorer
+from tendo import colorer   # noqa
 
 if __name__ == '__main__':
     import logging

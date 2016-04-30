@@ -3,8 +3,6 @@
 # Author: sorin sbarnea
 # License: public domain
 import codecs
-import collections
-import functools
 import logging
 import os
 import pipes
@@ -13,11 +11,7 @@ import subprocess
 import types
 import time
 import unittest
-
-if sys.version_info[0] == 3:
-    string_types = str,
-else:
-    string_types = basestring,
+from six import string_types
 
 global logger
 global stdout
@@ -192,8 +186,7 @@ class testTee(unittest.TestCase):
 
     def test_1(self):
         """
-
-                               CMD      os.system()
+        No                       CMD      os.system()
            1  sort /?             ok          ok
            2  "sort" /?           ok          ok
            3  sort "/?"           ok          ok
@@ -202,8 +195,7 @@ class testTee(unittest.TestCase):
            6  "sort /?"          [bad]         ok
            7  "sort "/?""        [bad]         ok
            8 ""sort" "/?""       [bad]           ok
-
-"""
+        """
 
         quotes = {
             'dir >nul': 'dir >nul',
@@ -231,11 +223,11 @@ class testTee(unittest.TestCase):
     def test_3(self):
         self.assertEqual(system2(['python', '-V'])[0], 0)
 
-    def test_2(self):
+    def test_4(self):
         self.assertEqual(system(['python', '-c', "print('c c')"]), 0)
 
 if __name__ == '__main__':
-    import os
+
     # unittest.main()
     import pytest
     pytest.main([__file__])

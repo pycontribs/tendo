@@ -2,7 +2,6 @@
 
 import sys
 import os
-import errno
 import tempfile
 import unittest
 import logging
@@ -94,7 +93,7 @@ def f(name):
     tmp = logger.level
     logger.setLevel(logging.CRITICAL)  # we do not want to see the warning
     try:
-        me2 = SingleInstance(flavor_id=name)
+        me2 = SingleInstance(flavor_id=name)  # noqa
     except SingleInstanceException:
         sys.exit(-1)
     logger.setLevel(tmp)
@@ -116,7 +115,7 @@ class testSingleton(unittest.TestCase):
         assert p.exitcode == 0, "%s != 0" % p.exitcode
 
     def test_3(self):
-        me = SingleInstance(flavor_id="test-3")
+        me = SingleInstance(flavor_id="test-3")  # noqa -- me should still kept
         p = Process(target=f, args=("test-3",))
         p.start()
         p.join()
