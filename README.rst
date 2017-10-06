@@ -2,18 +2,43 @@
 tendo
 ======
 
-Tendo is a python module that adds basic functionality that is 
-not (yet) provided by Python. 
+Tendo is a python module that adds basic functionality that is
+not (yet) provided by Python.
 
-[![Build Status](https://drone.io/github.com/pycontribs/tendo/status.png)](https://drone.io/github.com/pycontribs/tendo/latest)
-[![Build Status](https://travis-ci.org/pycontribs/tendo.svg?branch=master)](https://travis-ci.org/pycontribs/tendo)
+.. image:: https://img.shields.io/pypi/v/tendo.svg
+        :target: https://pypi.python.org/pypi/tendo/
+
+.. image:: https://img.shields.io/pypi/l/tendo.svg
+        :target: https://pypi.python.org/pypi/tendo/
+
+.. image:: https://img.shields.io/pypi/wheel/tendo.svg
+        :target: https://pypi.python.org/pypi/tendo/
+
+.. image:: https://img.shields.io/codeclimate/github/pycontribs/tendo.svg
+        :target: https://codeclimate.com/github/pycontribs/tendo
+
+------------
+
+.. image:: https://readthedocs.org/projects/tendo/badge/?version=master
+        :target: http://tendo.readthedocs.io
+
+.. image:: https://api.travis-ci.org/pycontribs/tendo.svg?branch=master
+        :target: https://travis-ci.org/pycontribs/tendo
+
+.. image:: https://img.shields.io/bountysource/team/pycontribs/activity.svg
+        :target: https://www.bountysource.com/teams/pycontribs/issues?tracker_ids=3650997
+
+.. image:: https://requires.io/github/pycontribs/tendo/requirements.svg?branch=master
+        :target: https://requires.io/github/pycontribs/tendo/requirements/?branch=master
+        :alt: Requirements Status
+
 
 * [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.org/en/latest/#module-tendo.singleton)
 * [console logging coloring](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer)
 * enable you to use symlinks under windows
-* [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing extenal programs and redirecting their output to both console/file)
+* [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file)
 * [improved execfile](https://tendo.readthedocs.org/en/latest/#module-tendo.execfile2)
- 
+
 Documentation
 ------------------------------
 Check:
@@ -22,7 +47,7 @@ Check:
 
 Requirements and compatibility
 ------------------------------
-* python 2.5-3.2
+* python 2.7-3.6
 * distribute (for installation)
 * tox for running tests
 
@@ -37,4 +62,3 @@ TODO
 ----
 * implement testing, see test frameworks http://pycheesecake.org/wiki/PythonTestingToolsTaxonomy
 * implement all PEP8 recomandations
-

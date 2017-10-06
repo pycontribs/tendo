@@ -170,7 +170,7 @@ class testSingleton(unittest.TestCase):
         logging.getLogger().addHandler(ch)
         logging.getLogger().addHandler(fh)
 
-        logging.warn("a warning")
+        logging.warning("a warning")
         logging.error("some error")
         logging.info("some info")
         logging.debug("some info")
