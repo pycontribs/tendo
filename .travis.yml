@@ -1,56 +1,86 @@
 language: python
+sudo: false
+matrix:
+  fast_finish: false
 os:
 - linux
-python:
-- '2.7'
-- '3.5'
-- '3.6'
-install:
-- pip -q install -r requirements.txt
-- pip -q install -r requirements-dev.txt
-- pip -q install -r requirements-opt.txt || echo "skipped"
-- pip -q install coveralls
-script:
-  - curl --silent -Lo travis_after_all.py https://raw.github.com/pycontribs/travis_after_all/master/travis_after_all.py
-  - travis_wait python setup.py test
-after_success:
-  - python travis_after_all.py
-  - export $(cat .to_export_back)
-  - |
-      if [ "$BUILD_LEADER" = "YES" ]; then
-        if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
-          echo "All jobs succeeded! PUBLISHING..."
-        else
-          echo "Some jobs failed"
-        fi
-      fi
-  - coveralls
-  - python setup.py build_sphinx upload_docs release
-after_failure:
-  - python travis_after_all.py
-  - export $(cat .to_export_back)
-  - |
-      if [ "$BUILD_LEADER" = "YES" ]; then
-        if [ "$BUILD_AGGREGATE_STATUS" = "others_failed" ]; then
-          echo "All jobs failed"
-        else
-          echo "Some jobs failed"
-        fi
-      fi
-after_script:
-  - echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
+matrix:
+  include:
+    - python: 2.7
+      env: TOXENV=py27
+    - python: 3.4
+      env: TOXENV=py34
+    - python: 3.5
+      env: TOXENV=py35
+    - python: 3.6
+      env: TOXENV=py36
+    - python: pypy
+      env: TOXENV=pypy
+    - python: 2.7
+      env: TOXENV=docs
 branches:
   only:
-  - master
+    - master
+    - develop
+install:
+- pip -q --log dist/pip.log install --upgrade pip setuptools tox-travis py wheel
+- python setup.py sdist bdist_wheel install
+- pip install ./dist/*.whl
+- pip --version
+script:
+- export PACKAGE_NAME=$(python setup.py --name)
+- export PACKAGE_VERSION=$(python setup.py --version)
+- python setup.py --version
+- tox --installpkg ./dist/*.whl --travis-after
+# validates that the build source distribution is installable using the old easy_install
+- pip uninstall -y $PACKAGE_NAME && easy_install ./dist/$PACKAGE_NAME-*.tar.gz
+after_success:
+- coveralls
+- bash <(curl -s https://codecov.io/bash)
+- requires.io update-site -t ac3bbcca32ae03237a6aae2b02eb9411045489bb -r
 notifications:
-  hipchat: 7d72ba6ba0bf07248f17e0a6a1a899@DevOps
+  email:
+  - pycontribs@googlegroups.com
+  - sorin.sbarnea@gmail.com
+
 deploy:
-  provider: pypi
+- provider: releases
+  api_key:
+    secure: G19YtkGAX0aJ1oyd/7eRj1KYdsmAkjkfU2UISvsjh/68ec1+9qtPpN7BbkFYZYMjSx0BtS0SEEA7Vdl4F9DI9Zzqahbj7WzDLFe9/4aZKM/ztfKWR6CNAYaMazAKS5W7r9pPkBBDIIJ9zCqvV7FRzjewEpfTwFzwUdY+IpxEsAM=
+  file:
+  - dist/$PACKAGE_NAME-$PACKAGE_VERSION.tar.gz
+  - dist/$PACKAGE_NAME-$PACKAGE_VERSION-py2.py3-none-any.whl
+  - ChangeLog
+  skip_cleanup: true
+  on:
+    repo: pycontribs/tendo
+    tags: true
+    python: 2.7
+    condition: $TOXENV != docs
+- provider: pypi
   user: sorin
   password:
-    secure: "E0cjANF7SLBdYrsnWLK8X/xWznqkF0JrP/DVfDazPzUYH6ynFeneyofzNJQPLTLsqe1eKXhuUJ/Sbl+RHFB0ySo/j/7NfYd/9pm8hpUkGCvR09IwtvMLgWKp3k10NWab03o2GOkSJSrLvZofyZBGR40wwu2O9uXPCb2rvucCGbw="
-  distributions: "bdist_wheel"
-  before_deploy:
-  - echo "before deploy..."
-  after_deploy:
-  - echo "after deploy..."
+    secure: E0cjANF7SLBdYrsnWLK8X/xWznqkF0JrP/DVfDazPzUYH6ynFeneyofzNJQPLTLsqe1eKXhuUJ/Sbl+RHFB0ySo/j/7NfYd/9pm8hpUkGCvR09IwtvMLgWKp3k10NWab03o2GOkSJSrLvZofyZBGR40wwu2O9uXPCb2rvucCGbw=
+  distributions: sdist bdist_wheel
+  skip_cleanup: true
+  on:
+    tags: true
+    python: 2.7
+    condition: $TOXENV != docs
+    branch: master
+- provider: pypi
+  server: https://testpypi.python.org/pypi
+  user: sorins
+  password:
+    secure: E0cjANF7SLBdYrsnWLK8X/xWznqkF0JrP/DVfDazPzUYH6ynFeneyofzNJQPLTLsqe1eKXhuUJ/Sbl+RHFB0ySo/j/7NfYd/9pm8hpUkGCvR09IwtvMLgWKp3k10NWab03o2GOkSJSrLvZofyZBGR40wwu2O9uXPCb2rvucCGbw=
+  distributions: sdist bdist_wheel
+  skip_cleanup: true
+  on:
+    tags: false
+    python: 2.7
+    condition: $TOXENV != docs
+    branch: develop
+env:
+  global:
+  - secure: fuXwQL+KHQ96XkAFl2uQc8eK8dAjrgkup46tck/UGjVpdv1PT/yHmBKrvpFjDa50ueGbtBwTdKAwhyAmYuiZCk2IYHzdvBylCZBBji2FSpaTM59CVwgkVT6tx3HHO83X0mEX6ih9TJvZD5XhX+YUjopnseRXRq3ey3JZJXWN4RM=
+  - secure: "pGQGM5YmHvOgaKihOyzb3k6bdqLQnZQ2OXO9QrfXlXwtop3zvZQi80Q+01l230x2psDWlwvqWTknAjAt1w463fYXPwpoSvKVCsLSSbjrf2l56nrDqnoir+n0CBy288+eIdaGEfzcxDiuULeKjlg08zrqjcjLjW0bDbBrlTXsb5U="
