@@ -18,10 +18,12 @@ matrix:
       env: TOXENV=pypy
     - python: 2.7
       env: TOXENV=docs
+# https://docs.travis-ci.com/user/customizing-the-build
 branches:
   only:
     - master
     - develop
+    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 install:
 - pip -q --log dist/pip.log install --upgrade pip setuptools tox-travis py wheel
 - python setup.py sdist bdist_wheel install
@@ -46,39 +48,39 @@ notifications:
 deploy:
 - provider: releases
   api_key:
-    secure: G19YtkGAX0aJ1oyd/7eRj1KYdsmAkjkfU2UISvsjh/68ec1+9qtPpN7BbkFYZYMjSx0BtS0SEEA7Vdl4F9DI9Zzqahbj7WzDLFe9/4aZKM/ztfKWR6CNAYaMazAKS5W7r9pPkBBDIIJ9zCqvV7FRzjewEpfTwFzwUdY+IpxEsAM=
+    secure: FdDsSx1GhjAcvNPtdDhNtlIlAVFDWv+hXu1HGLnDVdAzFVnJt96z7ORTjKuUnTDNPKvyxOtAx67xE5K2pR9UV8MK4rz3qyRNoNbUKz9IHqs8BCdm7NTUV1GgoTxlFvbez5K/B8IdEge37ru+qE5zJslQYSBAxA1y+lUaNAhugiA=
+  file_glob: true
   file:
-  - dist/$PACKAGE_NAME-$PACKAGE_VERSION.tar.gz
-  - dist/$PACKAGE_NAME-$PACKAGE_VERSION-py2.py3-none-any.whl
+  - dist/$PACKAGE_NAME-$PACKAGE_VERSION*
   - ChangeLog
   skip_cleanup: true
   on:
     repo: pycontribs/tendo
     tags: true
     python: 2.7
-    condition: $TOXENV != docs
+    condition: $TOXENV == py27
 - provider: pypi
-  user: sorin
+  user: pycontribs
   password:
-    secure: E0cjANF7SLBdYrsnWLK8X/xWznqkF0JrP/DVfDazPzUYH6ynFeneyofzNJQPLTLsqe1eKXhuUJ/Sbl+RHFB0ySo/j/7NfYd/9pm8hpUkGCvR09IwtvMLgWKp3k10NWab03o2GOkSJSrLvZofyZBGR40wwu2O9uXPCb2rvucCGbw=
+    secure: "ZvNpERuRpiPb5+mML/nm16UTI3DwEZEVOLmz9kDfaJU5+9hy1mvhwkIBWEEEBvy3NA5zk64i1uBORSwp+WPnwWNsurksZwgmSp1k2M6FzE0l2tRt7VQ4Lle6CfhLJ7vo0mZS7GdfWwcw4DEOV7guh3VtD200TNK6o/AuRRXztpM="
   distributions: sdist bdist_wheel
   skip_cleanup: true
   on:
     tags: true
     python: 2.7
-    condition: $TOXENV != docs
+    condition: $TOXENV == py27
     branch: master
 - provider: pypi
   server: https://testpypi.python.org/pypi
-  user: sorins
+  user: pycontribs
   password:
-    secure: E0cjANF7SLBdYrsnWLK8X/xWznqkF0JrP/DVfDazPzUYH6ynFeneyofzNJQPLTLsqe1eKXhuUJ/Sbl+RHFB0ySo/j/7NfYd/9pm8hpUkGCvR09IwtvMLgWKp3k10NWab03o2GOkSJSrLvZofyZBGR40wwu2O9uXPCb2rvucCGbw=
+    secure: "ZvNpERuRpiPb5+mML/nm16UTI3DwEZEVOLmz9kDfaJU5+9hy1mvhwkIBWEEEBvy3NA5zk64i1uBORSwp+WPnwWNsurksZwgmSp1k2M6FzE0l2tRt7VQ4Lle6CfhLJ7vo0mZS7GdfWwcw4DEOV7guh3VtD200TNK6o/AuRRXztpM="
   distributions: sdist bdist_wheel
   skip_cleanup: true
   on:
     tags: false
     python: 2.7
-    condition: $TOXENV != docs
+    condition: $TOXENV == py27
     branch: develop
 env:
   global:
