@@ -1,88 +1,77 @@
 language: python
+cache:
+- pip
 sudo: false
-matrix:
-  fast_finish: false
 os:
 - linux
-matrix:
-  include:
-    - python: 2.7
-      env: TOXENV=py27
-    - python: 3.4
-      env: TOXENV=py34
-    - python: 3.5
-      env: TOXENV=py35
-    - python: 3.6
-      env: TOXENV=py36
-    - python: pypy
-      env: TOXENV=pypy
-    - python: 2.7
-      env: TOXENV=docs
-# https://docs.travis-ci.com/user/customizing-the-build
-branches:
-  only:
-    - master
-    - develop
-    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+stages:
+- lint
+- docs
+- test
+- deploy
 install:
-- pip -q --log dist/pip.log install --upgrade pip setuptools tox-travis py wheel
-- python setup.py sdist bdist_wheel install
-- pip install ./dist/*.whl
-- pip --version
-script:
-- export PACKAGE_NAME=$(python setup.py --name)
-- export PACKAGE_VERSION=$(python setup.py --version)
-- python setup.py --version
-- tox --installpkg ./dist/*.whl --travis-after
-# validates that the build source distribution is installable using the old easy_install
-- pip uninstall -y $PACKAGE_NAME && easy_install ./dist/$PACKAGE_NAME-*.tar.gz
-after_success:
-- coveralls
-- bash <(curl -s https://codecov.io/bash)
-- requires.io update-site -t ac3bbcca32ae03237a6aae2b02eb9411045489bb -r
-notifications:
-  email:
-  - pycontribs@googlegroups.com
-  - sorin.sbarnea@gmail.com
-
-deploy:
-- provider: releases
-  api_key:
-    secure: FdDsSx1GhjAcvNPtdDhNtlIlAVFDWv+hXu1HGLnDVdAzFVnJt96z7ORTjKuUnTDNPKvyxOtAx67xE5K2pR9UV8MK4rz3qyRNoNbUKz9IHqs8BCdm7NTUV1GgoTxlFvbez5K/B8IdEge37ru+qE5zJslQYSBAxA1y+lUaNAhugiA=
-  file_glob: true
-  file:
-  - dist/$PACKAGE_NAME-$PACKAGE_VERSION*
-  - ChangeLog
-  skip_cleanup: true
-  on:
-    repo: pycontribs/tendo
-    tags: true
+- pip install -q tox-travis tox-pyenv virtualenv wheel | cat
+jobs:
+  include:
+  - stage: lint
+    script: python -m tox
     python: 2.7
-    condition: $TOXENV == py27
-- provider: pypi
-  user: pycontribs
-  password:
-    secure: "ZvNpERuRpiPb5+mML/nm16UTI3DwEZEVOLmz9kDfaJU5+9hy1mvhwkIBWEEEBvy3NA5zk64i1uBORSwp+WPnwWNsurksZwgmSp1k2M6FzE0l2tRt7VQ4Lle6CfhLJ7vo0mZS7GdfWwcw4DEOV7guh3VtD200TNK6o/AuRRXztpM="
-  distributions: sdist bdist_wheel
-  skip_cleanup: true
-  on:
-    tags: true
+    env: TOXENV=lint
+  - stage: docs
+    script: python -m tox
     python: 2.7
-    condition: $TOXENV == py27
-    branch: master
-- provider: pypi
-  server: https://testpypi.python.org/pypi
-  user: pycontribs
-  password:
-    secure: "ZvNpERuRpiPb5+mML/nm16UTI3DwEZEVOLmz9kDfaJU5+9hy1mvhwkIBWEEEBvy3NA5zk64i1uBORSwp+WPnwWNsurksZwgmSp1k2M6FzE0l2tRt7VQ4Lle6CfhLJ7vo0mZS7GdfWwcw4DEOV7guh3VtD200TNK6o/AuRRXztpM="
-  distributions: sdist bdist_wheel
-  skip_cleanup: true
-  on:
-    tags: false
+    env: TOXENV=docs
+  - stage: test
+    script: python -m tox
     python: 2.7
-    condition: $TOXENV == py27
-    branch: develop
-env:
-  global:
-  - secure: fuXwQL+KHQ96XkAFl2uQc8eK8dAjrgkup46tck/UGjVpdv1PT/yHmBKrvpFjDa50ueGbtBwTdKAwhyAmYuiZCk2IYHzdvBylCZBBji2FSpaTM59CVwgkVT6tx3HHO83X0mEX6ih9TJvZD5XhX+YUjopnseRXRq3ey3JZJXWN4RM=
-  - secure: "pGQGM5YmHvOgaKihOyzb3k6bdqLQnZQ2OXO9QrfXlXwtop3zvZQi80Q+01l230x2psDWlwvqWTknAjAt1w463fYXPwpoSvKVCsLSSbjrf2l56nrDqnoir+n0CBy288+eIdaGEfzcxDiuULeKjlg08zrqjcjLjW0bDbBrlTXsb5U="
+    env: TOXENV=py27
+    after_success:
+    - coveralls
+    - bash <(curl -s https://codecov.io/bash) -e TOX_ENV
+  - stage: test
+    script: python -m tox
+    python: 3.4
+    env: TOXENV=py34
+    after_success:
+    - coveralls
+    - bash <(curl -s https://codecov.io/bash) -e TOX_ENV
+  - stage: test
+    script: python -m tox
+    python: 3.5
+    env: TOXENV=py35
+    after_success:
+    - coveralls
+    - bash <(curl -s https://codecov.io/bash) -e TOX_ENV
+  - stage: test
+    script: python -m tox
+    python: 3.6
+    env: TOXENV=py36 PYTHON='3.6' PYENV_VERSION='system'
+    after_success:
+    - coveralls
+    - bash <(curl -s https://codecov.io/bash) -e TOX_ENV
+  - stage: deploy
+    script:
+    - export PACKAGE_NAME=$(python setup.py --name)
+    - export PACKAGE_VERSION=$(python setup.py --version)
+    - python setup.py sdist bdist_wheel
+    deploy:
+    - provider: pypi
+      user: pycontribs
+      password:
+        secure: beq1+egB93Y9a51NOdrG0ja9zKb+g3/JejoM6kUpm2FU37a9+AU3fAAoGdYcrRqF2fmrBGuYNW29vJEzaDT4YK/FSMNrcipt8U3yyNXJ0oFbVsi0FLeDlBzEFarhY71BguEoJlf+nwCphPXCj/aJPxNiAKYnNCfBdfP0WKH/N5M=
+      distributions: sdist bdist_wheel
+      skip_cleanup: true
+      on:
+        tags: true
+        repo: pycontribs/tendo
+    - provider: releases
+      api_key:
+        secure: Dz7yMcIBxTKD2zYi0ph9qTz2N0AdmOWD9eI/CMW3DdXh15e4fQqL7O5cr4Sn+FSKHMbUCUoztXwJsYLbrCPB2tH8HliPhSuNzb0CwScRD9wSzQzhli10YPj+Oe2UlPOcIWQFRYTUQ1tfpvfDcvRL7klLDiKUpghJ+xf7crXzqGE=
+      file:
+      - dist/$PACKAGE_NAME-$PACKAGE_VERSION.tar.gz
+      - dist/$PACKAGE_NAME-$PACKAGE_VERSION-py2.py3-none-any.whl
+      - ChangeLog
+      skip_cleanup: true
+      on:
+        tags: true
+        repo: pycontribs/tendo

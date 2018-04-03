@@ -1,11 +1,11 @@
 #!/usr/bin/python
 import codecs
-import sys
-import unittest
-import logging
-import tempfile
-import os
 import inspect
+import logging
+import os
+import sys
+import tempfile
+import unittest
 
 import six
 """
@@ -20,8 +20,7 @@ open_old = open
 
 
 def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
-    """
-    This replaces Python original function with an improved version that is Unicode aware.
+    """This replaces Python original function with an improved version that is Unicode aware.
 
     The new `open()` does change behaviour only for text files, not binary.
 
@@ -39,7 +38,6 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
     Files with BOM will be read properly as Unicode and the BOM will not be part of the text.
 
     If you do not specify the fallback_encoding, files without BOM will be read as `UTF-8` instead of `ascii`.
-
     """
     # Do not assign None to bufsize or mode because calling original open will
     # fail
@@ -51,7 +49,7 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
             f = open_old(filename, "rb")
             aBuf = bytes(f.read(4))
             f.close()
-        except:
+        except Exception:
             aBuf = six.b('')
         if six.binary_type(aBuf[:3]) == six.b('\xEF\xBB\xBF'):
             f = codecs.open(filename, mode, "utf_8")
@@ -117,9 +115,8 @@ class testUnicode(unittest.TestCase):
         self.assertTrue(passed, "Unable to detect invalid utf8 file")
 
     def test_write_on_existing_utf8(self):
-        import shutil
         import filecmp
-        import os
+        import shutil
         (ftmp, fname_tmp) = tempfile.mkstemp()
         shutil.copyfile(os.path.join(self.dir, "tests/utf8.txt"), fname_tmp)
         f = open(fname_tmp, "a")  # encoding not specified, should use utf-8

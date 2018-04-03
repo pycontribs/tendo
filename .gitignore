@@ -26,3 +26,4 @@ test-distribute.sh
 .idea/tendo.iml
 /ChangeLog
 /AUTHORS
+/.pytest_cache

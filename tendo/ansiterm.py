@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Originally from http://waf.googlecode.com/svn/trunk/waflib/ansiterm.py
-import sys
 import os
+import sys
 try:
     if (not sys.stderr.isatty()) or (not sys.stdout.isatty()):
         raise ValueError('not a tty')
@@ -37,7 +37,7 @@ else:
 
     try:
         _type = unicode
-    except:
+    except Exception:
         _type = str
 
     def to_int(number, default):

@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 # encoding: utf-8
-# Author: sorin sbarnea
-# License: public domain
 import codecs
 import logging
 import os
 import pipes
-import sys
-import subprocess
-import types
-import time
-import unittest
 from six import string_types
+import subprocess
+import sys
+import time
+import types
+import unittest
 
 global logger
 global stdout
@@ -30,8 +28,8 @@ _sentinel = object()
 
 
 def quote_command(cmd):
-    """
-    This function does assure that the command line is entirely quoted.
+    """This function does assure that the command line is entirely quoted.
+
     This is required in order to prevent getting "The input line is too long" error message.
     """
     if not (os.name == "nt" or os.name == "dos"):
@@ -45,7 +43,7 @@ def quote_command(cmd):
 
 def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sentinel, timing=_sentinel):
     # def tee(cmd, cwd=None, logger=tee_logger, console=tee_console):
-    """ Works exactly like :func:`system` but it returns both the exit code and the output as a list of lines.
+    """Works exactly like :func:`system` but it returns both the exit code and the output as a list of lines.
 
     This method returns a tuple: (return_code, output_lines_as_list). The return code of 0 means success.
     """
@@ -161,7 +159,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 
 
 def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel):
-    """ This works similar to :py:func:`os.system` but add some useful optional parameters.
+    """This works similar to :py:func:`os.system` but add some useful optional parameters.
 
     * ``cmd`` - command to be executed
     * ``cwd`` - optional working directory to be set before running cmd
@@ -185,8 +183,8 @@ def system(cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timin
 class testTee(unittest.TestCase):
 
     def test_1(self):
-        """
-        No                       CMD      os.system()
+        """No                       CMD      os.system()
+
            1  sort /?             ok          ok
            2  "sort" /?           ok          ok
            3  sort "/?"           ok          ok

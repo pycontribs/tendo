@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-# Author: sorin sbarnea
-# License: public domain
 
 from tendo import colorer   # noqa
 

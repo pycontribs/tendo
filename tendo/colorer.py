@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-# Author: sorin sbarnea
-# License: public domain
 
 """
 Colorer does enable colored logging messages by using `ANSI escape sequences <http://en.wikipedia.org/wiki/ANSI_escape_code>`_.
@@ -16,13 +14,13 @@ The colored output is generated only when the console is a terminal supporting i
 ... logging.info("gray line")
 ... logging.debug("magenta line")
 """
-import logging
 import copy
+import logging
 import os
+import six
 import sys
 import tempfile
 import unittest
-import six
 
 if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
         ('TERM' in os.environ.keys() and os.environ['TERM'] in ['linux']) or \
