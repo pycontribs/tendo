@@ -5,28 +5,25 @@ tendo
 Tendo is a python module that adds basic functionality that is
 not (yet) provided by Python.
 
-.. image:: https://img.shields.io/pypi/v/tendo.svg
+.. image:: https://img.shields.io/pypi/v/tendo.svg?colorB=green
         :target: https://pypi.python.org/pypi/tendo/
 
-.. image:: https://img.shields.io/pypi/l/tendo.svg
+.. image:: https://img.shields.io/pypi/l/tendo.svg?colorB=green
         :target: https://pypi.python.org/pypi/tendo/
 
 .. image:: https://img.shields.io/pypi/wheel/tendo.svg
         :target: https://pypi.python.org/pypi/tendo/
 
-.. image:: https://img.shields.io/codeclimate/github/pycontribs/tendo.svg
-        :target: https://codeclimate.com/github/pycontribs/tendo
+.. image:: https://img.shields.io/codecov/c/github/pycontribs/tendo/master.svg
+        :target: https://codecov.io/gh/pycontribs/tendo
 
 ------------
 
-.. image:: https://readthedocs.org/projects/tendo/badge/?version=master
+.. image:: https://readthedocs.org/projects/tendo/badge/?version=latest
         :target: http://tendo.readthedocs.io
 
 .. image:: https://api.travis-ci.org/pycontribs/tendo.svg?branch=master
         :target: https://travis-ci.org/pycontribs/tendo
-
-.. image:: https://img.shields.io/bountysource/team/pycontribs/activity.svg
-        :target: https://www.bountysource.com/teams/pycontribs/issues?tracker_ids=3650997
 
 .. image:: https://requires.io/github/pycontribs/tendo/requirements.svg?branch=master
         :target: https://requires.io/github/pycontribs/tendo/requirements/?branch=master
@@ -61,4 +58,4 @@ Related project and packages
 TODO
 ----
 * implement testing, see test frameworks http://pycheesecake.org/wiki/PythonTestingToolsTaxonomy
-* implement all PEP8 recomandations
+* implement all PEP8 recommendations
