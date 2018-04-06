@@ -7,7 +7,7 @@ import sys
 from pbr.version import VersionInfo
 
 
-_v = VersionInfo('wstools').semantic_version()
+_v = VersionInfo('tendo').semantic_version()
 __version__ = _v.release_string()
 version_info = _v.version_tuple()
 
