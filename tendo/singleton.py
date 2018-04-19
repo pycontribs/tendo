@@ -28,14 +28,16 @@ class SingleInstance(object):
     Providing a flavor_id will augment the filename with the provided flavor_id, allowing you to create multiple singleton instances from the same file. This is particularly useful if you want specific functions to have their own singleton instances.
     """
 
-    def __init__(self, flavor_id=""):
+    def __init__(self, flavor_id="", lockfile=""):
         import sys
         self.initialized = False
-        basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace(
-            "/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
-        # os.path.splitext(os.path.abspath(sys.modules['__main__'].__file__))[0].replace("/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
-        self.lockfile = os.path.normpath(
-            tempfile.gettempdir() + '/' + basename)
+        if lockfile:
+            self.lockfile = lockfile
+        else:
+            basename = os.path.splitext(os.path.abspath(sys.argv[0]))[0].replace(
+                "/", "-").replace(":", "").replace("\\", "-") + '-%s' % flavor_id + '.lock'
+            self.lockfile = os.path.normpath(
+                tempfile.gettempdir() + '/' + basename)
 
         logger.debug("SingleInstance lockfile: " + self.lockfile)
         if sys.platform == 'win32':
