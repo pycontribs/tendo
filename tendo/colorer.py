@@ -179,6 +179,7 @@ class testSingleton(unittest.TestCase):
             assert(line == expected_lines[line_no])
             line_no += 1
 
+
 if __name__ == '__main__':
     import logging
     # import colorer

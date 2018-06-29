@@ -224,6 +224,7 @@ class testTee(unittest.TestCase):
     def test_4(self):
         self.assertEqual(system(['python', '-c', "print('c c')"]), 0)
 
+
 if __name__ == '__main__':
 
     # unittest.main()
