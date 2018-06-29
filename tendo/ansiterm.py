@@ -6,21 +6,26 @@ try:
     if (not sys.stderr.isatty()) or (not sys.stdout.isatty()):
         raise ValueError('not a tty')
 
-    from ctypes import *  # noqa
+    import ctypes
+    from ctypes import byref
+    from ctypes import c_char
+    from ctypes import c_int
+    from ctypes import c_short
+    from ctypes import windll
 
-    class COORD(Structure):
+    class COORD(ctypes.Structure):
         _fields_ = [("X", c_short), ("Y", c_short)]
 
-    class SMALL_RECT(Structure):
+    class SMALL_RECT(ctypes.Structure):
         _fields_ = [("Left", c_short), ("Top", c_short),
                     ("Right", c_short), ("Bottom", c_short)]
 
-    class CONSOLE_SCREEN_BUFFER_INFO(Structure):
+    class CONSOLE_SCREEN_BUFFER_INFO(ctypes.Structure):
         _fields_ = [("Size", COORD), ("CursorPosition", COORD), ("Attributes",
                                                                  c_short), ("Window", SMALL_RECT), ("MaximumWindowSize", COORD)]
 
-    class CONSOLE_CURSOR_INFO(Structure):
-        _fields_ = [('dwSize', c_ulong), ('bVisible', c_int)]
+    class CONSOLE_CURSOR_INFO(ctypes.Structure):
+        _fields_ = [('dwSize', ctypes.c_ulong), ('bVisible', c_int)]
 
     sbinfo = CONSOLE_SCREEN_BUFFER_INFO()
     csinfo = CONSOLE_CURSOR_INFO()
@@ -99,8 +104,8 @@ else:
                     self.hconsole, clear_start)
             else:  # Clear from cursor position to end of screen
                 clear_start = sbinfo.CursorPosition
-                clear_length = ((sbinfo.Size.X - sbinfo.CursorPosition.X) +
-                                sbinfo.Size.X * (sbinfo.Size.Y - sbinfo.CursorPosition.Y))
+                clear_length = sbinfo.Size.X - sbinfo.CursorPosition.X + \
+                    sbinfo.Size.X * (sbinfo.Size.Y - sbinfo.CursorPosition.Y)
             chars_written = c_int()
             windll.kernel32.FillConsoleOutputCharacterA(
                 self.hconsole, c_char(' '), clear_length, clear_start, byref(chars_written))
@@ -238,7 +243,7 @@ else:
         }
         # Match either the escape sequence or text not containing escape
         # sequence
-        ansi_tokans = re.compile('(?:\x1b\[([0-9?;]*)([a-zA-Z])|([^\x1b]+))')
+        ansi_tokans = re.compile(r'(?:\x1b\[([0-9?;]*)([a-zA-Z])|([^\x1b]+))')
 
         def write(self, text):
             try:

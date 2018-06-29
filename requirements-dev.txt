@@ -1,9 +1,8 @@
-hacking>=1.0.0
+hacking>=1.1.0
 
 Sphinx
 autopep8
 coveralls
-pep8
 pytest>=2.6.0
 pytest-cov
 pytest-xdist

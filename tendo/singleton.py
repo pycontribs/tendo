@@ -132,6 +132,7 @@ class testSingleton(unittest.TestCase):
         # instance running
         assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode
 
+
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())
 
