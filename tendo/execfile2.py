@@ -100,5 +100,6 @@ class testExecfile(unittest.TestCase):
             "import sys\nif len(sys.argv)==2 and sys.argv[1]=='doh!': sys.exit(-1)", cmd="doh!")
         self.assertEqual(exit_code, -1)
 
+
 if __name__ == "__main__":
     unittest.main()

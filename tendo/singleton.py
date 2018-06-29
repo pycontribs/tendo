@@ -139,6 +139,7 @@ class testSingleton(unittest.TestCase):
         me = SingleInstance(lockfile=lockfile)
         assert me.lockfile == lockfile
 
+        
 logger = logging.getLogger("tendo.singleton")
 logger.addHandler(logging.StreamHandler())
 
