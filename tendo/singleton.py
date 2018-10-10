@@ -8,6 +8,10 @@ import tempfile
 import unittest
 
 
+if sys.platform != "win32":
+    import fcntl
+
+
 class SingleInstanceException(BaseException):
     pass
 
@@ -29,7 +33,6 @@ class SingleInstance(object):
     """
 
     def __init__(self, flavor_id="", lockfile=""):
-        import sys
         self.initialized = False
         if lockfile:
             self.lockfile = lockfile
@@ -57,7 +60,6 @@ class SingleInstance(object):
                 print(e.errno)
                 raise
         else:  # non Windows
-            import fcntl
             self.fp = open(self.lockfile, 'w')
             self.fp.flush()
             try:
@@ -69,8 +71,6 @@ class SingleInstance(object):
         self.initialized = True
 
     def __del__(self):
-        import os
-        import sys
         if not self.initialized:
             return
         try:
@@ -79,7 +79,6 @@ class SingleInstance(object):
                     os.close(self.fd)
                     os.unlink(self.lockfile)
             else:
-                import fcntl
                 fcntl.lockf(self.fp, fcntl.LOCK_UN)
                 # os.close(self.fp)
                 if os.path.isfile(self.lockfile):
