@@ -17,7 +17,7 @@ singleton
 .. automodule:: tendo.singleton
 
 .. autoclass:: SingleInstance
-    :members: 
+    :members:
 
 =======
 colorer
@@ -52,4 +52,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

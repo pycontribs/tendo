@@ -1,0 +1,10 @@
+---
+
+rules:
+  line-length:
+    max: 999
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+  key-duplicates: enable
+ignore: |
+  .tox

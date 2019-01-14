@@ -1,0 +1,27 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^tendo/tests/.*\.txt$
+      - id: end-of-file-fixer
+        exclude: ^tendo/tests/.*\.txt$
+      - id: mixed-line-ending
+        exclude: ^tendo/tests/.*\.txt$
+      - id: check-byte-order-marker
+        exclude: ^tendo/tests/.*\.txt$
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-vcs-permalinks
+      - id: flake8
+      - id: debug-statements
+      - id: requirements-txt-fixer
+      - id: check-yaml
+        files: .*\.(yaml|yml)$
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.14.0
+    hooks:
+      - id: yamllint
+        files: \.(yaml|yml)$
