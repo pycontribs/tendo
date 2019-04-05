@@ -8,6 +8,10 @@ import tempfile
 import unittest
 
 
+logger = logging.getLogger("tendo.singleton")
+logger.addHandler(logging.StreamHandler())
+
+
 class SingleInstanceException(BaseException):
     pass
 
@@ -30,6 +34,10 @@ class SingleInstance(object):
 
     def __init__(self, flavor_id="", lockfile=""):
         import sys
+        self.sys = sys
+        self.os = os
+        self.logger = logger
+
         self.initialized = False
         if lockfile:
             self.lockfile = lockfile
@@ -39,7 +47,7 @@ class SingleInstance(object):
             self.lockfile = os.path.normpath(
                 tempfile.gettempdir() + '/' + basename)
 
-        logger.debug("SingleInstance lockfile: " + self.lockfile)
+        self.logger.debug("SingleInstance lockfile: " + self.lockfile)
         if sys.platform == 'win32':
             try:
                 # file already exists, we try to remove (in case previous
@@ -51,42 +59,40 @@ class SingleInstance(object):
             except OSError:
                 type, e, tb = sys.exc_info()
                 if e.errno == 13:
-                    logger.error(
+                    self.logger.error(
                         "Another instance is already running, quitting.")
                     raise SingleInstanceException()
                 print(e.errno)
                 raise
         else:  # non Windows
             import fcntl
+            self.fcntl = fcntl
             self.fp = open(self.lockfile, 'w')
             self.fp.flush()
             try:
                 fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except IOError:
-                logger.warning(
+                self.logger.warning(
                     "Another instance is already running, quitting.")
                 raise SingleInstanceException()
         self.initialized = True
 
     def __del__(self):
-        import os
-        import sys
         if not self.initialized:
             return
         try:
-            if sys.platform == 'win32':
+            if self.sys.platform == 'win32':
                 if hasattr(self, 'fd'):
-                    os.close(self.fd)
-                    os.unlink(self.lockfile)
+                    self.os.close(self.fd)
+                    self.os.unlink(self.lockfile)
             else:
-                import fcntl
-                fcntl.lockf(self.fp, fcntl.LOCK_UN)
+                self.fcntl.lockf(self.fp, self.fcntl.LOCK_UN)
                 # os.close(self.fp)
-                if os.path.isfile(self.lockfile):
-                    os.unlink(self.lockfile)
+                if self.os.path.isfile(self.lockfile):
+                    self.os.unlink(self.lockfile)
         except Exception as e:
-            if logger:
-                logger.warning(e)
+            if self.logger:
+                self.logger.warning(e)
             else:
                 print("Unloggable error: %s" % e)
             sys.exit(-1)
@@ -139,9 +145,6 @@ class testSingleton(unittest.TestCase):
         me = SingleInstance(lockfile=lockfile)
         assert me.lockfile == lockfile
 
-
-logger = logging.getLogger("tendo.singleton")
-logger.addHandler(logging.StreamHandler())
 
 if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
