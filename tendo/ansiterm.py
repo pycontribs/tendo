@@ -40,10 +40,7 @@ else:
     import re
     import threading
 
-    try:
-        _type = unicode
-    except Exception:
-        _type = str
+    from six import text_type
 
     def to_int(number, default):
         return number and int(number) or default
@@ -255,7 +252,7 @@ else:
                             cmd_func(self, param)
                     else:
                         chars_written = c_int()
-                        if isinstance(txt, _type):
+                        if isinstance(txt, text_type):
                             windll.kernel32.WriteConsoleW(
                                 self.hconsole, txt, len(txt), byref(chars_written), None)
                         else:
