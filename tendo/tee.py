@@ -84,7 +84,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
             except TypeError:
                 f.write(msg.encode("utf-8"))
         except Exception:
-            type, e, tb = sys.exc_info()
+            sys.exc_info()[1]
             import traceback
             print('        ****** ERROR: Exception: %s\nencoding = %s' %
                   (e, encoding))
@@ -127,7 +127,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
             line = p.stdout.readline()
             line = line.decode(encoding)
         except Exception:
-            type, e, tb = sys.exc_info()
+            e = sys.exc_info()[1]
             logging.error(e)
             logging.error("The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s" %
                           (encoding, cmd, repr(line)))

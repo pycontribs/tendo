@@ -15,13 +15,16 @@ repos:
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-vcs-permalinks
-      - id: flake8
       - id: debug-statements
       - id: requirements-txt-fixer
       - id: check-yaml
         files: .*\.(yaml|yml)$
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.14.0
+    rev: v1.15.0
     hooks:
       - id: yamllint
         files: \.(yaml|yml)$
+  - repo: https://github.com/PyCQA/flake8
+    rev: 3.7.7
+    hooks:
+      - id: flake8

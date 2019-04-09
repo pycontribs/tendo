@@ -1,7 +1,6 @@
 coveralls
 docutils
 MarkupSafe
-pre-commit
 pytest-cov
 pytest-instafail
 pytest-xdist

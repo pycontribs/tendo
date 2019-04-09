@@ -7,5 +7,5 @@ prepare:
 test: prepare
 	python setup.py --version
 	python setup.py --name
-	python -m flake8
+	python -m tox -e lint
 	python setup.py test
