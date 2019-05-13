@@ -140,8 +140,8 @@ class testSingleton(unittest.TestCase):
 
 
 logger = logging.getLogger("tendo.singleton")
-logger.addHandler(logging.StreamHandler())
 
 if __name__ == "__main__":
+    logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.DEBUG)
     unittest.main()
