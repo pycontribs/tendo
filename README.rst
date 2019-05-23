@@ -22,8 +22,8 @@ not (yet) provided by Python.
 .. image:: https://readthedocs.org/projects/tendo/badge/?version=latest
         :target: http://tendo.readthedocs.io
 
-.. image:: https://api.travis-ci.org/pycontribs/tendo.svg?branch=master
-        :target: https://travis-ci.org/pycontribs/tendo
+.. image:: https://api.travis-ci.com/pycontribs/tendo.svg?branch=master
+        :target: https://travis-ci.com/pycontribs/tendo
 
 .. image:: https://requires.io/github/pycontribs/tendo/requirements.svg?branch=master
         :target: https://requires.io/github/pycontribs/tendo/requirements/?branch=master

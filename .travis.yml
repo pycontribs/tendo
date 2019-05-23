@@ -77,7 +77,7 @@ jobs:
           skip_cleanup: true
           on:
             tags: true
-            repo: pycontribs/jira
+            repo: pycontribs/tendo
             branch: master
 env:
   global:
