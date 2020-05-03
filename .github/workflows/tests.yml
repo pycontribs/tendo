@@ -6,7 +6,7 @@ on:
 
 jobs:
   tests:
-    name: ${{ matrix.python-version }}@${{ matrix.os }}
+    name: ${{ matrix.toxenv }}@${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -17,6 +17,13 @@ jobs:
         os:
         - ubuntu-latest
         - macOS-latest
+        include:
+        - python-version: 3.8
+          toxenv: py38
+        - python-version: 3.7
+          toxenv: py37
+        - python-version: 3.6
+          toxenv: py36
     env:
       TOX_PARALLEL_NO_SPINNER: 1
     steps:
@@ -41,4 +48,9 @@ jobs:
         python -m pip freeze --all
     - name: Test with tox
       run: |
-        python -m tox --parallel auto
+        python -m tox -e ${{ matrix.toxenv }}
+    - name: Archive report.html
+      uses: actions/upload-artifact@v1
+      with:
+        name: report.html.zip
+        path: .tox/${{ matrix.toxenv }}/log/report.html
