@@ -53,7 +53,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
     if hasattr(cmd, '__iter__'):
         cmd = " ".join(pipes.quote(s) for s in cmd)
 
-    t = time.clock()
+    t = time.process_time()
     output = []
     if log_command is _sentinel:
         log_command = globals().get('log_command')
@@ -146,7 +146,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
             def secondsToStr(t):
                 return time.strftime('%H:%M:%S', time.gmtime(t))
             mylogger("Returned: %d (execution time %s)\n" %
-                     (returncode, secondsToStr(time.clock() - t)))
+                     (returncode, secondsToStr(time.process_time() - t)))
         else:
             mylogger("Returned: %d\n" % returncode)
 
