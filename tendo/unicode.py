@@ -93,7 +93,11 @@ class testUnicode(unittest.TestCase):
 
     def test_read_utf8(self):
         try:
-            f = open(os.path.join(self.dir, "tests/utf8.txt"), "rU")
+            if six.PY2:
+                mode = "rU"
+            else:
+                mode = "r"
+            f = open(os.path.join(self.dir, "tests/utf8.txt"), mode)
             f.readlines()
             f.close()
         except Exception:
@@ -104,7 +108,11 @@ class testUnicode(unittest.TestCase):
     def test_read_invalid_utf8(self):
         passed = False
         try:
-            f = open(os.path.join(self.dir, "tests/utf8-invalid.txt"), "rU")
+            if six.PY2:
+                mode = "rU"
+            else:
+                mode = "r"
+            f = open(os.path.join(self.dir, "tests/utf8-invalid.txt"), mode)
             f.readlines()
             f.close()
         except Exception:
