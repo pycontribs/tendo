@@ -44,18 +44,11 @@ Check:
 
 Requirements and compatibility
 ------------------------------
-* python 2.7-3.6
+* python 3.6 or newer
 * distribute (for installation)
 * tox for running tests
 
 Related project and packages
 ----------------------------
-* six - helps you write code that works with both py2 and py3
 * jaraco - http://pypi.python.org/pypi/jaraco.util
 * pexpect (maybe)
-
-
-TODO
-----
-* implement testing, see test frameworks http://pycheesecake.org/wiki/PythonTestingToolsTaxonomy
-* implement all PEP8 recommendations
