@@ -1,11 +1,11 @@
 coveralls
 docutils
 MarkupSafe
+pytest>=2.6.0
 pytest-cov
 pytest-html
 pytest-instafail
 pytest-xdist
-pytest>=2.6.0
 
 Sphinx
 wheel
