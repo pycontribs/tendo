@@ -2,7 +2,7 @@ import inspect
 import pytest
 import sys
 import tempfile
-import six 
+import six
 import os
 import filecmp
 import shutil
