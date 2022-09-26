@@ -2,6 +2,8 @@
 # Originally from http://waf.googlecode.com/svn/trunk/waflib/ansiterm.py
 import os
 import sys
+
+
 try:
     if (not sys.stderr.isatty()) or (not sys.stdout.isatty()):
         raise ValueError('not a tty')

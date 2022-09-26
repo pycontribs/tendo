@@ -27,3 +27,4 @@ test-distribute.sh
 /ChangeLog
 /AUTHORS
 /.pytest_cache
+venv/*
