@@ -30,8 +30,7 @@ def test_colorer():
     logging.error("some error")
     logging.info("some info")
     logging.debug("some info")
-    expected_lines = ['WARNING: a warning\n', 'ERROR: some error\n',
-                        'INFO: some info\n', 'DEBUG: some info\n']
+    expected_lines = ['WARNING: a warning\n', 'ERROR: some error\n', 'INFO: some info\n', 'DEBUG: some info\n']
     line_no = 0
     for line in open(tmp_file).readlines():
         assert(line == expected_lines[line_no])

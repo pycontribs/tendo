@@ -1,16 +1,17 @@
 import inspect
 import pytest
-import sys
 import tempfile
 import six
 import os
 import filecmp
 import shutil
 
+
 @pytest.fixture
 def dir():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     return os.path.dirname(inspect.getfile(inspect.currentframe()))
+
 
 def test_read_utf8(dir):
     if six.PY2:
@@ -22,6 +23,7 @@ def test_read_utf8(dir):
     f.close()
     assert True
 
+
 def test_read_invalid_utf8(dir):
     with pytest.raises(UnicodeDecodeError):
         if six.PY2:
@@ -32,6 +34,7 @@ def test_read_invalid_utf8(dir):
         f.readlines()
         f.close()
 
+
 def test_write_on_existing_utf8(dir):
     (ftmp, fname_tmp) = tempfile.mkstemp()
     shutil.copyfile(os.path.join(dir, "assets/utf8.txt"), fname_tmp)
@@ -41,6 +44,6 @@ def test_write_on_existing_utf8(dir):
     f.close()
     passed = filecmp.cmp(
         os.path.join(dir, "assets/utf8-after-append.txt"), fname_tmp, shallow=False)
-    assert passed == True
+    assert passed is True
     os.close(ftmp)
     os.unlink(fname_tmp)

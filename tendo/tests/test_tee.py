@@ -35,11 +35,14 @@ def test_1():
         #    print("failed")
     os.name = save
 
+
 def test_2():
     assert system(['python', '-V']) == 0
 
+
 def test_3():
     assert system2(['python', '-V'])[0] == 0
+
 
 def test_4():
     assert system(['python', '-c', "print('c c')"]) == 0
