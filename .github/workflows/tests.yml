@@ -15,7 +15,6 @@ jobs:
         - 3.9
         - 3.8
         - 3.7
-        - 3.6
         os:
         - ubuntu-latest
         - macOS-latest
@@ -28,8 +27,6 @@ jobs:
           toxenv: py38
         - python-version: 3.7
           toxenv: py37
-        - python-version: 3.6
-          toxenv: py36
     env:
       TOX_PARALLEL_NO_SPINNER: 1
     steps:

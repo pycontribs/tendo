@@ -21,9 +21,10 @@ def f(name):
 
 
 def test_1():
-        me = SingleInstance(flavor_id="test-1")
-        del me  # now the lock should be removed
-        assert True
+    me = SingleInstance(flavor_id="test-1")
+    del me  # now the lock should be removed
+    assert True
+
 
 def test_2():
     p = Process(target=f, args=("test-2",))
@@ -31,6 +32,7 @@ def test_2():
     p.join()
     # the called function should succeed
     assert p.exitcode == 0, "%s != 0" % p.exitcode
+
 
 def test_3():
     me = SingleInstance(flavor_id="test-3")  # noqa -- me should still kept
@@ -48,6 +50,7 @@ def test_3():
     # the called function should fail because we already have another
     # instance running
     assert p.exitcode != 0, "%s != 0 (3rd execution)" % p.exitcode
+
 
 def test_4():
     lockfile = '/tmp/foo.lock'
