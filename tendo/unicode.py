@@ -1,11 +1,7 @@
 #!/usr/bin/python
 import codecs
-import inspect
 import logging
-import os
 import sys
-import tempfile
-import unittest
 
 import six
 """
@@ -83,61 +79,3 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
         traceback.print_exc(file=sys.stderr)
 
         return open_old(filename, mode, bufsize)
-
-
-class testUnicode(unittest.TestCase):
-
-    def setUp(self):
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        self.dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
-
-    def test_read_utf8(self):
-        try:
-            if six.PY2:
-                mode = "rU"
-            else:
-                mode = "r"
-            f = open(os.path.join(self.dir, "tests/utf8.txt"), mode)
-            f.readlines()
-            f.close()
-        except Exception:
-            type, e, tb = sys.exc_info()
-            self.assertTrue(
-                False, "Unable to properly read valid utf8 encoded file: " + e)
-
-    def test_read_invalid_utf8(self):
-        passed = False
-        try:
-            if six.PY2:
-                mode = "rU"
-            else:
-                mode = "r"
-            f = open(os.path.join(self.dir, "tests/utf8-invalid.txt"), mode)
-            f.readlines()
-            f.close()
-        except Exception:
-            type, e, tb = sys.exc_info()
-            if isinstance(e, UnicodeDecodeError):
-                passed = True  # yes, we expect an exception
-            pass
-        self.assertTrue(passed, "Unable to detect invalid utf8 file")
-
-    def test_write_on_existing_utf8(self):
-        import filecmp
-        import shutil
-        (ftmp, fname_tmp) = tempfile.mkstemp()
-        shutil.copyfile(os.path.join(self.dir, "tests/utf8.txt"), fname_tmp)
-        f = open(fname_tmp, "a")  # encoding not specified, should use utf-8
-        f.write(six.u(
-            "\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000"))
-        f.close()
-        passed = filecmp.cmp(
-            os.path.join(self.dir, "tests/utf8-after-append.txt"), fname_tmp, shallow=False)
-        self.assertTrue(
-            passed, "Appending to existing UTF-8 file test failed (%s)." % fname_tmp)
-        os.close(ftmp)
-        os.unlink(fname_tmp)
-
-
-if __name__ == '__main__':
-    unittest.main()

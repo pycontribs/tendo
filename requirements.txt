@@ -1,4 +1,4 @@
-pbr
-pip
-setuptools
-six>=1.7.2
+pbr~=5.10.0
+pip~=22.2.2
+setuptools~=65.3.0
+six~=1.16.0

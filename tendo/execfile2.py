@@ -1,9 +1,6 @@
 #!/usr/bin/env python
-import os
 import shlex
 import sys
-import tempfile
-import unittest
 
 if sys.hexversion > 0x03000000:
     def execfile(file, globals=globals(), locals=locals()):
@@ -57,49 +54,3 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
         if cmd:
             sys.argv = saved_argv  # we restore sys.argv
     return exit_code
-
-
-class testExecfile(unittest.TestCase):
-
-    def _exec_py_code(self, code, cmd=None):
-        (ftmp, fname_tmp) = tempfile.mkstemp()
-        f = open(fname_tmp, "w")  # encoding not specified, should use utf-8
-        f.write(code)
-        f.close()
-        exit_code = execfile2(fname_tmp, cmd=cmd, quiet=True)
-        os.close(ftmp)
-        os.unlink(fname_tmp)
-        return exit_code
-
-    def test_normal_execution(self):
-        exit_code = self._exec_py_code("")
-        self.assertEqual(exit_code, 0)
-
-    def test_bad_code(self):
-        exit_code = self._exec_py_code("bleah")
-        self.assertEqual(exit_code, 1)
-
-    def test_sys_exit_0(self):
-        exit_code = self._exec_py_code("import sys; sys.exit(0)")
-        self.assertEqual(exit_code, 0)
-
-    def test_sys_exit_5(self):
-        exit_code = self._exec_py_code("import sys; sys.exit(5)")
-        self.assertEqual(exit_code, 5)
-
-    def test_sys_exit_text(self):
-        exit_code = self._exec_py_code("import sys; sys.exit('bleah')")
-        self.assertEqual(exit_code, 1)
-
-    def test_raised_exception(self):
-        exit_code = self._exec_py_code("raise Exception('bleah')")
-        self.assertEqual(exit_code, 1)
-
-    def test_command_line(self):
-        exit_code = self._exec_py_code(
-            "import sys\nif len(sys.argv)==2 and sys.argv[1]=='doh!': sys.exit(-1)", cmd="doh!")
-        self.assertEqual(exit_code, -1)
-
-
-if __name__ == "__main__":
-    unittest.main()
