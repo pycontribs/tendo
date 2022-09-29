@@ -44,7 +44,7 @@ Check:
 
 Requirements and compatibility
 ------------------------------
-* python 3.6 or newer
+* Python 3.7-3.10
 * distribute (for installation)
 * tox for running tests
 
