@@ -12,12 +12,12 @@ __version__ = _v.release_string()
 version_info = _v.version_tuple()
 
 __author__ = "Sorin Sbarnea"
-__copyright__ = "Copyright 2010-2018, Sorin Sbarnea"
+__copyright__ = "Copyright 2010-2022, Sorin Sbarnea"
 __email__ = "sorin.sbarnea@gmail.com"
 __status__ = "Production"
 __all__ = ('tee', 'colorer', 'unicode',
            'execfile2', 'singleton', 'ansiterm', '__version__')
 
 
-if sys.hexversion < 0x02050000:
-    sys.exit("Python 2.5 or newer is required by tendo module.")
+if sys.hexversion < 0x03070000:
+    sys.exit("Python 3.7 or newer is required by tendo module.")

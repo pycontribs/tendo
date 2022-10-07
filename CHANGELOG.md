@@ -1,3 +1,5 @@
+TBD version 1.0.0
+
 2013-07-09 version 0.2.3
     * fixed python 3 compatibility
 
