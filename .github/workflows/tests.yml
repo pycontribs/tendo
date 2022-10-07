@@ -53,7 +53,7 @@ jobs:
       run: |
         python -m tox -e ${{ matrix.toxenv }}
     - name: Archive report.html
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: report.html.zip
         path: .tox/${{ matrix.toxenv }}/log/report.html
