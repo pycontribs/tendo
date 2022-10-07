@@ -41,6 +41,8 @@ class SingleInstance(object):
                 tempfile.gettempdir() + '/' + basename)
 
         logger.debug("SingleInstance lockfile: " + self.lockfile)
+
+    def __enter__(self):
         if sys.platform == 'win32':
             try:
                 # file already exists, we try to remove (in case previous
@@ -67,10 +69,13 @@ class SingleInstance(object):
                     "Another instance is already running, quitting.")
                 raise SingleInstanceException()
         self.initialized = True
+        return self
 
-    def __del__(self):
+    def __exit__(self, exc_type, exc_value, exc_tb):
         if not self.initialized:
             return
+        if exc_value is not None:
+            logger.warning("Error: %s" % exc_value, exc_info=True)
         try:
             if sys.platform == 'win32':
                 if hasattr(self, 'fd'):
@@ -86,6 +91,8 @@ class SingleInstance(object):
                 logger.warning(e)
             else:
                 print("Unloggable error: %s" % e)
+            if exc_value is not None:
+                raise e from exc_value
             sys.exit(-1)
 
 
