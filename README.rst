@@ -14,7 +14,7 @@ not (yet) provided by Python.
 .. image:: https://img.shields.io/pypi/wheel/tendo.svg
         :target: https://pypi.python.org/pypi/tendo/
 
-.. image:: https://img.shields.io/codecov/c/github/pycontribs/tendo/master.svg
+.. image:: https://img.shields.io/codecov/c/github/pycontribs/tendo/main.svg
         :target: https://codecov.io/gh/pycontribs/tendo
 
 ------------
@@ -22,11 +22,11 @@ not (yet) provided by Python.
 .. image:: https://readthedocs.org/projects/tendo/badge/?version=latest
         :target: http://tendo.readthedocs.io
 
-.. image:: https://api.travis-ci.com/pycontribs/tendo.svg?branch=master
+.. image:: https://api.travis-ci.com/pycontribs/tendo.svg?branch=main
         :target: https://travis-ci.com/pycontribs/tendo
 
-.. image:: https://requires.io/github/pycontribs/tendo/requirements.svg?branch=master
-        :target: https://requires.io/github/pycontribs/tendo/requirements/?branch=master
+.. image:: https://requires.io/github/pycontribs/tendo/requirements.svg?branch=main
+        :target: https://requires.io/github/pycontribs/tendo/requirements/?branch=main
         :alt: Requirements Status
 
 
