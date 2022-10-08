@@ -51,9 +51,10 @@ jobs:
           fetch-depth: 0 # needed by setuptools-scm
       - name: Install poetry
         run: pipx install poetry
-      - uses: actions/setup-python@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: ${{ matrix.python-version }}
           cache: "poetry"
       - name: Install dependencies
         run: poetry install
@@ -125,26 +126,23 @@ jobs:
       PYTEST_REQPASS: 0
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out src from Git
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # needed by setuptools-scm
-
+      - name: Install poetry
+        run: pipx install poetry
       - name: Set up Python ${{ matrix.python-version }}
         if: "!contains(matrix.shell, 'wsl')"
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install poetry
-        run: pipx install poetry
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
           cache: "poetry"
       - name: Install dependencies
         run: poetry install
       - name: Initialize tox envs
         run: >-
-          python3 -m
+          poetry run
           tox
           --parallel auto
           --parallel-live
@@ -154,7 +152,7 @@ jobs:
         env:
           TOXENV: ${{ matrix.tox_env }}
       - name: "Test with tox: ${{ matrix.tox_env }}"
-        run: python3 -m tox
+        run: poetry run tox
         env:
           TOXENV: ${{ matrix.tox_env }}
       - name: Combine coverage data
