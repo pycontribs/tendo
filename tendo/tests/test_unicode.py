@@ -6,6 +6,7 @@ import filecmp
 import shutil
 from tendo.unicode import open
 
+
 @pytest.fixture
 def dir():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
