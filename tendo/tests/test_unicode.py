@@ -4,7 +4,7 @@ import tempfile
 import os
 import filecmp
 import shutil
-
+from tendo.unicode import open
 
 @pytest.fixture
 def dir():
