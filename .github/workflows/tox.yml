@@ -157,7 +157,7 @@ jobs:
           TOXENV: ${{ matrix.tox_env }}
       - name: Combine coverage data
         # produce a single .coverage file at repo root
-        run: tox -e coverage
+        run: poetry run tox -e coverage
       - name: Upload coverage data
         if: "runner.os == 'Linux'"
         uses: codecov/codecov-action@v3
