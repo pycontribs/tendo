@@ -1,0 +1,20 @@
+---
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      day: sunday
+      interval: weekly
+    labels:
+      - skip-changelog
+    versioning-strategy: lockfile-only
+    open-pull-requests-limit: 3
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "skip-changelog"
