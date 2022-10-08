@@ -39,6 +39,7 @@ pytest-instafail = "^0.4.2"
 pytest-xdist = "^2.5.0"
 Sphinx = "^5.2.3"
 wheel = "^0.37.1"
+tox = "^3.26.0"
 
 [build-system]
 requires = ["poetry-core"]
