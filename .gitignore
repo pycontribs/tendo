@@ -28,3 +28,4 @@ test-distribute.sh
 /AUTHORS
 /.pytest_cache
 venv/*
+src/tendo/_version.py
