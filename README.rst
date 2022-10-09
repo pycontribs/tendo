@@ -33,7 +33,7 @@ not (yet) provided by Python.
 * [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.org/en/latest/#module-tendo.singleton)
 * [console logging coloring](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer)
 * enable you to use symlinks under windows
-* [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file)
+* [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file
 * [improved execfile](https://tendo.readthedocs.org/en/latest/#module-tendo.execfile2)
 
 Documentation
