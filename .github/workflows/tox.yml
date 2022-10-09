@@ -38,7 +38,7 @@ jobs:
         python-version:
           - 3.9
         os:
-          - ubuntu-20.04
+          - ubuntu-22.04
         env:
           - TOXENV: lint
           - TOXENV: docs
