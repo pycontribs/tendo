@@ -7,7 +7,7 @@ import sys
 from ._version import __version__
 
 __author__ = "Sorin Sbarnea"
-__copyright__ = "Copyright 2010-2018, Sorin Sbarnea"
+__copyright__ = "Copyright 2010-2022, Sorin Sbarnea"
 __email__ = "sorin.sbarnea@gmail.com"
 __status__ = "Production"
 __all__ = ('tee', 'colorer', 'unicode',
