@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - 3.9
+          - "3.10"
         os:
           - ubuntu-22.04
         env:
@@ -127,17 +127,15 @@ jobs:
       PYTEST_REQPASS: 0
 
     steps:
-
-      - uses: actions/checkout@v3
+      - name: Check out src from Git
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # needed by setuptools-scm
-
       - name: Set up Python ${{ matrix.python-version }}
         if: "!contains(matrix.shell, 'wsl')"
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install tox
         run: |
           python3 -m pip install --upgrade tox
@@ -161,7 +159,7 @@ jobs:
           TOXENV: ${{ matrix.tox_env }}
       - name: Combine coverage data
         # produce a single .coverage file at repo root
-        run: tox -e coverage
+        run: python3 -m tox -e coverage
       - name: Upload coverage data
         if: "runner.os == 'Linux'"
         uses: codecov/codecov-action@v3
