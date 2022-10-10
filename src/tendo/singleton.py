@@ -40,7 +40,7 @@ class SingleInstance(object):
             self.lockfile = os.path.normpath(
                 tempfile.gettempdir() + '/' + basename)
 
-        logger.debug("SingleInstance lockfile: " + self.lockfile)
+        logger.debug(f"SingleInstance lockfile: {self.lockfile}")
 
     def __enter__(self):
         if sys.platform == 'win32':
@@ -90,7 +90,7 @@ class SingleInstance(object):
             if logger:
                 logger.warning(e)
             else:
-                print("Unloggable error: %s" % e)
+                print(f"Unloggable error: {e}")
             if exc_value is not None:
                 raise e from exc_value
             sys.exit(-1)
