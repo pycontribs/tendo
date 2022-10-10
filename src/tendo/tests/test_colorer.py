@@ -33,5 +33,5 @@ def test_colorer():
     expected_lines = ['WARNING: a warning\n', 'ERROR: some error\n', 'INFO: some info\n', 'DEBUG: some info\n']
     line_no = 0
     for line in open(tmp_file).readlines():
-        assert(line == expected_lines[line_no])
+        assert line == expected_lines[line_no]
         line_no += 1

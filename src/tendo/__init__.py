@@ -14,5 +14,5 @@ __all__ = ('tee', 'colorer', 'unicode',
            'execfile2', 'singleton', 'ansiterm', '__version__')
 
 
-if sys.hexversion < 0x02050000:
-    sys.exit("Python 2.5 or newer is required by tendo module.")
+if sys.hexversion < 0x03080000:
+    sys.exit("Python 3.8 or newer is required by tendo module.")
