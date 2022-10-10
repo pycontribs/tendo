@@ -4,12 +4,7 @@
 from __future__ import absolute_import
 import sys
 
-from pbr.version import VersionInfo
-
-
-_v = VersionInfo('tendo').semantic_version()
-__version__ = _v.release_string()
-version_info = _v.version_tuple()
+from ._version import __version__
 
 __author__ = "Sorin Sbarnea"
 __copyright__ = "Copyright 2010-2022, Sorin Sbarnea"

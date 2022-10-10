@@ -55,9 +55,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "poetry"
-      - name: Install dependencies
-        run: poetry install
+      - name: Install tox
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --upgrade tox
+      - name: Log installed dists
+        run: python -m pip freeze --all
       - name: Initialize tox envs
         run: poetry run tox --parallel auto --parallel-live --notest --skip-missing-interpreters false -vv
         env: ${{ matrix.env }}

@@ -1,3 +1,15 @@
+[build-system]
+requires = [
+  "setuptools >= 65.4.0", # required by pyproject+setuptools_scm integration
+  "setuptools_scm[toml] >= 3.5.0", # required for "no-local-version" scheme
+  "setuptools_scm_git_archive >= 1.0",
+  "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+target-version = ["py38"]
+
 [tool.coverage.run]
 source_pkgs = ["tendo"]
 branch = true
@@ -10,37 +22,10 @@ source = ["src", ".tox/*/site-packages"]
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 
-[tool.poetry]
-name = "tendo"
-version = "0.3.0"
-description = "Tendo is a python module that adds basic functionality that is"
-authors = ["not (yet) provided by Python."]
-license = "Sorin Sbarnea <sorin.sbarnea@gmail.com>"
-readme = "README.md"
+[tool.isort]
+profile = "black"
+add_imports = "from __future__ import annotations"
 
-[tool.poetry.dependencies]
-python = "^3.8"
-pbr = "^5.10.0"
-pip = "^22.2.2"
-setuptools = "^65.4.1"
-
-
-[tool.poetry.group.dev.dependencies]
-coverage = "^6.5.0"
-coveralls = "^3.3.1"
-docutils = "^0.19"
-MarkupSafe = "^2.1.1"
-pre-commit = "^2.20.0"
-pytest = "^7.1.3"
-pytest-cache = "^1.0"
-pytest-cov = "^4.0.0"
-pytest-html = "^3.1.1"
-pytest-instafail = "^0.4.2"
-pytest-xdist = "^2.5.0"
-Sphinx = "^5.2.3"
-wheel = "^0.37.1"
-tox = "^3.26.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+write_to = "src/tendo/_version.py"

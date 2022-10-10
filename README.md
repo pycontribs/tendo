@@ -1,7 +1,7 @@
 # tendo
 
 Tendo is a python module that adds basic functionality that is
-not (yet) provided by Python.
+not (yet) provided by Python. Read the [documentation](https://tendo.readthedocs.org/en/latest/) for more info. 
 
 Compatible with Python 3.8 and up (tested till 3.10).
 
