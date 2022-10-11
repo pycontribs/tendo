@@ -19,6 +19,11 @@ repos:
       - id: requirements-txt-fixer
       - id: check-yaml
         files: .*\.(yaml|yml)$
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        language_version: python3
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.28.0
     hooks:

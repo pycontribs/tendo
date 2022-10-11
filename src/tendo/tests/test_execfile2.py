@@ -1,4 +1,3 @@
-
 import os
 import tempfile
 
@@ -48,5 +47,7 @@ def test_raised_exception():
 
 def test_command_line():
     exit_code = exec_py_code(
-        "import sys\nif len(sys.argv)==2 and sys.argv[1]=='doh!': sys.exit(-1)", cmd="doh!")
+        "import sys\nif len(sys.argv)==2 and sys.argv[1]=='doh!': sys.exit(-1)",
+        cmd="doh!",
+    )
     assert exit_code == -1

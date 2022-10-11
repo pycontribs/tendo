@@ -20,9 +20,11 @@ import os
 import sys
 
 
-if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
-        ('TERM' in os.environ.keys() and os.environ['TERM'] in ['linux']) or \
-        ('PYCHARM_HOSTED' in os.environ.keys()):
+if (
+    (hasattr(sys.stderr, "isatty") and sys.stderr.isatty())
+    or ("TERM" in os.environ.keys() and os.environ["TERM"] in ["linux"])
+    or ("PYCHARM_HOSTED" in os.environ.keys())
+):
 
     # Why stderr and not stdout? - because python logging module does output to stderr by default and not stdout.
     # now we patch Python code to add color support to logging.StreamHandler
@@ -30,16 +32,18 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
         # add methods we need to the class
         def _out_handle(self):
             import ctypes
+
             return ctypes.windll.kernel32.GetStdHandle(self.STD_OUTPUT_HANDLE)
 
         def _set_color(self, code):
             import ctypes
+
             # Constants from the Windows API
             self.STD_OUTPUT_HANDLE = -11
             hdl = ctypes.windll.kernel32.GetStdHandle(self.STD_OUTPUT_HANDLE)
             ctypes.windll.kernel32.SetConsoleTextAttribute(hdl, code)
 
-        setattr(logging.StreamHandler, '_set_color', _set_color)
+        setattr(logging.StreamHandler, "_set_color", _set_color)
 
         def new(*args):
             FOREGROUND_BLUE = 0x0001  # text color contains blue.
@@ -75,7 +79,12 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
 
             levelno = args[1].levelno
             if levelno >= 50:
-                color = BACKGROUND_YELLOW | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_INTENSITY
+                color = (
+                    BACKGROUND_YELLOW
+                    | FOREGROUND_RED
+                    | FOREGROUND_INTENSITY
+                    | BACKGROUND_INTENSITY
+                )
             elif levelno >= 40:
                 color = FOREGROUND_RED | FOREGROUND_INTENSITY
             elif levelno >= 30:
@@ -92,6 +101,7 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
             args[0]._set_color(FOREGROUND_WHITE)
             # print "after"
             return ret
+
         return new
 
     def add_coloring_to_emit_ansi(fn):
@@ -102,39 +112,42 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
                 new_args = (args[0], copy.copy(args[1]))
             else:
                 new_args = (args[0], copy.copy(args[1]), args[2:])
-            if hasattr(args[0], 'baseFilename'):
+            if hasattr(args[0], "baseFilename"):
                 return fn(*args)
             levelno = new_args[1].levelno
             if levelno >= 50:
-                color = '\x1b[31m'  # red
+                color = "\x1b[31m"  # red
             elif levelno >= 40:
-                color = '\x1b[31m'  # red
+                color = "\x1b[31m"  # red
             elif levelno >= 30:
-                color = '\x1b[33m'  # yellow
+                color = "\x1b[33m"  # yellow
             elif levelno >= 20:
-                color = '\x1b[32m'  # green
+                color = "\x1b[32m"  # green
             elif levelno >= 10:
-                color = '\x1b[35m'  # pink
+                color = "\x1b[35m"  # pink
             else:
-                color = '\x1b[0m'  # normal
+                color = "\x1b[0m"  # normal
             try:
-                new_args[
-                    1].msg = color + str(new_args[1].msg) + '\x1b[0m'  # normal
+                new_args[1].msg = color + str(new_args[1].msg) + "\x1b[0m"  # normal
             except Exception as e:
                 raise e
             return fn(*new_args)
+
         return new
 
     import platform
-    if platform.system() == 'Windows':
+
+    if platform.system() == "Windows":
         # Windows does not support ANSI escapes and we are using API calls to
         # set the console color
         logging.StreamHandler.emit = add_coloring_to_emit_windows(
-            logging.StreamHandler.emit)
+            logging.StreamHandler.emit
+        )
     else:
         # all non-Windows platforms are supporting ANSI escapes so we use them
         logging.StreamHandler.emit = add_coloring_to_emit_ansi(
-            logging.StreamHandler.emit)
+            logging.StreamHandler.emit
+        )
         # log = logging.getLogger()
         # log.addFilter(log_filter())
         # //hdlr = logging.StreamHandler()
