@@ -18,7 +18,7 @@ def b(s):
     return s.encode("latin-1")
 
 
-def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
+def open(filename, mode="r", bufsize=-1, fallback_encoding="utf_8"):
     """This replaces Python original function with an improved version that is Unicode aware.
 
     The new `open()` does change behaviour only for text files, not binary.
@@ -49,24 +49,24 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
             aBuf = bytes(f.read(4))
             f.close()
         except Exception:
-            aBuf = b('')
-        if bytes(aBuf[:3]) == b('\xEF\xBB\xBF'):
+            aBuf = b("")
+        if bytes(aBuf[:3]) == b("\xEF\xBB\xBF"):
             f = codecs.open(filename, mode, "utf_8")
             f.seek(3, 0)
             f.BOM = codecs.BOM_UTF8
-        elif bytes(aBuf[:2]) == b('\xFF\xFE'):
+        elif bytes(aBuf[:2]) == b("\xFF\xFE"):
             f = codecs.open(filename, mode, "utf_16_le")
             f.seek(2, 0)
             f.BOM = codecs.BOM_UTF16_LE
-        elif bytes(aBuf[:2]) == b('\xFE\xFF'):
+        elif bytes(aBuf[:2]) == b("\xFE\xFF"):
             f = codecs.open(filename, mode, "utf_16_be")
             f.seek(2, 0)
             f.BOM = codecs.BOM_UTF16_BE
-        elif bytes(aBuf[:4]) == b('\xFF\xFE\x00\x00'):
+        elif bytes(aBuf[:4]) == b("\xFF\xFE\x00\x00"):
             f = codecs.open(filename, mode, "utf_32_le")
             f.seek(4, 0)
             f.BOM = codecs.BOM_UTF32_LE
-        elif bytes(aBuf[:4]) == b('\x00\x00\xFE\xFF'):
+        elif bytes(aBuf[:4]) == b("\x00\x00\xFE\xFF"):
             f = codecs.open(filename, mode, "utf_32_be")
             f.seek(4, 0)
             f.BOM = codecs.BOM_UTF32_BE
@@ -77,8 +77,11 @@ def open(filename, mode='r', bufsize=-1, fallback_encoding='utf_8'):
         return f
     else:
         import traceback
+
         logging.warning(
-            "Calling unicode.open(%s,%s,%s) that may be wrong." % (filename, mode, bufsize))
+            "Calling unicode.open(%s,%s,%s) that may be wrong."
+            % (filename, mode, bufsize)
+        )
         traceback.print_exc(file=sys.stderr)
 
         return open_old(filename, mode, bufsize)

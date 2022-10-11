@@ -54,7 +54,7 @@ def test_multiple_singletons_from_process():
 
 
 def test_singleton_lock_file():
-    lockfile = '/tmp/foo.lock'
+    lockfile = "/tmp/foo.lock"
     with SingleInstance(lockfile=lockfile) as me:
         print(me)
         assert me.lockfile == lockfile
