@@ -42,8 +42,6 @@ else:
     import re
     import threading
 
-    from six import text_type
-
     def to_int(number, default):
         return number and int(number) or default
     wlock = threading.Lock()
@@ -51,7 +49,7 @@ else:
     STD_OUTPUT_HANDLE = -11
     STD_ERROR_HANDLE = -12
 
-    class AnsiTerm(object):
+    class AnsiTerm:
 
         def __init__(self):
             self.encoding = sys.stdout.encoding
@@ -254,7 +252,7 @@ else:
                             cmd_func(self, param)
                     else:
                         chars_written = c_int()
-                        if isinstance(txt, text_type):
+                        if isinstance(txt, str):
                             windll.kernel32.WriteConsoleW(
                                 self.hconsole, txt, len(txt), byref(chars_written), None)
                         else:
