@@ -15,12 +15,12 @@ def test_colorer():
     print("sys.stdout.isatty = %s" % isatty)
 
     logging.getLogger().setLevel(logging.NOTSET)
-    tmp_file = tempfile.NamedTemporaryFile(suffix='_colorer.log').name
+    tmp_file = tempfile.NamedTemporaryFile(suffix="_colorer.log").name
     fh = logging.FileHandler(tmp_file)
     fh.setLevel(logging.NOTSET)
     ch = logging.StreamHandler()
     ch.setLevel(logging.NOTSET)
-    formatter = logging.Formatter('%(levelname)s: %(message)s')
+    formatter = logging.Formatter("%(levelname)s: %(message)s")
     fh.setFormatter(formatter)
     ch.setFormatter(formatter)
     logging.getLogger().addHandler(ch)
@@ -30,7 +30,12 @@ def test_colorer():
     logging.error("some error")
     logging.info("some info")
     logging.debug("some info")
-    expected_lines = ['WARNING: a warning\n', 'ERROR: some error\n', 'INFO: some info\n', 'DEBUG: some info\n']
+    expected_lines = [
+        "WARNING: a warning\n",
+        "ERROR: some error\n",
+        "INFO: some info\n",
+        "DEBUG: some info\n",
+    ]
     line_no = 0
     for line in open(tmp_file).readlines():
         assert line == expected_lines[line_no]

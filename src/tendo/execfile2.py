@@ -3,6 +3,7 @@ import shlex
 import sys
 
 if sys.hexversion > 0x03000000:
+
     def execfile(file, globals=globals(), locals=locals()):
         fh = open(file, "r")
         if not fh:
@@ -26,7 +27,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
     - 1 - if SystemExit does not contain an error code or if other Exception is received.
     - x - the SystemExit error code (if present)
     """
-    _globals['__name__'] = '__main__'
+    _globals["__name__"] = "__main__"
     saved_argv = sys.argv  # we save sys.argv
     if cmd:
         sys.argv = list([filename])
@@ -36,8 +37,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
             sys.argv.extend(shlex.split(cmd))
     exit_code = 0
     try:
-        exec(
-            compile(open(filename).read(), filename, 'exec'), _globals, _locals)
+        exec(compile(open(filename).read(), filename, "exec"), _globals, _locals)
 
     except SystemExit:
         type, e, tb = sys.exc_info()
@@ -48,6 +48,7 @@ def execfile2(filename, _globals=dict(), _locals=dict(), cmd=None, quiet=False):
     except Exception:
         if not quiet:
             import traceback
+
             traceback.print_exc(file=sys.stderr)
         exit_code = 1
     finally:

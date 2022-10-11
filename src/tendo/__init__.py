@@ -10,8 +10,15 @@ __author__ = "Sorin Sbarnea"
 __copyright__ = "Copyright 2010-2022, Sorin Sbarnea"
 __email__ = "sorin.sbarnea@gmail.com"
 __status__ = "Production"
-__all__ = ('tee', 'colorer', 'unicode',
-           'execfile2', 'singleton', 'ansiterm', '__version__')
+__all__ = (
+    "tee",
+    "colorer",
+    "unicode",
+    "execfile2",
+    "singleton",
+    "ansiterm",
+    "__version__",
+)
 
 
 if sys.hexversion < 0x03080000:
