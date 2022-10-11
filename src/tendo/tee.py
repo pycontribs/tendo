@@ -4,7 +4,6 @@ import codecs
 import logging
 import os
 import pipes
-from six import string_types
 import subprocess
 import sys
 import time
@@ -97,7 +96,7 @@ def system2(cmd, cwd=None, logger=_sentinel, stdout=_sentinel, log_command=_sent
 
     if not logger:
         mylogger = nop
-    elif isinstance(logger, string_types):
+    elif isinstance(logger, str):
         f = codecs.open(logger, "a+b", 'utf_8')
         mylogger = filelogger
     elif isinstance(logger, (types.FunctionType, types.MethodType, types.BuiltinFunctionType)):
