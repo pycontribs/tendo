@@ -14,7 +14,7 @@ class SingleInstanceException(BaseException):
     pass
 
 
-class SingleInstance(object):
+class SingleInstance:
 
     """Class that can be instantiated only once per machine.
 

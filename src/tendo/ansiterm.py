@@ -49,7 +49,7 @@ else:
     STD_OUTPUT_HANDLE = -11
     STD_ERROR_HANDLE = -12
 
-    class AnsiTerm(object):
+    class AnsiTerm:
 
         def __init__(self):
             self.encoding = sys.stdout.encoding
