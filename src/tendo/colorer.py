@@ -17,7 +17,6 @@ The colored output is generated only when the console is a terminal supporting i
 import copy
 import logging
 import os
-import six
 import sys
 
 
@@ -120,7 +119,7 @@ if (hasattr(sys.stderr, "isatty") and sys.stderr.isatty()) or \
                 color = '\x1b[0m'  # normal
             try:
                 new_args[
-                    1].msg = color + six.text_type(new_args[1].msg) + '\x1b[0m'  # normal
+                    1].msg = color + str(new_args[1].msg) + '\x1b[0m'  # normal
             except Exception as e:
                 raise e
             return fn(*new_args)

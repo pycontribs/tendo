@@ -15,7 +15,7 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.org/e
 
 ## Requirements and compatibility
 
-- python 3.6 or newer
+- python 3.8 or newer
 - tox for running tests
 
 ## Related projects and packages
