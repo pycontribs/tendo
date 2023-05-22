@@ -29,7 +29,3 @@ repos:
     hooks:
       - id: yamllint
         files: \.(yaml|yml)$
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
