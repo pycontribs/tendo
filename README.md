@@ -2,7 +2,7 @@
 [![](https://img.shields.io/codecov/c/github/pycontribs/tendo/main.svg)](https://codecov.io/gh/pycontribs/tendo)
 [![](https://readthedocs.org/projects/tendo/badge/?version=latest)](http://tendo.readthedocs.io)
 
-# tendo
+tendo
 
 Tendo is a python module that adds basic functionality that is
 not provided by Python. Read the [documentation](https://tendo.readthedocs.org/en/latest/) for more info.
@@ -13,12 +13,12 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.org/e
 - [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file
 - [improved execfile](https://tendo.readthedocs.org/en/latest/#module-tendo.execfile2)
 
-## Requirements and compatibility
+Requirements and compatibility
 
 - python 3.8 or newer
 - tox for running tests
 
-## Related projects and packages
+Related projects and packages
 
 - jaraco - http://pypi.python.org/pypi/jaraco.util
 - pexpect (maybe)
