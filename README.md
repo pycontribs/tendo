@@ -20,5 +20,5 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.io) f
 
 ## Related projects and packages
 
-- jaraco(http://pypi.python.org/pypi/jaraco.util)
+- [jaraco](http://pypi.python.org/pypi/jaraco.util)
 - pexpect (maybe)
