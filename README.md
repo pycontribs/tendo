@@ -7,11 +7,11 @@
 Tendo is a python module that adds basic functionality that is
 not provided by Python. Read the [documentation](https://tendo.readthedocs.io) for more info.
 
-- [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.org/en/latest/#module-tendo.singleton)
-- [console logging coloring](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer)
+- [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.io/#module-tendo.singleton)
+- [console logging coloring](https://tendo.readthedocs.io/#module-tendo.colorer)
 - enable you to use symlinks under windows
-- [python tee implementation](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file
-- [improved execfile](https://tendo.readthedocs.org/en/latest/#module-tendo.execfile2)
+- [python tee implementation](https://tendo.readthedocs.io/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file
+- [improved execfile](https://tendo.readthedocs.io/#module-tendo.execfile2)
 
 ## Requirements and compatibility
 
