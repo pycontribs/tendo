@@ -13,7 +13,7 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.io) f
 - [python tee implementation](https://tendo.readthedocs.io/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file
 - [improved execfile](https://tendo.readthedocs.io/#module-tendo.execfile2)
 
-### Requirements and compatibility
+### Requirements And Compatibility
 
 - python 3.8 or newer
 - tox for running tests
