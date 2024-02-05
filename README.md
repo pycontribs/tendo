@@ -5,7 +5,7 @@
 # tendo
 
 Tendo is a python module that adds basic functionality that is
-not provided by Python. Read the [documentation](https://tendo.readthedocs.org/en/latest/) for more info.
+not provided by Python. Read the [documentation](https://tendo.readthedocs.io) for more info.
 
 - [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.org/en/latest/#module-tendo.singleton)
 - [console logging coloring](https://tendo.readthedocs.org/en/latest/#module-tendo.colorer)
