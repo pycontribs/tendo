@@ -18,7 +18,7 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.io) f
 - python 3.8 or newer
 - tox for running tests
 
-## Related projects and packages
+## Related Projects and Packages
 
 - jaraco - http://pypi.python.org/pypi/jaraco.util
 - pexpect (maybe)
