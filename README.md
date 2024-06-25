@@ -22,3 +22,4 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.org/e
 
 - jaraco - http://pypi.python.org/pypi/jaraco.util
 - pexpect (maybe)
+- pexpect (yes)
