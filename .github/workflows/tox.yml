@@ -5,9 +5,13 @@ on:
   push:
     branches:
       - "main"
+      - "releases/**"
+      - "stable/**"
   pull_request:
     branches:
       - "main"
+  pull_request_target:
+    types: [opened, labeled, unlabeled] # for ack job
   workflow_call:
 
 concurrency:
@@ -21,7 +25,12 @@ permissions: # needed for tox.yml workflow
   packages: write
   pull-requests: write
 jobs:
+  ack:
+    # checks pull-request labels and updates the release notes on pushes
+    if: github.event_name == 'pull_request_target' || github.event_name == 'push'
+    uses: ansible/team-devtools/.github/workflows/push.yml@main
   tox:
+    if: github.event_name != 'pull_request_target'
     uses: ansible/team-devtools/.github/workflows/tox.yml@main
     with:
       jobs_producing_coverage: 6
