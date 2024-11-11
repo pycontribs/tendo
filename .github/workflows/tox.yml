@@ -19,8 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 permissions: # needed for tox.yml workflow
-  checks: read
-  contents: read
+  checks: write
+  contents: write # needed to update release
   id-token: write
   packages: write
   pull-requests: write
