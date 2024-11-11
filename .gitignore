@@ -29,3 +29,4 @@ test-distribute.sh
 /.pytest_cache
 venv/*
 src/tendo/_version.py
+coverage.lcov
