@@ -3,7 +3,7 @@
 import codecs
 import logging
 import os
-import pipes
+from shlex import quote
 import subprocess
 import sys
 import time
@@ -57,7 +57,7 @@ def system2(
     # because collections.Iterable seems to be missing on Debian Python 2.5.5
     # (but not on OS X 10.8 with Python 2.5.6)
     if hasattr(cmd, "__iter__"):
-        cmd = " ".join(pipes.quote(s) for s in cmd)
+        cmd = " ".join(quote(s) for s in cmd)
 
     t = time.process_time()
     output = []

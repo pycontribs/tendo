@@ -10,17 +10,19 @@ build-backend = "setuptools.build_meta"
 [tool.black]
 target-version = ["py38"]
 
-[tool.coverage.run]
-source_pkgs = ["tendo"]
-branch = true
-parallel = true
-concurrency = ["multiprocessing", "thread"]
-
-[tool.coverage.paths]
-source = ["src", ".tox/*/site-packages"]
-
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+fail_under = 100
+skip_covered = true
+show_missing = true
+
+[tool.coverage.run]
+source = ["src"]
+# Do not use branch until bug is fixes:
+# https://github.com/nedbat/coveragepy/issues/605
+branch = false
+parallel = true
+concurrency = ["multiprocessing", "thread"]
 
 [tool.isort]
 profile = "black"
