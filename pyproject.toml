@@ -51,9 +51,6 @@ documentation = "https://tendo.readthedocs.io"
 repository = "https://github.com/pycontribs/tendo"
 changelog = "https://github.com/pycontribs/tendo/releases"
 
-[tool.black]
-target-version = ["py38"]
-
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 fail_under = 100
@@ -71,6 +68,58 @@ concurrency = ["multiprocessing", "thread"]
 [tool.isort]
 profile = "black"
 add_imports = "from __future__ import annotations"
+
+[tool.ruff]
+target-version = "py310"
+lint.select = ["ALL"]
+lint.ignore = [
+  # Disabled on purpose:
+  "ANN101", # Missing type annotation for `self` in method
+  "D203", # incompatible with D211
+  "D211",
+  "D213", # incompatible with D212
+  "E501", # we use black
+  "RET504", # Unnecessary variable assignment before `return` statement
+  "COM812", # conflicts with ISC001 on format
+  "ISC001", # conflicts with COM812 on format
+  # Temporary disabled during adoption:
+  "A001",
+  "A002",
+  "ANN",
+  "ARG",
+  "B",
+  "BLE001",
+  "C",
+  "C901",
+  "D",
+  "EM101",
+  "ERA",
+  "EXE",
+  "FBT",
+  "FURB",
+  "G",
+  "N",
+  "PGH",
+  "PLR",
+  "PLW",
+  "PT",
+  "PTH",
+  "RUF012",
+  "S",
+  "S101",
+  "SIM",
+  "SIM115",
+  "SLF",
+  "T",
+  "TRY",
+  "UP",
+  "UP031",
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+parametrize-values-type = "tuple"
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
 
 [tool.setuptools.dynamic]
 dependencies = { file = [".config/requirements.in"] }

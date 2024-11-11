@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 """
 Colorer does enable colored logging messages by using `ANSI escape sequences <http://en.wikipedia.org/wiki/ANSI_escape_code>`_.
@@ -14,11 +13,11 @@ The colored output is generated only when the console is a terminal supporting i
 ... logging.info("gray line")
 ... logging.debug("magenta line")
 """
+
 import copy
 import logging
 import os
 import sys
-
 
 if (
     (hasattr(sys.stderr, "isatty") and sys.stderr.isatty())
@@ -42,7 +41,7 @@ if (
             hdl = ctypes.windll.kernel32.GetStdHandle(self.STD_OUTPUT_HANDLE)
             ctypes.windll.kernel32.SetConsoleTextAttribute(hdl, code)
 
-        setattr(logging.StreamHandler, "_set_color", _set_color)
+        logging.StreamHandler._set_color = _set_color
 
         def new(*args):
             FOREGROUND_BLUE = 0x0001  # text color contains blue.
@@ -114,9 +113,7 @@ if (
             if hasattr(args[0], "baseFilename"):
                 return fn(*args)
             levelno = new_args[1].levelno
-            if levelno >= 50:
-                color = "\x1b[31m"  # red
-            elif levelno >= 40:
+            if levelno >= 50 or levelno >= 40:
                 color = "\x1b[31m"  # red
             elif levelno >= 30:
                 color = "\x1b[33m"  # yellow
@@ -140,12 +137,12 @@ if (
         # Windows does not support ANSI escapes and we are using API calls to
         # set the console color
         logging.StreamHandler.emit = add_coloring_to_emit_windows(
-            logging.StreamHandler.emit
+            logging.StreamHandler.emit,
         )
     else:
         # all non-Windows platforms are supporting ANSI escapes so we use them
         logging.StreamHandler.emit = add_coloring_to_emit_ansi(
-            logging.StreamHandler.emit
+            logging.StreamHandler.emit,
         )
         # log = logging.getLogger()
         # log.addFilter(log_filter())

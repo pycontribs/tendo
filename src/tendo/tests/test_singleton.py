@@ -1,6 +1,6 @@
 import logging
-from multiprocessing import Process
 import sys
+from multiprocessing import Process
 
 from tendo.singleton import SingleInstance, SingleInstanceException
 
