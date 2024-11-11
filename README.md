@@ -8,9 +8,8 @@
 not provided by Python.
 
 - [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.io/#module-tendo.singleton)
-- [console logging coloring](https://tendo.readthedocs.io/#module-tendo.colorer)
 - enable you to use symlinks under windows
-- [python tee implementation](https://tendo.readthedocs.io/#module-tendo.colorer) for executing external programs and redirecting their output to both console/file
+- python tee implementation
 - [improved execfile](https://tendo.readthedocs.io/#module-tendo.execfile2)
 
 ## Requirements and Compatibility
