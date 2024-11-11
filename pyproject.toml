@@ -1,11 +1,55 @@
 [build-system]
 requires = [
   "setuptools >= 65.4.0", # required by pyproject+setuptools_scm integration
-  "setuptools_scm[toml] >= 3.5.0", # required for "no-local-version" scheme
-  "setuptools_scm_git_archive >= 1.0",
-  "wheel",
+  "setuptools_scm[toml] >= 7.0.5", # required for "no-local-version" scheme
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+# https://peps.python.org/pep-0621/#readme
+requires-python = ">=3.10"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+name = "tendo"
+description = "A Python library that extends some core functionality"
+readme = "README.md"
+authors = [{ "name" = "Sorin Sbarnea", "email" = "ssbarnea@redhat.com" }]
+maintainers = [{ "name" = "Sorin Sbarnea", "email" = "ssbarnea@redhat.com" }]
+license = { text = "MIT" }
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: Python Software Foundation License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Software Development :: Bug Tracking",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Testing",
+  "Topic :: System :: Systems Administration",
+  "Topic :: Utilities",
+]
+keywords = [
+    "tendo",
+    "tee",
+    "unicode",
+    "colorer",
+    "singleton",
+    ]
+
+[project.urls]
+homepage = "https://github.com/pycontribs/tendo"
+documentation = "https://tendo.readthedocs.io"
+repository = "https://github.com/pycontribs/tendo"
+changelog = "https://github.com/pycontribs/tendo/releases"
 
 [tool.black]
 target-version = ["py38"]
@@ -28,6 +72,22 @@ concurrency = ["multiprocessing", "thread"]
 profile = "black"
 add_imports = "from __future__ import annotations"
 
+[tool.setuptools.dynamic]
+dependencies = { file = [".config/requirements.in"] }
+optional-dependencies.docs = { file = [".config/requirements-docs.in"] }
+optional-dependencies.test = { file = [".config/requirements-test.in"] }
+
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
+tag_regex = "^(?P<prefix>v)?(?P<version>\\d+[^\\+]*)(?P<suffix>.*)?$"
 write_to = "src/tendo/_version.py"
+# To prevent accidental pick of mobile version tags such 'v6'
+git_describe_command = [
+  "git",
+  "describe",
+  "--dirty",
+  "--tags",
+  "--long",
+  "--match",
+  "v*.*",
+]
