@@ -265,7 +265,6 @@ if __name__ == "__main__":
     # import pytest
     # pytest.main(['--pyargs', __name__])
     """
-    import colorer
     import tempfile, os
 
     logging.basicConfig(level=logging.NOTSET,

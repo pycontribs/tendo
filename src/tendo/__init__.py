@@ -11,11 +11,9 @@ __email__ = "sorin.sbarnea@gmail.com"
 __status__ = "Production"
 __all__ = (
     "tee",
-    "colorer",
     "unicode",
     "execfile2",
     "singleton",
-    "ansiterm",
     "__version__",
 )
 
