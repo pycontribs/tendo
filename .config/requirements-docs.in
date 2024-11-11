@@ -1,3 +1,1 @@
-Sphinx~=5.2.1
-docutils~=0.19
-MarkupSafe~=2.1.1
+mkdocs-ansible>=24.3.1
