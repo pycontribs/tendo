@@ -78,7 +78,9 @@ def open(filename, mode="r", bufsize=-1, fallback_encoding="utf_8"):
     import traceback
 
     logging.warning(
-        "Calling unicode.open(%s,%s,%s) that may be wrong." % (filename, mode, bufsize),
+        "Calling unicode.open({},{},{}) that may be wrong.".format(
+            filename, mode, bufsize
+        ),
     )
     traceback.print_exc(file=sys.stderr)
 

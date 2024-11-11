@@ -6,7 +6,7 @@ import sys
 from ._version import __version__
 
 __author__ = "Sorin Sbarnea"
-__copyright__ = "Copyright 2010-2022, Sorin Sbarnea"
+__copyright__ = "Copyright 2010-2024, Sorin Sbarnea"
 __email__ = "sorin.sbarnea@gmail.com"
 __status__ = "Production"
 __all__ = (
@@ -20,5 +20,5 @@ __all__ = (
 )
 
 
-if sys.hexversion < 0x03080000:
-    sys.exit("Python 3.8 or newer is required by tendo module.")
+if sys.hexversion < 0x030A0000:
+    sys.exit("Python 3.10 or newer is required by tendo module.")

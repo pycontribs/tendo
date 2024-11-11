@@ -92,7 +92,7 @@ def system2(
             sys.exc_info()[1]
             import traceback
 
-            print("        ****** ERROR: Exception: %s\nencoding = %s" % (e, encoding))
+            print(f"        ****** ERROR: Exception: {e}\nencoding = {encoding}")
             traceback.print_exc(file=sys.stderr)
             sys.exit(-1)
 
@@ -239,7 +239,7 @@ class testTee(unittest.TestCase):
             self.assertEqual(
                 value,
                 resulted_value,
-                "Returned <%s>, expected <%s>" % (resulted_value, value),
+                f"Returned <{resulted_value}>, expected <{value}>",
             )
             # ret = os.system(resulted_value)
             # if not ret==0:
