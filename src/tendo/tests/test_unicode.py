@@ -1,9 +1,11 @@
-import inspect
-import pytest
-import tempfile
-import os
 import filecmp
+import inspect
+import os
 import shutil
+import tempfile
+
+import pytest
+
 from tendo.unicode import open
 
 
@@ -34,11 +36,13 @@ def test_write_on_existing_utf8(dir):
     shutil.copyfile(os.path.join(dir, "assets/utf8.txt"), fname_tmp)
     f = open(fname_tmp, "a")  # encoding not specified, should use utf-8
     f.write(
-        "\u0061\u0062\u0063\u0219\u021B\u005F\u1E69\u0073\u0323\u0307\u0073\u0307\u0323\u005F\u0431\u0434\u0436\u005F\u03B1\u03B2\u03CE\u005F\u0648\u062A\u005F\u05D0\u05E1\u05DC\u005F\u6C38\U0002A6A5\u9EB5\U00020000"
+        "\u0061\u0062\u0063\u0219\u021b\u005f\u1e69\u0073\u0323\u0307\u0073\u0307\u0323\u005f\u0431\u0434\u0436\u005f\u03b1\u03b2\u03ce\u005f\u0648\u062a\u005f\u05d0\u05e1\u05dc\u005f\u6c38\U0002a6a5\u9eb5\U00020000",
     )
     f.close()
     passed = filecmp.cmp(
-        os.path.join(dir, "assets/utf8-after-append.txt"), fname_tmp, shallow=False
+        os.path.join(dir, "assets/utf8-after-append.txt"),
+        fname_tmp,
+        shallow=False,
     )
     assert passed is True
     os.close(ftmp)

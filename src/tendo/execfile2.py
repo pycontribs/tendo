@@ -5,7 +5,7 @@ import sys
 if sys.hexversion > 0x03000000:
 
     def execfile(file, globals=globals(), locals=locals()):
-        fh = open(file, "r")
+        fh = open(file)
         if not fh:
             raise Exception("Unable to open %s." % file)
         exec(fh.read() + "\n", globals, locals)

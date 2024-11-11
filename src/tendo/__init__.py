@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # Licensed to PSF under a Contributor Agreement.
 # See http://www.python.org/psf/license for licensing details.
-from __future__ import absolute_import
 import sys
 
 from ._version import __version__

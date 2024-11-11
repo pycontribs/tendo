@@ -3,17 +3,12 @@
 import os
 import sys
 
-
 try:
     if (not sys.stderr.isatty()) or (not sys.stdout.isatty()):
         raise ValueError("not a tty")
 
     import ctypes
-    from ctypes import byref
-    from ctypes import c_char
-    from ctypes import c_int
-    from ctypes import c_short
-    from ctypes import windll
+    from ctypes import byref, c_char, c_int, c_short, windll
 
     class COORD(ctypes.Structure):
         _fields_ = [("X", c_short), ("Y", c_short)]
@@ -67,7 +62,8 @@ else:
             self.orig_sbinfo = CONSOLE_SCREEN_BUFFER_INFO()
             self.orig_csinfo = CONSOLE_CURSOR_INFO()
             windll.kernel32.GetConsoleScreenBufferInfo(
-                self.hconsole, byref(self.orig_sbinfo)
+                self.hconsole,
+                byref(self.orig_sbinfo),
             )
             windll.kernel32.GetConsoleCursorInfo(hconsole, byref(self.orig_csinfo))
 
@@ -152,7 +148,8 @@ else:
             y = to_int(y, 1) - 1
             sbinfo = self.screen_buffer_info()
             new_pos = COORD(
-                min(max(0, x), sbinfo.Size.X), min(max(0, y), sbinfo.Size.Y)
+                min(max(0, x), sbinfo.Size.X),
+                min(max(0, y), sbinfo.Size.Y),
             )
             windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos)
 
@@ -185,13 +182,15 @@ else:
         def next_line(self, param):
             sbinfo = self.screen_buffer_info()
             self.move_cursor(
-                x_offset=-sbinfo.CursorPosition.X, y_offset=to_int(param, 1)
+                x_offset=-sbinfo.CursorPosition.X,
+                y_offset=to_int(param, 1),
             )
 
         def prev_line(self, param):
             sbinfo = self.screen_buffer_info()
             self.move_cursor(
-                x_offset=-sbinfo.CursorPosition.X, y_offset=-to_int(param, 1)
+                x_offset=-sbinfo.CursorPosition.X,
+                y_offset=-to_int(param, 1),
             )
 
         escape_to_color = {
@@ -274,11 +273,19 @@ else:
                         chars_written = c_int()
                         if isinstance(txt, str):
                             windll.kernel32.WriteConsoleW(
-                                self.hconsole, txt, len(txt), byref(chars_written), None
+                                self.hconsole,
+                                txt,
+                                len(txt),
+                                byref(chars_written),
+                                None,
                             )
                         else:
                             windll.kernel32.WriteConsoleA(
-                                self.hconsole, txt, len(txt), byref(chars_written), None
+                                self.hconsole,
+                                txt,
+                                len(txt),
+                                byref(chars_written),
+                                None,
                             )
             finally:
                 wlock.release()

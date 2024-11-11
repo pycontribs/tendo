@@ -5,7 +5,6 @@ import os
 import sys
 import tempfile
 
-
 if sys.platform != "win32":
     import fcntl
 
@@ -58,7 +57,7 @@ class SingleInstance:
                 type, e, tb = sys.exc_info()
                 if e.errno == 13:
                     logger.error("Another instance is already running, quitting.")
-                    raise SingleInstanceException()
+                    raise SingleInstanceException
                 print(e.errno)
                 raise
         else:  # non Windows
@@ -66,9 +65,9 @@ class SingleInstance:
             self.fp.flush()
             try:
                 fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except IOError:
+            except OSError:
                 logger.warning("Another instance is already running, quitting.")
-                raise SingleInstanceException()
+                raise SingleInstanceException
         self.initialized = True
         return self
 

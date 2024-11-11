@@ -1,4 +1,5 @@
 import os
+
 from tendo.tee import quote_command, system, system2
 
 
@@ -14,7 +15,6 @@ def test_1():
     7  "sort "/?""        [bad]         ok
     8 ""sort" "/?""       [bad]           ok
     """
-
     quotes = {
         "dir >nul": "dir >nul",
         'cd /D "C:\\Program Files\\"': '"cd /D "C:\\Program Files\\""',

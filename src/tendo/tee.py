@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-# encoding: utf-8
 import codecs
 import logging
 import os
-from shlex import quote
 import subprocess
 import sys
 import time
 import types
 import unittest
+from shlex import quote
 
 global logger
 global stdout
@@ -96,7 +95,6 @@ def system2(
             print("        ****** ERROR: Exception: %s\nencoding = %s" % (e, encoding))
             traceback.print_exc(file=sys.stderr)
             sys.exit(-1)
-        pass
 
     def nop(msg):
         pass
@@ -107,14 +105,15 @@ def system2(
         f = codecs.open(logger, "a+b", "utf_8")
         mylogger = filelogger
     elif isinstance(
-        logger, (types.FunctionType, types.MethodType, types.BuiltinFunctionType)
+        logger,
+        (types.FunctionType, types.MethodType, types.BuiltinFunctionType),
     ):
         mylogger = logger
     else:
         method_write = getattr(logger, "write", None)
         # if we can call write() we'll aceppt it :D
         # this should work for filehandles
-        if hasattr(method_write, "__call__"):
+        if callable(method_write):
             f = logger
             mylogger = filelogger
         else:
@@ -125,7 +124,11 @@ def system2(
 
     cmd = quote_command(cmd)  # to prevent _popen() bug
     p = subprocess.Popen(
-        cmd, cwd=cwd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        cmd,
+        cwd=cwd,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
     )
     if log_command:
         mylogger("Running: %s" % cmd)
@@ -136,12 +139,11 @@ def system2(
             line = line.decode(encoding)
         except Exception:
             e = sys.exc_info()[1]
-            logging.error(e)
-            logging.error(
+            logging.exception(e)
+            logging.exception(
                 "The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s"
-                % (encoding, cmd, repr(line))
+                % (encoding, cmd, repr(line)),
             )
-            pass
 
         output.append(line)
         if not line:
@@ -159,22 +161,27 @@ def system2(
 
             mylogger(
                 "Returned: %d (execution time %s)\n"
-                % (returncode, secondsToStr(time.process_time() - t))
+                % (returncode, secondsToStr(time.process_time() - t)),
             )
         else:
             mylogger("Returned: %d\n" % returncode)
 
     # running a tool that returns non-zero? this deserves a warning
-    if not returncode == 0:
+    if returncode != 0:
         logging.warning(
-            "Returned: %d from: %s\nOutput %s" % (returncode, cmd, "\n".join(output))
+            "Returned: %d from: %s\nOutput %s" % (returncode, cmd, "\n".join(output)),
         )
 
     return returncode, output
 
 
 def system(
-    cmd, cwd=None, logger=None, stdout=None, log_command=_sentinel, timing=_sentinel
+    cmd,
+    cwd=None,
+    logger=None,
+    stdout=None,
+    log_command=_sentinel,
+    timing=_sentinel,
 ):
     """This works similar to :py:func:`os.system` but add some useful optional parameters.
 
@@ -216,7 +223,6 @@ class testTee(unittest.TestCase):
         7  "sort "/?""        [bad]         ok
         8 ""sort" "/?""       [bad]           ok
         """
-
         quotes = {
             "dir >nul": "dir >nul",
             'cd /D "C:\\Program Files\\"': '"cd /D "C:\\Program Files\\""',
