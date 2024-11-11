@@ -8,12 +8,12 @@
 not provided by Python.
 
 - [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.io/#module-tendo.singleton)
-- enable you to use symlinks under windows
 - python tee implementation
 - [improved execfile](https://tendo.readthedocs.io/#module-tendo.execfile2)
 
 ## Requirements and Compatibility
 
+- POSIX-compatible operating system, including Linux and macOS
 - python 3.10 or newer
 - tox for running tests
 

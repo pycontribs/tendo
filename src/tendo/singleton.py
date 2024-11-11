@@ -1,12 +1,10 @@
 #! /usr/bin/env python
 
+import fcntl
 import logging
 import os
 import sys
 import tempfile
-
-if sys.platform != "win32":
-    import fcntl
 
 
 class SingleInstanceException(BaseException):
@@ -46,28 +44,13 @@ class SingleInstance:
         logger.debug(f"SingleInstance lockfile: {self.lockfile}")
 
     def __enter__(self):
-        if sys.platform == "win32":
-            try:
-                # file already exists, we try to remove (in case previous
-                # execution was interrupted)
-                if os.path.exists(self.lockfile):
-                    os.unlink(self.lockfile)
-                self.fd = os.open(self.lockfile, os.O_CREAT | os.O_EXCL | os.O_RDWR)
-            except OSError:
-                type, e, tb = sys.exc_info()
-                if e.errno == 13:
-                    logger.error("Another instance is already running, quitting.")
-                    raise SingleInstanceException
-                print(e.errno)
-                raise
-        else:  # non Windows
-            self.fp = open(self.lockfile, "w")
-            self.fp.flush()
-            try:
-                fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except OSError:
-                logger.warning("Another instance is already running, quitting.")
-                raise SingleInstanceException
+        self.fp = open(self.lockfile, "w")
+        self.fp.flush()
+        try:
+            fcntl.lockf(self.fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            logger.warning("Another instance is already running, quitting.")
+            raise SingleInstanceException
         self.initialized = True
         return self
 
@@ -77,15 +60,10 @@ class SingleInstance:
         if exc_value is not None:
             logger.warning("Error: %s" % exc_value, exc_info=True)
         try:
-            if sys.platform == "win32":
-                if hasattr(self, "fd"):
-                    os.close(self.fd)
-                    os.unlink(self.lockfile)
-            else:
-                fcntl.lockf(self.fp, fcntl.LOCK_UN)
-                # os.close(self.fp)
-                if os.path.isfile(self.lockfile):
-                    os.unlink(self.lockfile)
+            fcntl.lockf(self.fp, fcntl.LOCK_UN)
+            # os.close(self.fp)
+            if os.path.isfile(self.lockfile):
+                os.unlink(self.lockfile)
         except Exception as e:
             if logger:
                 logger.warning(e)

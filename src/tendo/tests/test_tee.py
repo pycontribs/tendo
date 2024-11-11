@@ -1,4 +1,5 @@
 import os
+import sys
 
 from tendo.tee import quote_command, system, system2
 
@@ -36,12 +37,12 @@ def test_1():
 
 
 def test_2():
-    assert system(["python", "-V"]) == 0
+    assert system([sys.executable, "-V"]) == 0
 
 
 def test_3():
-    assert system2(["python", "-V"])[0] == 0
+    assert system2([sys.executable, "-V"])[0] == 0
 
 
 def test_4():
-    assert system(["python", "-c", "print('c c')"]) == 0
+    assert system([sys.executable, "-c", "print()"]) == 0
