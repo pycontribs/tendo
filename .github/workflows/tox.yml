@@ -38,3 +38,5 @@ jobs:
         docs
         lint
         pkg
+        py310-windows:tox -e py310:runner=windows-latest
+        py313-windows:tox -e py313:runner=windows-latest
