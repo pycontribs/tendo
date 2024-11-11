@@ -1,0 +1,20 @@
+version: 2
+
+submodules:
+  include: all
+  recursive: true
+
+mkdocs:
+  fail_on_warning: true
+
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.11"
+
+python:
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
+        - docs

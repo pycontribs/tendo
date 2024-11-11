@@ -30,3 +30,4 @@ test-distribute.sh
 venv/*
 src/tendo/_version.py
 coverage.lcov
+site

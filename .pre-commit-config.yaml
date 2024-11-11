@@ -19,6 +19,10 @@ repos:
       - id: requirements-txt-fixer
       - id: check-yaml
         files: .*\.(yaml|yml)$
+        exclude: >
+          (?x)^(
+            mkdocs.yml
+          )$
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:

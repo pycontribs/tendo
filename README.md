@@ -4,8 +4,8 @@
 
 # tendo
 
-Tendo is a python module that adds basic functionality that is
-not provided by Python. Read the [documentation](https://tendo.readthedocs.io) for more info.
+[Tendo](https://tendo.readthedocs.io) is a python module that adds basic functionality that is
+not provided by Python.
 
 - [transparent Unicode support for text file operations (BOM detection)](https://tendo.readthedocs.io/#module-tendo.singleton)
 - [console logging coloring](https://tendo.readthedocs.io/#module-tendo.colorer)
@@ -15,7 +15,7 @@ not provided by Python. Read the [documentation](https://tendo.readthedocs.io) f
 
 ## Requirements and Compatibility
 
-- python 3.8 or newer
+- python 3.10 or newer
 - tox for running tests
 
 ## Related Projects and Packages
