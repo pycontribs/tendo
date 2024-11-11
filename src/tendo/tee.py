@@ -30,10 +30,6 @@ def quote_command(cmd):
 
     This is required in order to prevent getting "The input line is too long" error message.
     """
-    if not (os.name == "nt" or os.name == "dos"):
-        # the escaping is required only on Windows platforms, in fact it will
-        # break cmd line on others
-        return cmd
     if '"' in cmd[1:-1]:
         cmd = '"' + cmd + '"'
     return cmd
@@ -247,13 +243,13 @@ class testTee(unittest.TestCase):
         os.name = save
 
     def test_2(self):
-        self.assertEqual(system(["python", "-V"]), 0)
+        self.assertEqual(system([sys.executable, "-V"]), 0)
 
     def test_3(self):
-        self.assertEqual(system2(["python", "-V"])[0], 0)
+        self.assertEqual(system2([sys.executable, "-V"])[0], 0)
 
     def test_4(self):
-        self.assertEqual(system(["python", "-c", "print('c c')"]), 0)
+        self.assertEqual(system([sys.executable, "-c", "print('c c')"]), 0)
 
 
 if __name__ == "__main__":
