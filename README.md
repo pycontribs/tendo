@@ -1,5 +1,5 @@
 [![](https://img.shields.io/pypi/v/tendo.svg?colorB=green)](https://pypi.python.org/pypi/tendo/)
-[![](https://img.shields.io/codecov/c/github/pycontribs/tendo/main.svg)](https://codecov.io/gh/pycontribs/tendo)
+[![codecov](https://codecov.io/gh/pycontribs/tendo/graph/badge.svg?token=1VvPGtNT0c)](https://codecov.io/gh/pycontribs/tendo)
 [![](https://readthedocs.org/projects/tendo/badge/?version=latest)](http://tendo.readthedocs.io)
 
 # tendo
