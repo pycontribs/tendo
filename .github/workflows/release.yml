@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0 # needed by setuptools-scm
       - name: Switch to using Python 3.10 by default
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: Install tox
