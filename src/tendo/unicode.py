@@ -12,6 +12,7 @@ This file does add some additional Unicode support to Python, like:
 """
 # we save the file function handler because we want to override it
 open_old = open
+_logger = logging.getLogger()
 
 
 def b(s):
@@ -77,7 +78,7 @@ def open(filename, mode="r", bufsize=-1, fallback_encoding="utf_8"):
         return f
     import traceback
 
-    logging.warning(
+    _logger.warning(
         "Calling unicode.open({},{},{}) that may be wrong.".format(
             filename, mode, bufsize
         ),

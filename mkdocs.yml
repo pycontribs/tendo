@@ -37,8 +37,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          import:
-            - https://docs.python.org/3/objects.inv
+          paths: [src]
           options:
             # heading_level: 2
             docstring_style: sphinx
@@ -56,6 +55,9 @@ plugins:
             show_signature_annotations: yes
             separate_signature: yes
             # show_bases: false
+          inventories:
+            - url: https://docs.ansible.com/ansible/latest/objects.inv
+              domains: [py, std]
     # options:
     #   show_root_heading: true
     #   docstring_style: sphinx
