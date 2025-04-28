@@ -10,11 +10,11 @@ __copyright__ = "Copyright 2010-2024, Sorin Sbarnea"
 __email__ = "sorin.sbarnea@gmail.com"
 __status__ = "Production"
 __all__ = (
-    "tee",
-    "unicode",
+    "__version__",
     "execfile2",
     "singleton",
-    "__version__",
+    "tee",
+    "unicode",
 )
 
 

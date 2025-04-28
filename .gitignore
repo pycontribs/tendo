@@ -31,3 +31,4 @@ venv/*
 src/tendo/_version.py
 coverage.lcov
 site
+_readthedocs

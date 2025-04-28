@@ -6,7 +6,7 @@ import tempfile
 
 import pytest
 
-from tendo.unicode import open
+from tendo.unicode import open  # noqa: A004
 
 
 @pytest.fixture

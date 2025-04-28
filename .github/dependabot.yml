@@ -1,20 +1,26 @@
 ---
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 version: 2
 updates:
   - package-ecosystem: pip
-    directory: /
+    directory: /.config/
     schedule:
       day: sunday
-      interval: weekly
+      interval: monthly
     labels:
+      - dependencies
       - skip-changelog
     versioning-strategy: lockfile-only
     open-pull-requests-limit: 3
+    groups:
+      dependencies:
+        patterns:
+          - "*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
     labels:
-      - "dependencies"
-      - "skip-changelog"
+      - dependencies
+      - skip-changelog

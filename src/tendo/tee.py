@@ -23,6 +23,7 @@ timing = True
 # outputs the command being executed to the log (before command output)
 log_command = True
 _sentinel = object()
+_logger = logging.getLogger()
 
 
 def quote_command(cmd):
@@ -135,8 +136,8 @@ def system2(
             line = line.decode(encoding)
         except Exception:
             e = sys.exc_info()[1]
-            logging.exception(e)
-            logging.exception(
+            _logger.exception(e)
+            _logger.exception(
                 "The output of the command could not be decoded as %s\ncmd: %s\n line ignored: %s"
                 % (encoding, cmd, repr(line)),
             )
@@ -164,8 +165,11 @@ def system2(
 
     # running a tool that returns non-zero? this deserves a warning
     if returncode != 0:
-        logging.warning(
-            "Returned: %d from: %s\nOutput %s" % (returncode, cmd, "\n".join(output)),
+        _logger.warning(
+            "Returned: %d from: %s\nOutput %s",
+            returncode,
+            cmd,
+            "\n".join(output),
         )
 
     return returncode, output

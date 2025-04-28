@@ -1,27 +1,18 @@
 [build-system]
+build-backend = "setuptools.build_meta"
 requires = [
   "setuptools >= 65.4.0", # required by pyproject+setuptools_scm integration
-  "setuptools_scm[toml] >= 7.0.5", # required for "no-local-version" scheme
+  "setuptools_scm[toml] >= 7.0.5" # required for "no-local-version" scheme
 ]
-build-backend = "setuptools.build_meta"
 
 [project]
-# https://peps.python.org/pep-0621/#readme
-requires-python = ">=3.10"
-dynamic = ["version", "dependencies", "optional-dependencies"]
-name = "tendo"
-description = "A Python library that extends some core functionality"
-readme = "README.md"
-authors = [{ "name" = "Sorin Sbarnea", "email" = "ssbarnea@redhat.com" }]
-maintainers = [{ "name" = "Sorin Sbarnea", "email" = "ssbarnea@redhat.com" }]
-license = { text = "MIT" }
+authors = [{"email" = "ssbarnea@redhat.com", "name" = "Sorin Sbarnea"}]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Intended Audience :: Information Technology",
   "Intended Audience :: System Administrators",
-  "License :: OSI Approved :: Python Software Foundation License",
   "Operating System :: MacOS",
   "Operating System :: POSIX :: Linux",
   "Operating System :: POSIX",
@@ -37,43 +28,53 @@ classifiers = [
   "Topic :: Software Development :: Quality Assurance",
   "Topic :: Software Development :: Testing",
   "Topic :: System :: Systems Administration",
-  "Topic :: Utilities",
+  "Topic :: Utilities"
 ]
+description = "A Python library that extends some core functionality"
+dynamic = ["version", "dependencies", "optional-dependencies"]
 keywords = [
-    "tendo",
-    "tee",
-    "unicode",
-    "singleton",
-    ]
+  "tendo",
+  "tee",
+  "unicode",
+  "singleton"
+]
+license = "MIT"
+maintainers = [{"email" = "ssbarnea@redhat.com", "name" = "Sorin Sbarnea"}]
+name = "tendo"
+readme = "README.md"
+# https://peps.python.org/pep-0621/#readme
+requires-python = ">=3.10"
 
 [project.urls]
-homepage = "https://github.com/pycontribs/tendo"
-documentation = "https://tendo.readthedocs.io"
-repository = "https://github.com/pycontribs/tendo"
 changelog = "https://github.com/pycontribs/tendo/releases"
+documentation = "https://tendo.readthedocs.io"
+homepage = "https://github.com/pycontribs/tendo"
+repository = "https://github.com/pycontribs/tendo"
 
 [tool.coverage.report]
-exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+exclude_also = ["pragma: no cover", "if TYPE_CHECKING:"]
 fail_under = 100
-skip_covered = true
 show_missing = true
+skip_covered = true
+skip_empty = true
 
 [tool.coverage.run]
-source = ["src"]
 # Do not use branch until bug is fixes:
 # https://github.com/nedbat/coveragepy/issues/605
 branch = false
-parallel = true
 concurrency = ["multiprocessing", "thread"]
+parallel = true
+source = ["src"]
 
 [tool.isort]
-profile = "black"
 add_imports = "from __future__ import annotations"
+profile = "black"
 
 [tool.ruff]
 target-version = "py310"
-lint.select = ["ALL"]
-lint.ignore = [
+
+[tool.ruff.lint]
+ignore = [
   # Disabled on purpose:
   "ANN101", # Missing type annotation for `self` in method
   "D203", # incompatible with D211
@@ -114,30 +115,41 @@ lint.ignore = [
   "T",
   "TRY",
   "UP",
-  "UP031",
+  "UP031"
 ]
+select = ["ALL"]
 
-[tool.ruff.lint.flake8-pytest-style]
-parametrize-values-type = "tuple"
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
 [tool.ruff.lint.pydocstyle]
-convention = "pep257"
+convention = "google"
 
 [tool.setuptools.dynamic]
-dependencies = { file = [".config/requirements.in"] }
-optional-dependencies.docs = { file = [".config/requirements-docs.in"] }
-optional-dependencies.test = { file = [".config/requirements-test.in"] }
+dependencies = {file = [".config/requirements.in"]}
+optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
+optional-dependencies.test = {file = [".config/requirements-test.in"]}
 
 [tool.setuptools_scm]
-local_scheme = "no-local-version"
-tag_regex = "^(?P<prefix>v)?(?P<version>\\d+[^\\+]*)(?P<suffix>.*)?$"
-write_to = "src/tendo/_version.py"
 # To prevent accidental pick of mobile version tags such 'v6'
 git_describe_command = [
   "git",
   "describe",
   "--dirty",
-  "--tags",
   "--long",
+  "--tags",
   "--match",
-  "v*.*",
+  "v*.*"
 ]
+local_scheme = "no-local-version"
+tag_regex = "^(?P<prefix>v)?(?P<version>\\d+[^\\+]*)(?P<suffix>.*)?$"
+write_to = "src/tendo/_version.py"
+
+[tool.tomlsort]
+in_place = true
+sort_inline_tables = true
+sort_table_keys = true
+
+[tool.uv.pip]
+annotation-style = "line"
+custom-compile-command = "tox run -e deps"
