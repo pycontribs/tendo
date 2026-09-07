@@ -13,29 +13,29 @@ repos:
     hooks:
       - id: check-useless-excludes
   - repo: https://github.com/pappasam/toml-sort
-    rev: v0.24.2
+    rev: v0.24.4
     hooks:
       - id: toml-sort-fix
 
   - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: 1.5.0
+    rev: 1.9.0
     hooks:
       - id: tox-ini-fmt
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.11.7"
+    rev: "v0.16.6"
     hooks:
       - id: ruff
         entry: sh -c 'ruff check --fix --force-exclude && ruff format --force-exclude'
         types_or: [python, pyi]
   - repo: https://github.com/asottile/pyupgrade
     # keep it after flake8
-    rev: v3.19.1
+    rev: v3.21.2
     hooks:
       - id: pyupgrade
         args: ["--py310-plus"]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         exclude: ^src/tendo/tests/.*\.txt$
@@ -58,7 +58,7 @@ repos:
             mkdocs.yml
           )$
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.37.0
+    rev: v1.38.0
     hooks:
       - id: yamllint
         files: \.(yaml|yml)$
