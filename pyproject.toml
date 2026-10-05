@@ -6,7 +6,7 @@ requires = [
 ]
 
 [project]
-authors = [{"email" = "ssbarnea@redhat.com", "name" = "Sorin Sbarnea"}]
+authors = [{ "email" = "ssbarnea@redhat.com", "name" = "Sorin Sbarnea" }]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
@@ -39,7 +39,7 @@ keywords = [
   "singleton"
 ]
 license = "MIT"
-maintainers = [{"email" = "ssbarnea@redhat.com", "name" = "Sorin Sbarnea"}]
+maintainers = [{ "email" = "ssbarnea@redhat.com", "name" = "Sorin Sbarnea" }]
 name = "tendo"
 readme = "README.md"
 # https://peps.python.org/pep-0621/#readme
@@ -126,9 +126,9 @@ known-first-party = ["src"]
 convention = "google"
 
 [tool.setuptools.dynamic]
-dependencies = {file = [".config/requirements.in"]}
-optional-dependencies.docs = {file = [".config/requirements-docs.in"]}
-optional-dependencies.test = {file = [".config/requirements-test.in"]}
+dependencies = { file = [".config/requirements.in"] }
+optional-dependencies.docs = { file = [".config/requirements-docs.in"] }
+optional-dependencies.test = { file = [".config/requirements-test.in"] }
 
 [tool.setuptools_scm]
 # To prevent accidental pick of mobile version tags such 'v6'
